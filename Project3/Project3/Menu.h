@@ -9,7 +9,7 @@
 
 enum eMenu{
 	eMenu_Game,        //ゲーム
-	eMenu_Config,    //設定
+	eMenu_Tranp,    //トランプ
 	eMenu_Finish,//終了
 	eMenu_count//ここで要素数がわかる
 };

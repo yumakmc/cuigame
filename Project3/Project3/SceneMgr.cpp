@@ -25,6 +25,9 @@ void SceneMgr::Update(){
 		case eScene_Game:
 			mScene = (BaseScene*) new Game(this);
 			break;
+		case eScene_Tranp:
+			mScene = (BaseScene*) new Tranp(this);
+			break;
 		}
 		mNextScene = eScene_None;    //次のシーン情報をクリア
 		mScene->Initialize();    //シーンを初期化

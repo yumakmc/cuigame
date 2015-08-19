@@ -6,8 +6,7 @@
 //#pragma comment(lib, "shlwapi.lib")
 
 #include "BaseScene.h"
-//#include "Text.h"
-//#include "CardGame.h"
+#include "Tranp.h"
 #include "gameSceneChanger.h"
 #include "gamebaseScene.h"
 

@@ -22,15 +22,10 @@ int main(){
 			Keyboard_Update();
 			scenemgr.Update();
 			system("cls");
-			//vector<vector<int>> TmpField(SIZE_Y, vector<int>(SIZE_X, 0));
-			vector<string> TmpField(SIZE_Y,"　　　　　　　　　　　　　　　　　　　　");
+			vector<string> TmpField(SIZE_Y,"　　　　　　　　　　　　　　　　　　　　");//空白の数はSIZE_Xの数と同じ修正したいけど重くなりそう
 			scenemgr.Draw(TmpField);
-			string a = "犬";
 			for (int y = 0; y < TmpField.size(); ++y) {
-				for (int x = 0; x < TmpField[0].size(); ++x) {
-					cout << TmpField[y][x];
-				}
-				cout << endl;
+				cout << TmpField[y]<<endl;
 			}
 		}
 	}

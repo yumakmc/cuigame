@@ -1,5 +1,6 @@
 #pragma once
 #include "Game.h"
+
 #include <vector>
 
 //ゲーム画面
@@ -19,7 +20,6 @@ void Game::Update(){
 		case eGameScene_Text:    //現在の画面がメニューなら
 			//mGameScene = (gameBaseScene*) new Text(d,this);
 			break;//以下略
-		
 		}
 		mNextScene = eGameScene_None;    //次のシーン情報をクリア
 		mGameScene->Initialize();    //シーンを初期化
