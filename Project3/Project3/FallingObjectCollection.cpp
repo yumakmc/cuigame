@@ -21,7 +21,7 @@ void FallingObjectCollection::Update() {
 		}
 	}
 	for (int i = 0; i <EraseCole.size(); ++i) {
-		FallingObjects.erase(FallingObjects.begin() + EraseCole[i]);
+		//FallingObjects.erase(FallingObjects.begin() + EraseCole[i]);
 	}
 	if (count % 3 == 0) {
 		FallingObject a(count / 90 + 1);
