@@ -8,7 +8,6 @@ Game::Game(SceneChanger* changer) : BaseScene(changer) {
 	//mGameScene = new Text(d,this);
 }
 void Game::Initialize(){
-	//mImageHandle = LoadGraph("‰æ‘œ//haikei");
 }
 void Game::Update(){
 	//if (CheckHitKey(KEY_INPUT_ESCAPE) != 0){ //EscƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
