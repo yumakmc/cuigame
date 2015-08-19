@@ -1,10 +1,8 @@
 #pragma once
 #include "FallingObject.h"
-
 #include  "Data_Rand.h"
 #include <vector>
 using namespace std;
-
 
 class FallingObjectCollection:public Task {
 public:

@@ -1,13 +1,10 @@
 #pragma once
 #include "Tranp.h"
 #include "Keyboard.h"
-
+#include <assert.h>
 #include <vector>
 
-//ゲーム画面
-
 vector<string> d;
-
 
 Tranp::Tranp(SceneChanger* changer) : BaseScene(changer) {
 	d.push_back("考えたんだけどさ………………");
@@ -27,7 +24,10 @@ void Tranp::Update() {
 		mGameScene->Finalize();//現在のシーンの終了処理を実行
 		switch (mNextScene) {       //シーンによって処理を分岐
 		case eGameScene_Text:    //現在の画面がメニューなら
-			mGameScene = (gameBaseScene*) new Text(d,this);
+			mGameScene = (gameBaseScene*) new Text(d, this);
+			break;//以下略
+		case eGameScene_CardGame:    //現在の画面がメニューなら
+			mGameScene = (gameBaseScene*) new Text(d, this);//ここ用修正　明らかに間違ってる　テスト用
 			break;//以下略
 		}
 		mNextScene = eGameScene_None;    //次のシーン情報をクリア
@@ -36,12 +36,11 @@ void Tranp::Update() {
 	mGameScene->Update(); //シーンの更新
 }
 void Tranp::Draw() {
-	//DrawString(0, 0, "ゲーム画面", GetColor(255, 255, 255));
+	assert(false);
 	BaseScene::Draw();
 	mGameScene->Draw();
 }
 void Tranp::Draw(vector<string> &tmpfield) {
-	//DrawString(0, 0, "ゲーム画面", GetColor(255, 255, 255));
 	BaseScene::Draw(tmpfield);
 	mGameScene->Draw(tmpfield);
 }

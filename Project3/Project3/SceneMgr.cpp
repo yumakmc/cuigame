@@ -1,7 +1,5 @@
-
 #pragma once
 #include "SceneMgr.h"
-
 
 SceneMgr::SceneMgr() :
 	mNextScene(eScene_None) //Ÿ‚ÌƒV[ƒ“ŠÇ—•Ï”

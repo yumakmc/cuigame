@@ -1,29 +1,10 @@
 #include "FallingObject.h"
 #include "Data_Rand.h"
 #include <math.h>
+
 FallingObject::FallingObject() {
 	type=rnd() % 4+1;
 	FallingObject(type);
-	//x = rnd() % SIZE_X;
-	//y = 0;
-	//switch (type) {
-	//case 1://ç˜
-	//	vel_x = 0.5;
-	//	vel_y = 0.5;
-	//	break;
-	//case 2://åı
-	//	vel_x = 0.5;
-	//	vel_y = 1;
-	//	break;
-	//case 3://ót
-	//	vel_x = -0.5;
-	//	vel_y = 0.5;
-	//	break;
-	//case 4://ê·
-	//	vel_x = 0.3;
-	//	vel_y = 0.2;
-	//	break;
-	//}
 }
 FallingObject::FallingObject(const int atype) {
 	type = atype;
@@ -50,21 +31,20 @@ FallingObject::FallingObject(const int atype) {
 }
 FallingObject::FallingObject(const FallingObject &a) {
 	type = a.type;
-	x = a.x;;
+	x = a.x;
 	y = a.y;
 	vel_x = a.vel_x;
 	vel_y = a.vel_y;
 }
 FallingObject::~FallingObject() {
-	
 }
 void FallingObject::Initialize() {
-	
 }
 							   
 bool FallingObject::Update(){//âÊñ Ç™Ç¢Ç…èoÇΩÇÁfalse ï‘Ç∑
 	x += vel_x;
 	x=fmod(x+SIZE_X, SIZE_X);
+
 	y += vel_y;
 	if (y > SIZE_Y) {
 		return false;
@@ -72,11 +52,9 @@ bool FallingObject::Update(){//âÊñ Ç™Ç¢Ç…èoÇΩÇÁfalse ï‘Ç∑
 	else {
 		return true;
 	}
-	//y = fmod(y+SIZE_Y, SIZE_Y);
 }
 void FallingObject::Draw(vector<string> &tmpfield) {
-	if (y > 19.9) {}
-	else {
+	if(y<19.9){
 		tmpfield[int(y)][2*int(x)] = FALLINGREAL[type][0];
 		tmpfield[int(y)][2 * int(x)+1] = FALLINGREAL[type][1];
 	}

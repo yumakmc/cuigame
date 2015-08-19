@@ -1,7 +1,8 @@
 #pragma once
 #include <time.h>
 using namespace std;
-static class TimeManeger{
+
+static class TimeManager{
 public:
 	clock_t GetDifference() {
 		clock_t nowtime = clock();
@@ -9,11 +10,11 @@ public:
 		pretime = nowtime;
 		return dif;
 	}
-	TimeManeger() :starttime(clock()) {
+	TimeManager() :starttime(clock()) {
 
 	}
 private:
 	const clock_t starttime;
 	clock_t pretime;
 
-}aTimeManeger;
+}aTimeManager;

@@ -7,8 +7,6 @@
 #include <map>
 using namespace std;
 
-
-
 class Text:public gameBaseScene{
 public:
 	//Text::Text(gameSceneChanger* changer);

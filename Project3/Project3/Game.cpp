@@ -1,9 +1,7 @@
 #pragma once
 #include "Game.h"
-
 #include <vector>
 
-//ƒQ[ƒ€‰æ–Ê
 
 Game::Game(SceneChanger* changer) : BaseScene(changer) {
 	//mGameScene = new Text(d,this);

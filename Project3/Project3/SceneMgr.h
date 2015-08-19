@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <vector>
-
 #include "Menu.h"
 #include "Game.h"
 
@@ -14,7 +13,6 @@ public:
 	//XV
 	void Update();
 	
-
 	//•`‰æ
 	void Draw();
 	void Draw(vector<string> &tmpField);

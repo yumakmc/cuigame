@@ -3,9 +3,7 @@
 #include <iostream>
 #include <map>
 #include "FallingObjectCollection.h"
-
 #include "BaseScene.h"
-
 
 enum eMenu{
 	eMenu_Game,        //ÉQÅ[ÉÄ
