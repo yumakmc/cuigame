@@ -5,7 +5,7 @@
 #include "BaseScene.h"
 #include "gameSceneChanger.h"
 #include "gamebaseScene.h"
-
+#include "Text.h"
 
 class Tranp :public gameSceneChanger, BaseScene {
 public:

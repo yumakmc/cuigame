@@ -14,7 +14,9 @@ mImageHandle(0) {
 void gameBaseScene::Draw(){
 	//DrawGraph(0, 0, mImageHandle, true);
 }
+void gameBaseScene::Draw(vector<string> &tmpfield) {
 
+}
 void gameBaseScene::Finalize(){
 	//DeleteGraph(mImageHandle);
 }

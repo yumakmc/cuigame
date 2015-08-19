@@ -129,7 +129,9 @@
     <ClCompile Include="SceneChanger.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Tranp.cpp" />
+    <ClCompile Include="TranpGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
@@ -146,7 +148,9 @@
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="test.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Tranp.h" />
+    <ClInclude Include="TranpGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

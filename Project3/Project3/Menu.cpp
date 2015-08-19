@@ -60,7 +60,6 @@ void Menu::Draw(vector<string> &tmpfield) {
 		tmpfield[16].replace(10, 2, "Çb");
 		break;
 	}
-	//DrawString(250, y, "Å°", GetColor(255, 255, 255));
 }
 
 void Menu::Update(){

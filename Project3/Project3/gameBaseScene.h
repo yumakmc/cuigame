@@ -22,6 +22,7 @@ public:
 	virtual void Finalize() override;
 	virtual void Update() override {}        //更新処理をオーバーライド。
 	virtual void Draw() override;            //描画処理をオーバーライド
+	virtual void Draw(vector<string> &tmpfield);
 protected:
 	int mImageHandle;                //画像ハンドル格納用変数
 	gameSceneChanger* mgameSceneChanger;    //クラス所有元にシーン切り替えを伝えるインターフェイス
