@@ -1,0 +1,45 @@
+﻿2015/08/19 16:20:33 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\MASUDA\Documents\Visual Studio 2015\Projects\Project3\Project3\Project3.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt FallingObjectCollection.cpp
+         FallingObjectCollection.cpp
+     1>c:\users\masuda\documents\visual studio 2015\projects\project3\project3\fallingobjectcollection.cpp(17): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+     1>c:\users\masuda\documents\visual studio 2015\projects\project3\project3\fallingobjectcollection.cpp(23): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+     1>c:\users\masuda\documents\visual studio 2015\projects\project3\project3\fallingobjectcollection.cpp(33): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+     1>c:\users\masuda\documents\visual studio 2015\projects\project3\project3\fallingobjectcollection.cpp(36): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+     1>c:\users\masuda\documents\visual studio 2015\projects\project3\project3\fallingobjectcollection.cpp(37): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+     1>c:\users\masuda\documents\visual studio 2015\projects\project3\project3\fallingobjectcollection.cpp(45): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\xutility(2518): error C2280: 'FallingObject &FallingObject::operator =(const FallingObject &)': 削除された関数を参照しようとしています
+         c:\users\masuda\documents\visual studio 2015\projects\project3\project3\fallingobject.h(24): note: コンパイラが 'FallingObject::operator =' をここに生成しました。
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\xutility(2539): note: コンパイル対象の関数 テンプレート インスタンス化 '_OutIt std::_Move<_InIt,_OutIt>(_InIt,_InIt,_OutIt,std::_Nonscalar_ptr_iterator_tag)' のリファレンスを確認してください
+                 with
+                 [
+                     _OutIt=FallingObject *,
+                     _InIt=FallingObject *
+                 ]
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\vector(1475): note: コンパイル対象の関数 テンプレート インスタンス化 '_OutIt std::_Move<FallingObject*,FallingObject*>(_InIt,_InIt,_OutIt)' のリファレンスを確認してください
+                 with
+                 [
+                     _OutIt=FallingObject *,
+                     _InIt=FallingObject *
+                 ]
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\vector(1470): note: クラス テンプレート のメンバー関数 'std::_Vector_iterator<std::_Vector_val<std::_Simple_types<FallingObject>>> std::vector<FallingObject,std::allocator<_Ty>>::erase(std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<FallingObject>>>)' のコンパイル中
+                 with
+                 [
+                     _Ty=FallingObject
+                 ]
+         c:\users\masuda\documents\visual studio 2015\projects\project3\project3\fallingobjectcollection.cpp(24): note: コンパイル対象の関数 テンプレート インスタンス化 'std::_Vector_iterator<std::_Vector_val<std::_Simple_types<FallingObject>>> std::vector<FallingObject,std::allocator<_Ty>>::erase(std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<FallingObject>>>)' のリファレンスを確認してください
+                 with
+                 [
+                     _Ty=FallingObject
+                 ]
+         c:\users\masuda\documents\visual studio 2015\projects\project3\project3\fallingobjectcollection.h(19): note: コンパイル対象のクラス テンプレート インスタンス化 'std::vector<FallingObject,std::allocator<_Ty>>' のリファレンスを確認してください
+                 with
+                 [
+                     _Ty=FallingObject
+                 ]
+     1>プロジェクト "C:\Users\MASUDA\Documents\Visual Studio 2015\Projects\Project3\Project3\Project3.vcxproj" (Build ターゲット) のビルドが終了しました -- 失敗。
+
+ビルドに失敗しました。
+
+経過時間 00:00:03.06

@@ -1,0 +1,28 @@
+#pragma once
+#include "gameSceneChanger.h"
+#include "Task.h"
+
+#include <vector>
+#include <string>
+#include <map>
+using namespace std;
+
+struct Text_Detail{
+	vector<string> text;
+	string leftimageplace;
+	string rightimageplace;
+};
+
+class gameBaseScene :public Task{
+public:
+	gameBaseScene(gameSceneChanger* changer);
+	gameBaseScene(vector<Text_Detail> adetail, gameSceneChanger* changer);
+	virtual ~gameBaseScene(){};
+	virtual void Initialize() override {}   //初期化処理をオーバーライド。
+	virtual void Finalize() override;
+	virtual void Update() override {}        //更新処理をオーバーライド。
+	virtual void Draw() override;            //描画処理をオーバーライド
+protected:
+	int mImageHandle;                //画像ハンドル格納用変数
+	gameSceneChanger* mgameSceneChanger;    //クラス所有元にシーン切り替えを伝えるインターフェイス
+};
