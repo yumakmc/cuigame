@@ -1,9 +1,8 @@
-﻿2015/08/20 0:06:26 にビルドを開始しました。
+﻿2015/08/20 1:19:51 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\MASUDA\Documents\cuigame\Project3\Project3\Project3.vcxproj" (Build ターゲット)。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Text.cpp
-         Text.cpp
-     1>c:\users\masuda\documents\cuigame\project3\project3\text.cpp(11): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt TranpGame.cpp
+         TranpGame.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\MASUDA\Documents\cuigame\Project3\Debug\Project3.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\MASUDA\Documents\cuigame\Project3\Debug\Project3.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\MASUDA\Documents\cuigame\Project3\Debug\Project3.lib" /MACHINE:X86 Debug\BaseScene.obj
          Debug\FallingObjectCollection.obj
@@ -24,4 +23,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:03.96
+経過時間 00:00:04.43

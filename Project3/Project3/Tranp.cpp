@@ -8,7 +8,8 @@ vector<string> d;
 
 Tranp::Tranp(SceneChanger* changer) : BaseScene(changer) {
 	d.push_back("考えたんだけどさ………………");
-	d.push_back("季節って４つもいらないよね");
+	d.push_back("季節が４つってさ");
+	d.push_back("絶対に多過ぎるよね");
 	d.push_back("夏は糞暑いし冬は糞寒いし");
 	d.push_back("秋は………被ってやがるし");
 	d.push_back("………よし、やろう");
