@@ -22,5 +22,7 @@ private:
 	int  mypoint;
 	bool opcarduseds[13];
 	int  oppoint;
-	vector<int> opcards;
+	vector<int> opcardorder;
+
+	int turn;//開かれたカードセットの数と同義
 };

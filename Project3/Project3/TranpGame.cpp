@@ -3,6 +3,7 @@
 #include "Keyboard.h"
 #include "Data_Rand.h"
 #include <assert.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -10,7 +11,6 @@ const int OP_UNUSEDCARDLIST_LEFT = 4;
 const int OP_UNUSEDCARDLIST_UP = 1;
 const int MY_UNUSEDCARDLIST_LEFT = 4;
 const int MY_UNUSEDCARDLIST_UP = 17;
-
 
 static map<int, string> TOTRANP = {
 	{ 1,"‚`"},
@@ -30,14 +30,16 @@ static map<int, string> TOTRANP = {
 };
 
 TranpGame::TranpGame(const int aopponent,vector<string> atexts, gameSceneChanger* changer) 
-	:gameBaseScene(changer),opponent(aopponent), opcards(){
+	:gameBaseScene(changer),opponent(aopponent), opcardorder(){
 	for (int i = 0; i < 13; ++i) {
 		mycarduseds[i] = false;
 		opcarduseds[i] = false;
-		opcards.push_back(i + 1);
+		opcardorder.push_back(i+1);
 	}
+	random_shuffle(opcardorder.begin(), opcardorder.end());
 	mypoint = 0;
 	oppoint = 0;
+	turn = 0;
 }
 void TranpGame::Initialize() {
 
@@ -45,29 +47,44 @@ void TranpGame::Initialize() {
 
 void TranpGame::Update() {
 	int mychoosenum = 0;
-	for (int i = 0; i < 9; ++i) {
+	for (int i = 0; i < 9; ++i){
 		if (Keyboard_Get('1' + i)) {
-			mycarduseds[i] = true;
-			mychoosenum = i+1;
-			break;
+			if (!mycarduseds[i]) {
+				mycarduseds[i] = true;
+				opcarduseds[opcardorder[turn++] - 1] = true;
+				mychoosenum = i + 1;
+				break;
+			}
 		}
 	}
 	if (mychoosenum == 0) {
 		if (Keyboard_Get('0')) {
+			if (!mycarduseds[9]) {
 			mycarduseds[9] = true;
+			opcarduseds[opcardorder[turn++] - 1] = true;
 			mychoosenum = 10;
+			}
 		}
 		else if (Keyboard_Get('J')) {
+			if (!mycarduseds[10]) {
 			mycarduseds[10] = true;
+			opcarduseds[opcardorder[turn++] - 1] = true;
 			mychoosenum = 11;
+			}
 		}
 		else if (Keyboard_Get('Q')) {
+			if (!mycarduseds[11]) {
 			mycarduseds[11] = true;
+			opcarduseds[opcardorder[turn++] - 1] = true;
 			mychoosenum = 12;
+			}
 		}
 		else if (Keyboard_Get('K')) {
-			mycarduseds[12] = true;
-			mychoosenum = 13;
+			if (!mycarduseds[12]) {
+				mycarduseds[12] = true;
+				opcarduseds[opcardorder[turn++] - 1] = true;
+				mychoosenum = 13;
+			}
 		}
 	}
 }
