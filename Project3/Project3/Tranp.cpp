@@ -1,6 +1,7 @@
 #pragma once
 #include "Tranp.h"
 #include "Keyboard.h"
+#include "TranpGame.h"
 #include <assert.h>
 #include <vector>
 
@@ -28,7 +29,7 @@ void Tranp::Update() {
 			mGameScene = (gameBaseScene*) new Text(d, this);
 			break;//以下略
 		case eGameScene_CardGame:    //現在の画面がメニューなら
-			mGameScene = (gameBaseScene*) new Text(d, this);//ここ用修正　明らかに間違ってる　テスト用
+			mGameScene = (gameBaseScene*) new TranpGame(0,d, this);
 			break;//以下略
 		}
 		mNextScene = eGameScene_None;    //次のシーン情報をクリア

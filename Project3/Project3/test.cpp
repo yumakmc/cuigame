@@ -1,12 +1,12 @@
 #pragma once 
 #include "test.h"
 #include <vector>
-
 using namespace std;
 
 static int Scene = eScene_Menu;    //åªç›ÇÃâÊñ (ÉVÅ[Éì)
 const double FPS = 10.0;
 const double TPF = CLOCKS_PER_SEC*1.0 / FPS;
+
 
 int main(){
 	SceneMgr scenemgr;
