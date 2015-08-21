@@ -46,7 +46,7 @@ void Text::Draw(){
 }
 void Text::Draw(vector<string> &tmpfield) {
 	//string textline = detail[nowtext].text[nowline];
-	tmpfield[0].replace(0, 2, texts[nowtext]);
+	tmpfield[0].replace(0, texts[nowtext].size(), texts[nowtext]);
 	if (nowline >= 1) {
 		//string textline = detail[nowtext].text[nowline-1];
 		//DrawString(TEXTLEFT, TEXTUP-TEXTUPSUKIMA, textline.c_str(), GetColor(255, 255, 255));

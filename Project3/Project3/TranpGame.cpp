@@ -7,12 +7,17 @@
 
 using namespace std;
 
-const int OP_UNUSEDCARDLIST_LEFT = 4;
+const int OP_UNUSEDCARDLIST_LEFT = 10;
 const int OP_UNUSEDCARDLIST_UP = 1;
-const int MY_UNUSEDCARDLIST_LEFT = 4;
+const int MY_UNUSEDCARDLIST_LEFT = 10;
 const int MY_UNUSEDCARDLIST_UP = 17;
 
-const int RESULT_CARDLIST_LEFT = 4;
+const int OP_CORE_LEFT = 4;
+const int OP_CORE_UP = 2;
+const int MY_CORE_LEFT = 4;
+const int MY_CORE_UP = 17;
+
+const int RESULT_CARDLIST_LEFT = 10;
 const int RESULT_CARDLIST_UP = 5;
 
 static map<int, string> WINMARK = {
@@ -39,7 +44,7 @@ static map<int, string> TOTRANP = {
 };
 
 TranpGame::TranpGame(const int aopponent,vector<string> atexts, gameSceneChanger* changer) 
-	:gameBaseScene(changer),opponent(aopponent), opcardorder(), mycardorder(){
+	:gameBaseScene(changer),opponent(aopponent), opcardorder(), mycardorder(),targetscore(((opponent==0)?80:((opponent==1)?100:120))){
 	for (int i = 0; i < 13; ++i) {
 		mycarduseds[i] = false;
 		opcarduseds[i] = false;
@@ -47,14 +52,13 @@ TranpGame::TranpGame(const int aopponent,vector<string> atexts, gameSceneChanger
 	}
 	random_shuffle(opcardorder.begin(), opcardorder.end());
 	mypoint = 0;
-	oppoint = 0;
+	oppoint = ((opponent == 0) ? 0 : ((opponent == 1) ? 20 : 40));
 	undecidedpoint = 0;
 	turn = 0;
 }
 void TranpGame::Initialize() {
 
 }
-
 void TranpGame::Update() {
 	int mychoosenum = 0;
 	int opchoosenum = 0;
@@ -134,9 +138,10 @@ void TranpGame::Draw() {
 void TranpGame::Draw(vector<string> &tmpfield) {
 	switch (opponent) {
 	case 0:
-		tmpfield[0].replace(0, 2, "もう死んだはずじゃなかったのか");
-		tmpfield[SIZE_Y - 1].replace(0, 2, "もう死んだはずじゃなかったのか");
-		tmpfield[OP_UNUSEDCARDLIST_UP].replace(OP_UNUSEDCARDLIST_LEFT-2, 2, "冬");
+		tmpfield[0].replace(0, 34, "「もう死んだはずじゃなかったのか」");
+		tmpfield[SIZE_Y - 1].replace(0, 34, "「もう死んだはずじゃなかったのか」");
+		tmpfield[OP_CORE_UP].replace(OP_CORE_LEFT, 2, "冬");
+		tmpfield[MY_CORE_UP].replace(MY_CORE_LEFT, 2, "春");
 		break;
 	case 1:
 		break;
@@ -164,28 +169,18 @@ void TranpGame::Draw(vector<string> &tmpfield) {
 			}
 		}
 	}
-	
-	string oppost = to_string(oppoint);
-	if (oppost.size() % 2) {
-		oppost = " " + oppost;
-	}
-	tmpfield[3].replace(2, oppost.size(), oppost);
-	string mypost = to_string(mypoint);
-	if (mypost.size() % 2) {
-		mypost = " " + mypost;
-	}
-	tmpfield[16].replace(2, mypost.size(), mypost);
+	string oppost = To_ZenString(oppoint);
+	tmpfield[ 3].replace(2, 4+oppost.size(), "響：" + oppost);
+	string mypost = To_ZenString(mypoint);
+	tmpfield[16].replace(2, 4+mypost.size(), "響："+mypost);
 	for (int i = 0; i < 13; ++i) {
 		if (i < turn) {
-			
-
 			const int winner(GetWinner(mycardorder[i], opcardorder[i]));
 			if (i < 7) {
 				tmpfield[RESULT_CARDLIST_UP + 0].replace(RESULT_CARDLIST_LEFT + 4 * i, 2, WINMARK[-winner]);
 				tmpfield[RESULT_CARDLIST_UP + 1].replace(RESULT_CARDLIST_LEFT + 4 * i, 2, TOTRANP[opcardorder[i]]);
 				tmpfield[RESULT_CARDLIST_UP + 2].replace(RESULT_CARDLIST_LEFT + 4 * i, 2, TOTRANP[mycardorder[i]]);
 				tmpfield[RESULT_CARDLIST_UP + 3].replace(RESULT_CARDLIST_LEFT + 4 * i, 2, WINMARK[winner]);
-
 			}
 			else {
 				tmpfield[RESULT_CARDLIST_UP + 4].replace(RESULT_CARDLIST_LEFT + 2 + 4 * (i - 7), 2, WINMARK[-winner]);
@@ -221,8 +216,17 @@ void TranpGame::Draw(vector<string> &tmpfield) {
 			}
 		}
 	}
+	tmpfield[9].replace(2, 4, "残響");
+	string ast(To_ZenString(undecidedpoint));
+	tmpfield[10].replace(2, ast.size(), ast);
 }
-int inline TranpGame::GetWinner(const int mynum, const int opnum) {
+int inline TranpGame::GetWinner(int mynum,int opnum) {
+	if (mynum == 1) {
+		mynum += 13;
+	}
+	if (opnum == 1) {
+		opnum += 13;
+	}
 	if (mynum > opnum) {
 		return 1;
 	}
@@ -232,4 +236,11 @@ int inline TranpGame::GetWinner(const int mynum, const int opnum) {
 	else {
 		return -1;
 	}
+}
+string TranpGame::To_ZenString(const int anum) {
+	string st = to_string(anum);
+	if (st.size() % 2) {
+		st = " " + st;
+	}
+	return st;
 }

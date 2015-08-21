@@ -32,7 +32,6 @@ void Menu::Draw(){
 		break;
 	}
 	afoc.Draw();
-	//DrawString(250, y, "¡", GetColor(255, 255, 255));
 }
 void Menu::Draw(vector<string> &tmpfield) {
 	BaseScene::Draw(tmpfield);//eƒNƒ‰ƒX‚Ì•`‰æƒƒ\ƒbƒh‚ğŒÄ‚Ô////////////////
@@ -43,18 +42,18 @@ void Menu::Draw(vector<string> &tmpfield) {
 		}
 	}
 	//tmpfield[BLANK_FOR_MENU_UP].replace(2 * BLANK_FOR_MENU_LEFT, (BLANK_FOR_MENU_RIGHT - BLANK_FOR_MENU_LEFT) * 2, "********************************");
-	tmpfield[12].replace(16, 2, "‚r‚s‚n‚q‚x‚P");
-	tmpfield[14].replace(16, 2, "‚r‚s‚n‚q‚x‚Q");
-	tmpfield[16].replace(16, 2, "‚d‚w‚h‚s");
+	tmpfield[12].replace(16, 12, "‚r‚s‚n‚q‚x‚P");
+	tmpfield[14].replace(16, 12, "‚r‚s‚n‚q‚x‚Q");
+	tmpfield[16].replace(16, 8, "‚d‚w‚h‚s");
 	switch (NowSelect) {//Œ»İ‚Ì‘I‘ğó‘Ô‚É]‚Á‚Äˆ—‚ğ•ªŠò
-	case eMenu_Game://ƒQ[ƒ€‘I‘ğ’†‚È‚ç@‚»‚Ì‚¤‚¿‚©[‚°[‚É•ÏX‚µ‚½‚¢‚æ‚Ë@À‘••³‚¾‚é‚»‚¤‚¾‚¯‚Ç
-		tmpfield[12].replace(10, 2, "‚`");
+	case eMenu_Game://ƒQ[ƒ€‘I‘ğ’†‚È‚ç@‚»‚Ì‚¤‚¿‚©[‚°[‚É•ÏX‚µ‚½‚¢@À‘•‚¾‚é‚»‚¤
+		tmpfield[12].replace(10, 2, "œ");
 		break;
 	case eMenu_Tranp://ƒgƒ‰ƒ“ƒv‘I‘ğ’†‚È‚ç	
-		tmpfield[14].replace(10, 2, "‚a");
+		tmpfield[14].replace(10, 2, "œ");
 		break;
 	case eMenu_Finish://I—¹‘I‘ğ’†‚È‚ç	
-		tmpfield[16].replace(10, 2, "‚b");
+		tmpfield[16].replace(10, 2, "œ");
 		break;
 	}
 }

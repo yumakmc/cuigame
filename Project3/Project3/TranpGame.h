@@ -17,12 +17,15 @@ public:
 	void Draw() override;            //描画処理をオーバーライド。
 	void Draw(vector<string> &tmpfield)override;
 	int inline GetWinner(const int mycard, const int opcard);//1 自分の勝ち 0　引き分け　-1 相手の勝ち
+	string inline To_ZenString(const int anum);
 private:
 	const int opponent;
+
 	bool mycarduseds[13];
 	int  mypoint;
 	bool opcarduseds[13];
 	int  oppoint;
+	const int targetscore;
 
 	int undecidedpoint = 0;
 
