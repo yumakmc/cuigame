@@ -8,13 +8,15 @@
 vector<string> d;
 
 Tranp::Tranp(SceneChanger* changer) : BaseScene(changer) {
+	nextenemy = 0;
 	d.push_back("考えたんだけどさ………………");
 	d.push_back("季節が４つってさ");
 	d.push_back("絶対に多過ぎるよね");
-	d.push_back("夏は糞暑いし冬は糞寒いし");
-	d.push_back("秋は………被ってやがるし");
+	d.push_back("冬は糞寒いし");
+	d.push_back("秋は自分と被ってやがるし");
+	d.push_back("夏は………ぶち殺してやりたい");
 	d.push_back("………よし、やろう");
-	mGameScene = new Text(d,this);
+	mGameScene = new Text(d,this,nextenemy);
 }
 void Tranp::Initialize() {
 }
@@ -26,10 +28,11 @@ void Tranp::Update() {
 		mGameScene->Finalize();//現在のシーンの終了処理を実行
 		switch (mNextScene) {       //シーンによって処理を分岐
 		case eGameScene_Text:    //現在の画面がメニューなら
-			mGameScene = (gameBaseScene*) new Text(d, this);
+			mGameScene = (gameBaseScene*) new Text(d, this, nextenemy);
 			break;//以下略
-		case eGameScene_CardGame:    //現在の画面がメニューなら
-			mGameScene = (gameBaseScene*) new TranpGame(0,d, this);
+		case eGameScene_CardGame:    
+			mGameScene = (gameBaseScene*) new TranpGame(nextenemy,d, this);
+			nextenemy++;
 			break;//以下略
 		}
 		mNextScene = eGameScene_None;    //次のシーン情報をクリア

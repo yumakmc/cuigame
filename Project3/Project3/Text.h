@@ -11,12 +11,13 @@ class Text:public gameBaseScene{
 public:
 	//Text::Text(gameSceneChanger* changer);
 
-	Text::Text(vector<string> atexts, gameSceneChanger* changer);
+	Text::Text(vector<string> atexts, gameSceneChanger* changer,const int enemy);
 	void Initialize() override;
 	//void Finalize() override;
 	void Update() override;        //更新処理をオーバーライド。
 	void Draw() override;            //描画処理をオーバーライド。
 	void Draw(vector<string> &tmpfield)override;
+
 private:
 
 	vector<string>texts;

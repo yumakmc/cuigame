@@ -69,7 +69,8 @@ void Menu::Update(){
 	if (Keyboard_Get(VK_RETURN) == 1){//エンターキーが押されたら
 		switch (NowSelect){//現在選択中の状態によって処理を分岐
 		case eMenu_Game://ゲーム選択中なら
-			mSceneChanger->ChangeScene(eScene_Game);
+			//mSceneChanger->ChangeScene(eScene_Game);
+			mSceneChanger->ChangeScene(eScene_Tranp);
 			break;
 		case eMenu_Tranp://設定選択中なら
 			mSceneChanger->ChangeScene(eScene_Tranp);

@@ -33,4 +33,6 @@ private:
 	vector<int> mycardorder;
 
 	int turn;//開かれたカードセットの数と同義
+
+	int serihunum;
 };

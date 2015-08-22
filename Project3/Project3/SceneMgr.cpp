@@ -36,7 +36,6 @@ void SceneMgr::Update(){
 //•`‰æ
 void SceneMgr:: Draw(){
 	mScene->Draw();
-
 }
 void SceneMgr::Draw(vector<string> &tmpField) {
 	mScene->Draw(tmpField);

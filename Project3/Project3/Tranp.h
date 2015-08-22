@@ -19,4 +19,6 @@ private:
 	//BaseGameScene* mScene;    //シーン管理変数
 	gameBaseScene* mGameScene;
 	eGameScene mNextScene;    //次のシーン管理変数
+	int nextenemy;
+	int nexttext;
 };

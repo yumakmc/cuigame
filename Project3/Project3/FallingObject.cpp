@@ -12,15 +12,15 @@ FallingObject::FallingObject(const int atype) {
 	y = 0;
 	switch (type) {
 	case 1://ç˜
-		vel_x = 0.5;
-		vel_y = 0.5;
+		vel_x = 0.6;
+		vel_y = 0.4;
 		break;
 	case 2://åı
 		vel_x = 0.5;
 		vel_y = 1;
 		break;
 	case 3://ót
-		vel_x = -0.5;
+		vel_x = -0.8;
 		vel_y = 0.5;
 		break;
 	case 4://ê·

@@ -4,7 +4,36 @@
 #include <assert.h>
 using namespace std;
 
-Text::Text(vector<string> atexts, gameSceneChanger* changer) :gameBaseScene(changer),texts(atexts) {
+const vector<vector<string>> ad = {
+	{"考えたんだけどさ………………",
+	"季節が４つってさ",
+	"絶対に多過ぎるよね",
+	"冬は糞寒いし",
+	"秋は自分と被ってやがるし",
+	"夏は………ぶち殺してやりたい",
+	"………よし、やろう"
+	},
+	{ "秋",
+	"季節が４つってさ",
+	"絶対に多過ぎるよね",
+	"冬は糞寒いし",
+	"秋は自分と被ってやがるし",
+	"夏は………ぶち殺してやりたい",
+	"………よし、やろう"
+	},
+	{ "夏",
+	"季節が４つってさ",
+	"絶対に多過ぎるよね",
+	"冬は糞寒いし",
+	"秋は自分と被ってやがるし",
+	"夏は………ぶち殺してやりたい",
+	"………よし、やろう"
+	},
+};
+
+
+
+Text::Text(vector<string> atexts, gameSceneChanger* changer, const int enemy = -1) :gameBaseScene(changer),texts(enemy==-1?atexts:ad[enemy]) {
 	nowline = 0;
 	nowtext = 0;
 }
@@ -31,28 +60,16 @@ void Text::Update(){
 }
 void Text::Draw(){
 	assert(false);
-	//string textline = detail[nowtext].text[nowline];
-
-	//DrawString(TEXTLEFT, TEXTUP, textline.c_str(), GetColor(255, 255, 255));
-	if (nowline >= 1){
-		//string textline = detail[nowtext].text[nowline-1];
-		//DrawString(TEXTLEFT, TEXTUP-TEXTUPSUKIMA, textline.c_str(), GetColor(255, 255, 255));
-	}
-	if (nowline >= 2){
-		//string textline = detail[nowtext].text[nowline-2];
-		//DrawString(TEXTLEFT, TEXTUP - TEXTUPSUKIMA*2, textline.c_str(), GetColor(255, 255, 255));
-	}
-	
 }
 void Text::Draw(vector<string> &tmpfield) {
 	//string textline = detail[nowtext].text[nowline];
 	tmpfield[0].replace(0, texts[nowtext].size(), texts[nowtext]);
-	if (nowline >= 1) {
-		//string textline = detail[nowtext].text[nowline-1];
-		//DrawString(TEXTLEFT, TEXTUP-TEXTUPSUKIMA, textline.c_str(), GetColor(255, 255, 255));
-	}
-	if (nowline >= 2) {
-		//string textline = detail[nowtext].text[nowline-2];
-		//DrawString(TEXTLEFT, TEXTUP - TEXTUPSUKIMA*2, textline.c_str(), GetColor(255, 255, 255));
-	}
+	//if (nowline >= 1) {
+	//	//string textline = detail[nowtext].text[nowline-1];
+	//	//DrawString(TEXTLEFT, TEXTUP-TEXTUPSUKIMA, textline.c_str(), GetColor(255, 255, 255));
+	//}
+	//if (nowline >= 2) {
+	//	//string textline = detail[nowtext].text[nowline-2];
+	//	//DrawString(TEXTLEFT, TEXTUP - TEXTUPSUKIMA*2, textline.c_str(), GetColor(255, 255, 255));
+	//}
 }
