@@ -7,6 +7,8 @@
 
 vector<string> d;
 
+extern int flag;//めっちゃ頭悪い
+
 Tranp::Tranp(SceneChanger* changer) : BaseScene(changer) {
 	nextenemy = 0;
 	d.push_back("考えたんだけどさ………………");
@@ -28,6 +30,7 @@ void Tranp::Update() {
 		mGameScene->Finalize();//現在のシーンの終了処理を実行
 		switch (mNextScene) {       //シーンによって処理を分岐
 		case eGameScene_Text:    //現在の画面がメニューなら
+			if (flag)nextenemy--;
 			mGameScene = (gameBaseScene*) new Text(d, this, nextenemy);
 			break;//以下略
 		case eGameScene_CardGame:    

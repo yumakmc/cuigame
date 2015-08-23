@@ -66,7 +66,7 @@ void Menu::Update(){
 		NowSelect = eMenu((int(NowSelect) +int(eMenu_count) - 1) % int(eMenu_count));//選択状態を一つ上げる
 	}
 	
-	if (Keyboard_Get(VK_RETURN) == 1){//エンターキーが押されたら
+	if (Keyboard_Get('Z') == 1){//Zキーが押されたら
 		switch (NowSelect){//現在選択中の状態によって処理を分岐
 		case eMenu_Game://ゲーム選択中なら
 			//mSceneChanger->ChangeScene(eScene_Game);
