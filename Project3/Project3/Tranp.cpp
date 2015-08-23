@@ -33,9 +33,14 @@ void Tranp::Update() {
 			if (flag)nextenemy--;
 			mGameScene = (gameBaseScene*) new Text(d, this, nextenemy);
 			break;//以下略
-		case eGameScene_CardGame:    
-			mGameScene = (gameBaseScene*) new TranpGame(nextenemy,d, this);
-			nextenemy++;
+		case eGameScene_CardGame:
+			if (nextenemy == 3) {
+				mSceneChanger->ChangeScene(eScene_Menu);
+			}
+			else {
+				mGameScene = (gameBaseScene*) new TranpGame(nextenemy, d, this);
+				nextenemy++;
+			}
 			break;//以下略
 		}
 		mNextScene = eGameScene_None;    //次のシーン情報をクリア
