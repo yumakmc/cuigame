@@ -13,7 +13,14 @@ public:
 	virtual void Initialize();    
 	//void Finalize() override ;        
 	bool Update() ;        
-	void Draw(vector<string> &tmpfield);          
+	void Draw(vector<string> &tmpfield);   
+	void FallingObject::operator =(const FallingObject &a) {
+		vel_x = a.vel_x;
+		vel_y = a.vel_y;
+		x = a.x;
+		y = a.y;
+		type = a.type;
+	}
 private:
 	random_device rnd;
 	float vel_x;
