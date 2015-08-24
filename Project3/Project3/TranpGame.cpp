@@ -2,6 +2,7 @@
 #include "TranpGame.h"
 #include "Keyboard.h"
 #include "Data_Rand.h"
+#include <Windows.h>
 #include <assert.h>
 #include <algorithm>
 #include <time.h>
@@ -73,23 +74,23 @@ void TranpGame::Initialize() {
 void TranpGame::Update() {
 	int mychoosenum = 0;
 	int opchoosenum = 0;
-	if (Keyboard_Get('H')) {
+	if (Keyboard_Get('H')==1) {
 		helpmode = !helpmode;
 	}
 	if (helpmode) {
-		if (Keyboard_Get('Z')) {
+		if (Keyboard_Get('Z')==1|| Keyboard_Get('H') == 1) {
 			helpmode = false;
 		}
 	}
 	else {
-		if (Keyboard_Get('Z')) {
+		if (Keyboard_Get('Z')==1 || Keyboard_Get(VK_CONTROL)) {
 			if (turn == 13) {
 				flag = mypoint <= oppoint;
 				mgameSceneChanger->ChangeScene(eGameScene_Text);
 			}
 		}
 		for (int i = 0; i < 9; ++i) {
-			if (Keyboard_Get('1' + i)) {
+			if (Keyboard_Get('1' + i)==1) {
 				if (!mycarduseds[i]) {
 					mycarduseds[i] = true;
 					mychoosenum = i + 1;
@@ -99,28 +100,28 @@ void TranpGame::Update() {
 			}
 		}
 		if (mychoosenum == 0) {
-			if (Keyboard_Get('0')) {
+			if (Keyboard_Get('0') == 1) {
 				if (!mycarduseds[9]) {
 					mycarduseds[9] = true;
 					mychoosenum = 10;
 					mycardorder.push_back(10);
 				}
 			}
-			else if (Keyboard_Get('J')) {
+			else if (Keyboard_Get('J') == 1) {
 				if (!mycarduseds[10]) {
 					mycarduseds[10] = true;
 					mychoosenum = 11;
 					mycardorder.push_back(11);
 				}
 			}
-			else if (Keyboard_Get('Q')) {
+			else if (Keyboard_Get('Q') == 1) {
 				if (!mycarduseds[11]) {
 					mycarduseds[11] = true;
 					mychoosenum = 12;
 					mycardorder.push_back(12);
 				}
 			}
-			else if (Keyboard_Get('K')) {
+			else if (Keyboard_Get('K') == 1) {
 				if (!mycarduseds[12]) {
 					mycarduseds[12] = true;
 					mychoosenum = 13;

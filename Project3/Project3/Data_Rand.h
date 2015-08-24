@@ -8,7 +8,7 @@ const int SIZE_Y = 20;
 
 static map<int, string> FALLINGREAL = {
 	{ 0,"Å@"},
-	{ 1,"ç˜" },
+	{ 1,"â‘" },
 	{ 2,"åı" },
 	{ 3,"ót" },
 	{ 4,"ê·" },

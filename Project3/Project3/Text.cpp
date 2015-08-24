@@ -2,6 +2,7 @@
 #include "Text.h"
 #include "Keyboard.h"
 #include <assert.h>
+#include <windows.h>
 using namespace std;
 
 const vector<vector<string>> ad = {
@@ -22,7 +23,7 @@ const vector<vector<string>> ad = {
 	"………よし、いこう"
 	},
 	{
-	"まさか二人も倒せるとは………流石自分",
+	"まさか二人とも倒せるとは………流石自分",
 	"あーで、残った奴が………",
 	"………まあやるしかないよね",
 	"最初からあいつが目的だったんだし………",
@@ -48,7 +49,7 @@ void Text::Initialize(){
 
 void Text::Update(){
 	static bool Zispushed=false;
-	if (Keyboard_Get('Z')==1){//z
+	if (Keyboard_Get('Z')==1||Keyboard_Get(VK_CONTROL)){//z
 		//if (nowline == detail[nowtext].text.size() - 1){
 			if (nowtext == texts.size()-1){
 				mgameSceneChanger->ChangeScene(eGameScene_CardGame);

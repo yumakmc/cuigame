@@ -11,7 +11,7 @@ FallingObject::FallingObject(const int atype) {
 	x = rnd() % SIZE_X;
 	y = 0;
 	switch (type) {
-	case 1://ç˜
+	case 1://â‘
 		vel_x = 0.6;
 		vel_y = 0.4;
 		break;
