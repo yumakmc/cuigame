@@ -61,7 +61,7 @@ TranpGame::TranpGame(const int aopponent,vector<string> atexts, gameSceneChanger
 	do {
 		random_shuffle(opcardorder.begin(), opcardorder.end());
 	} while (opponent == 2 && (opcardorder[5] != 0&&opcardorder[4] != 0&&opcardorder[6] != 0));//夏の時はjokerが567番目にでる
-	oppoint = ((opponent == 0) ? 1 : ((opponent == 1) ? 21 : -333));
+	oppoint = ((opponent == 0) ? 1 : ((opponent == 1) ? 21 : 33));
 	mypoint = ((opponent == 0) ? 0 : ((opponent == 1) ? -20 : -30));
 	undecidedpoint = 0;
 	turn = 0;
@@ -186,7 +186,7 @@ void TranpGame::Draw(vector<string> &tmpfield) {
 				//tmpfield[SIZE_Y - 1].replace(0, 32, "「たたき起こされて何かと思えば」");
 				break;
 			case 2:
-				tmpfield[0].replace(0, 32, "「たたき起こされて何かと思えば」");
+				tmpfield[0].replace(0, 32, "「この歪んだシステムも終わりか…」");
 			}
 
 			tmpfield[OP_CORE_UP].replace(OP_CORE_LEFT, 2, "冬");
@@ -209,10 +209,10 @@ void TranpGame::Draw(vector<string> &tmpfield) {
 				tmpfield[0].replace(0, 40, "「あれれ二ケ月前に殺したはずだったのに」");
 				break;
 			case 1:
-				tmpfield[0].replace(0, 40, "「しかたないねえもう一度殺し直してやる」");
+				tmpfield[0].replace(0, 40, "「しかたない　もう一度殺し直すとするか」");
 				break;
 			case 2:
-				tmpfield[0].replace(0, 32, "「まさか………ありえない………」");
+				tmpfield[0].replace(0, 38, "「まさか…ありえない…消えたくない…」");
 				break;
 			}
 
