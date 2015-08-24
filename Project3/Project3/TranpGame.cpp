@@ -186,11 +186,10 @@ void TranpGame::Draw(vector<string> &tmpfield) {
 				//tmpfield[SIZE_Y - 1].replace(0, 32, "「たたき起こされて何かと思えば」");
 				break;
 			case 2:
-				tmpfield[0].replace(0, 32, "「この歪んだシステムも終わりか…」");
+				tmpfield[0].replace(0, 34, "「この歪んだシステムも終わりか…」");
 			}
-
-			tmpfield[OP_CORE_UP].replace(OP_CORE_LEFT, 2, "冬");
-			tmpfield[MY_CORE_UP].replace(MY_CORE_LEFT, 2, "春");
+			tmpfield[OP_CORE_UP].replace(OP_CORE_LEFT, 2, "冬");		
+			tmpfield[3].replace(14, 14, "冬の残りカード");
 			break;
 		case 1:
 			switch (serihunum) {
@@ -201,7 +200,7 @@ void TranpGame::Draw(vector<string> &tmpfield) {
 				tmpfield[0].replace(0, 32, "「意地を張ってるのはあなただけ」");
 			}
 			tmpfield[OP_CORE_UP].replace(OP_CORE_LEFT, 2, "秋");
-			tmpfield[MY_CORE_UP].replace(MY_CORE_LEFT, 2, "春");
+			tmpfield[3].replace(14, 14, "秋の残りカード");
 			break;
 		case 2:
 			switch (serihunum) {
@@ -213,13 +212,17 @@ void TranpGame::Draw(vector<string> &tmpfield) {
 				break;
 			case 2:
 				tmpfield[0].replace(0, 38, "「まさか…ありえない…消えたくない…」");
+				tmpfield[19].replace(0, 14, "「ざまあみろ」");
 				break;
 			}
-
 			tmpfield[OP_CORE_UP].replace(OP_CORE_LEFT, 2, "夏");
-			tmpfield[MY_CORE_UP].replace(MY_CORE_LEFT, 2, "春");
+			tmpfield[3].replace(14, 14, "夏の残りカード");
 			break;
 		}
+		tmpfield[MY_CORE_UP].replace(MY_CORE_LEFT, 2, "春");
+		tmpfield[16].replace(14, 14, "春の残りカード");
+
+
 		if (turn == 13) {
 			
 			if (mypoint > oppoint) {//自分勝ったら
@@ -268,6 +271,7 @@ void TranpGame::Draw(vector<string> &tmpfield) {
 				}
 			}
 		}
+		
 		string oppost = To_ZenString(oppoint);
 		tmpfield[4].replace(2, 4 + oppost.size(), "日：" + oppost);
 		string mypost = To_ZenString(mypoint);

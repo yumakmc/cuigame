@@ -70,7 +70,7 @@ void Text::Draw(){
 void Text::Draw(vector<string> &tmpfield) {
 	//string textline = detail[nowtext].text[nowline];
 	tmpfield[0].replace(0, texts[nowtext].size(), texts[nowtext]);
-	tmpfield[1].replace(0, 30, "‚y‚Å‚·‚·‚ß‚é@‚b‚s‚q‚ÅƒXƒLƒbƒv");//—vC³
+	tmpfield[8].replace(0, 30, "‚y‚Å‚·‚·‚ß‚é@‚b‚s‚q‚ÅƒXƒLƒbƒv");//—vC³
 	//if (nowline >= 1) {
 	//	//string textline = detail[nowtext].text[nowline-1];
 	//	//DrawString(TEXTLEFT, TEXTUP-TEXTUPSUKIMA, textline.c_str(), GetColor(255, 255, 255));
