@@ -23,19 +23,18 @@ const vector<vector<string>> ad = {
 	"………よし、いこう"
 	},
 	{
-	"まさか二人とも倒せるとは………流石自分",
-	"あーで、残った奴が………",
+	"まさか二人とも倒せるとは………",
+	"あー　で、残った奴が………",
 	"………まあやるしかないよね",
 	"最初からあいつが目的だったんだし………",
 	"逃げたくなる前にさっさとやらないと",
 	"………よし………"
 	},
 	{ "こうして",
-	"せかいには春だけが残りました。",
-	"春は他の季節からすべてを",
-	"最初からあいつが目的だったんだし………",
-	"逃げたくなる前にさっさとやらないと",
-	"………よし………"
+	"世界には春だけが残りましたとさ",
+	"おわり",
+	"めでたしめでたし",
+	"………さーてこれからどうしよっかなー",
 	},
 	
 };
@@ -71,6 +70,7 @@ void Text::Draw(){
 void Text::Draw(vector<string> &tmpfield) {
 	//string textline = detail[nowtext].text[nowline];
 	tmpfield[0].replace(0, texts[nowtext].size(), texts[nowtext]);
+	tmpfield[1].replace(0, 30, "Ｚですすめる　ＣＴＲでスキップ");//要修正
 	//if (nowline >= 1) {
 	//	//string textline = detail[nowtext].text[nowline-1];
 	//	//DrawString(TEXTLEFT, TEXTUP-TEXTUPSUKIMA, textline.c_str(), GetColor(255, 255, 255));
