@@ -23,7 +23,7 @@ class Text:public gameBaseScene{
 public:
 	//Text::Text(gameSceneChanger* changer);
 
-	Text::Text(vector<string> atexts, gameSceneChanger* changer,const int enemy);
+	Text::Text( gameSceneChanger* changer,const int enemy);
 	void Initialize() override;
 	//void Finalize() override;
 	void Update() override;        //更新処理をオーバーライド。
@@ -32,7 +32,6 @@ public:
 
 private:
 
-	vector<string>texts;
 	vector<Text_Set>textss;
 
 	int nowline;

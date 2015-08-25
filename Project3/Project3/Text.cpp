@@ -108,7 +108,7 @@ const vector<vector<string>> ad = {
 	
 };
 
-Text::Text(vector<string> atexts, gameSceneChanger* changer, const int enemy = -1) :gameBaseScene(changer),texts(enemy==-1?atexts:ad[enemy]),textss(aad) {
+Text::Text(gameSceneChanger* changer, const int enemy = -1) :gameBaseScene(changer),textss(aad) {
 	nowline = 0;
 	nowtext = 0;
 	count = 0;
@@ -148,11 +148,12 @@ void Text::Draw(){
 	aDrawableConsole.draw(0, 0, "‚y‚Å‚·‚·‚ß‚é@‚b‚s‚q‚ÅƒXƒLƒbƒv");
 }
 void Text::Draw(vector<string> &tmpfield) {	
-	aDrawableConsole.draw(NAMELEFT, NAMEUP, textss[nowtext].name.c_str());
+	assert(false);
+	/*aDrawableConsole.draw(NAMELEFT, NAMEUP, textss[nowtext].name.c_str());
 	for (int i = 0; i < TEXTNUM; ++i) {
 		if (nowline >= i) {
 			aDrawableConsole.draw(NAMELEFT+2, NAMEUP+(TEXTNUM-i), textss[nowtext].text_details[nowline-i].text.c_str());
 		}
 	}
-	aDrawableConsole.draw(0,0, "‚y‚Å‚·‚·‚ß‚é@‚b‚s‚q‚ÅƒXƒLƒbƒv");
+	aDrawableConsole.draw(0,0, "‚y‚Å‚·‚·‚ß‚é@‚b‚s‚q‚ÅƒXƒLƒbƒv");*/
 }
