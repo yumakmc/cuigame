@@ -3,7 +3,7 @@
 enum eGameScene{
 
 	eGameScene_Text,  //設定画面
-	eGameScene_CardGame,//カードゲーム画面本編
+	eGameScene_Main,//カードゲーム画面本編
 	eGameScene_None,    //無し
 } ;
 

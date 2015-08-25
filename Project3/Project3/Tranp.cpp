@@ -33,7 +33,7 @@ void Tranp::Update() {
 			if (flag)nextenemy--;
 			mGameScene = (gameBaseScene*) new Text( this, nextenemy);
 			break;//ˆÈ‰º—ª
-		case eGameScene_CardGame:
+		case eGameScene_Main:
 			if (nextenemy == 3) {
 				mSceneChanger->ChangeScene(eScene_Menu);
 			}

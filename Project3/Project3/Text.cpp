@@ -122,7 +122,7 @@ void Text::Update(){
 	if (Keyboard_Get('Z')==1||Keyboard_Get(VK_CONTROL)){//z
 		if (nowline == textss[nowtext].text_details.size()-1){
 			if (nowtext == textss.size()-1){
-				mgameSceneChanger->ChangeScene(eGameScene_CardGame);
+				mgameSceneChanger->ChangeScene(eGameScene_Main);
 				return;
 			}
 			else{

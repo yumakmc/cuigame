@@ -36,7 +36,7 @@ void Menu::Draw(){
 	case eMenu_Tranp://トランプ選択中なら	
 		aDrawableConsole.draw(5, 13, "●");
 		break;
-	case eMenu_Rpg://トランプ選択中なら	
+	case eMenu_Rpg://RPG選択中なら	
 		aDrawableConsole.draw(5, 14, "●");
 		break;
 	case eMenu_Finish://終了選択中なら	
