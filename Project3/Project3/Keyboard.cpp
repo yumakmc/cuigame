@@ -1,5 +1,5 @@
-#include <windows.h>
 #include <vector>
+#include "Keyboard.h"
 using namespace std;
 
 static int m_Key[256];  // ƒL[‚Ì“ü—Íó‘ÔŠi”[—p•Ï”
