@@ -43,27 +43,13 @@ int main(){
 			time -= TPF;
 			Keyboard_Update();
 			scenemgr.Update();
-			vector<string> TmpField(SIZE_Y,"　　　　　　　　　　　　　　　　　　　　");//空白の数はSIZE_Xの数と同じ　修正したいけど重くなりそう
+			//vector<string> TmpField(SIZE_Y,"　　　　　　　　　　　　　　　　　　　　");//空白の数はSIZE_Xの数と同じ　修正したいけど重くなりそう
 
 			m_ConsoleBuff.loadDefaultColor();// 規定描画色呼出
 			m_ConsoleBuff.clear();// 画面のクリア
 
-			scenemgr.Draw(TmpField);
+			scenemgr.Draw();
 			LPDWORD cell(0);
-			//for (int y = 0; y < TmpField.size(); ++y) {
-			//	assert(TmpField[y].size() == 2 * SIZE_X);
-			//	const char* str = (TmpField[y]).c_str();
-			//	//WriteConsole(hSrceen[i], str, strlen(str), cell, NULL);
-			//	aDrawableConsole.draw(str);
-			//	//m_ConsoleBuff.writeString(str);
-			//	const char* kaigyou = "\n";
-			//	//WriteConsole(hSrceen[i], kaigyou, strlen(kaigyou), cell, NULL);
-			//	aDrawableConsole.draw(kaigyou);
-			//}
-			for (int y = 0; y < 4; ++y) {
-				const char* kaigyou = "\n";
-				m_ConsoleBuff.writeString(kaigyou);
-			}
 			
 			m_ConsoleBuff.showScreen();// 描画先スクリーンバッファを表示
 			m_ConsoleBuff.resetWindowSize();

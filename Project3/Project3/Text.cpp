@@ -6,24 +6,28 @@
 #include <windows.h>
 using namespace std;
 
-const vector < vector<TextSet> >aad= {
+const vector < Text_Set >aad= {
 	{
-		{ "考えたんだけどさ………………", 0,0},
-		{	"季節が４つってさ", 0,0 },
-		{"絶対に多過ぎるよね", 0,0 },
-		{"冬は糞寒いし", 0, 0},
-		{"秋は自分と被ってやがるし",  0, 0},
-		{"夏は………殺してやりたい",  0, 0},
-		{"………よし、やろう", 0, 0},
+		"？？？",0,{
+			{ "考えたんだけどさ………………", 0,0},
+			{	"季節が４つってさ", 0,0 },
+			{"絶対に多過ぎるよね", 0,0 },
+			{"冬は糞寒いし", 0, 0},
+			{"秋は自分と被ってやがるし",  0, 0},
+			{"夏は………殺してやりたい",  0, 0},
+			{"………よし、やろう", 0, 0},
+		}
 	},
 	{
-		{ "考えたんだけどさ………………", 0,0 },
-		{ "季節が４つってさ", 0,0 },
-		{ "絶対に多過ぎるよね", 0,0 },
-		{ "冬は糞寒いし", 0, 0 },
-		{ "秋は自分と被ってやがるし",  0, 0 },
-		{ "夏は………殺してやりたい",  0, 0 },
-		{ "………よし、やろう", 0, 0 },
+		"春",0,{
+			{ "考えたんだけどさ………………", 0,0 },
+			{ "季節が４つってさ", 0,0 },
+			{ "絶対に多過ぎるよね", 0,0 },
+			{ "冬は糞寒いし", 0, 0 },
+			{ "秋は自分と被ってやがるし",  0, 0 },
+			{ "夏は………殺してやりたい",  0, 0 },
+			{ "………よし、やろう", 0, 0 },
+		}
 	},
 };
 
@@ -71,7 +75,7 @@ void Text::Initialize(){
 void Text::Update(){
 	static bool Zispushed=false;
 	if (Keyboard_Get('Z')==1||Keyboard_Get(VK_CONTROL)){//z
-		if (nowline == textss[nowtext].size()-1){
+		if (nowline == textss[nowtext].text_details.size()-1){
 			if (nowtext == textss.size()-1){
 				mgameSceneChanger->ChangeScene(eGameScene_CardGame);
 				return;
@@ -87,24 +91,20 @@ void Text::Update(){
 	}
 }
 void Text::Draw(){
-	assert(false);
-}
-void Text::Draw(vector<string> &tmpfield) {
-	//string textline = detail[nowtext].text[nowline];
-	aDrawableConsole.draw(0, 0, texts[nowtext].c_str());
-	//aDrawableConsole.draw(0, 1, textss[nowtext][nowline].text.c_str());
-	aDrawableConsole.draw(0, 8, "Ｚですすめる　ＣＴＲでスキップ");
+	aDrawableConsole.draw(NAMELEFT, NAMEUP, textss[nowtext].name.c_str());
 	for (int i = 0; i < TEXTNUM; ++i) {
 		if (nowline >= i) {
-			aDrawableConsole.draw(0, (TEXTNUM-i), textss[nowtext][nowline-i].text.c_str());
+			aDrawableConsole.draw(NAMELEFT + 2, NAMEUP + (TEXTNUM - i), textss[nowtext].text_details[nowline - i].text.c_str());
 		}
 	}
-	//if (nowline >= 1) {
-	//	//string textline = detail[nowtext].text[nowline-1];
-	//	//DrawString(TEXTLEFT, TEXTUP-TEXTUPSUKIMA, textline.c_str(), GetColor(255, 255, 255));
-	//}
-	//if (nowline >= 2) {
-	//	//string textline = detail[nowtext].text[nowline-2];
-	//	//DrawString(TEXTLEFT, TEXTUP - TEXTUPSUKIMA*2, textline.c_str(), GetColor(255, 255, 255));
-	//}
+	aDrawableConsole.draw(0, 0, "Ｚですすめる　ＣＴＲでスキップ");
+}
+void Text::Draw(vector<string> &tmpfield) {	
+	aDrawableConsole.draw(NAMELEFT, NAMEUP, textss[nowtext].name.c_str());
+	for (int i = 0; i < TEXTNUM; ++i) {
+		if (nowline >= i) {
+			aDrawableConsole.draw(NAMELEFT+2, NAMEUP+(TEXTNUM-i), textss[nowtext].text_details[nowline-i].text.c_str());
+		}
+	}
+	aDrawableConsole.draw(0,0, "Ｚですすめる　ＣＴＲでスキップ");
 }

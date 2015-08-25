@@ -6,16 +6,12 @@
 #include <map>
 using namespace std;
 
-struct Text_Detail{
-	vector<string> text;
-	string leftimageplace;
-	string rightimageplace;
-};
+
 
 class gameBaseScene :public Task{
 public:
 	gameBaseScene(gameSceneChanger* changer);
-	gameBaseScene(vector<Text_Detail> adetail, gameSceneChanger* changer);
+	
 	virtual ~gameBaseScene(){};
 	virtual void Initialize() override {}   //初期化処理をオーバーライド。
 	virtual void Finalize() override;

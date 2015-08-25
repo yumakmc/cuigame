@@ -7,11 +7,17 @@
 #include <map>
 using namespace std;
 
-struct TextSet {
+struct Text_Detail {//テキスト一行分
 	string text;
 	int color;
 	int speed;//流れる速度
 };
+struct Text_Set {//テキスト数行分　これにアクションやしゃべる人の情報が加わる
+	string name;
+	int action;
+	vector<Text_Detail> text_details;
+};
+
 
 class Text:public gameBaseScene{
 public:
@@ -27,10 +33,12 @@ public:
 private:
 
 	vector<string>texts;
-	vector<vector<TextSet> >textss;
+	vector<Text_Set>textss;
 
 	int nowline;
 	int nowtext;
 
 	static const int TEXTNUM = 3;//同時に表示されるテキストの行
+	static const int NAMEUP = 15;
+	static const int NAMELEFT = 0;
 };

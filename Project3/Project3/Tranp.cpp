@@ -49,7 +49,6 @@ void Tranp::Update() {
 	mGameScene->Update(); //シーンの更新
 }
 void Tranp::Draw() {
-	assert(false);
 	BaseScene::Draw();
 	mGameScene->Draw();
 }

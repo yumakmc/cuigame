@@ -12,7 +12,8 @@ public:
 	virtual ~FallingObject() ;
 	virtual void Initialize();    
 	//void Finalize() override ;        
-	bool Update() ;        
+	bool Update() ;  
+	void Draw();
 	void Draw(vector<string> &tmpfield);   
 	void FallingObject::operator =(const FallingObject &a) {
 		vel_x = a.vel_x;

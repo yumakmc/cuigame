@@ -29,20 +29,11 @@ void FallingObjectCollection::Update() {
 	}
 }
 void FallingObjectCollection::Draw() {
-	assert(false);
-	//vector<vector<int>> TmpField(SIZE_Y, vector<int>(SIZE_X,0));
-	//for (int i = 0; i < FallingObjects.size(); ++i) {
-	//	//FallingObjects[i].Draw();
-	//}
-	//for (int y = 0; y < TmpField.size(); ++y) {
-	//	for (int  x= 0; x < TmpField[0].size(); ++x) {
-	//		cout << FALLINGREAL[TmpField[y][x]];
-	//	}
-	//	cout << endl;
-	//}
+	for (int i = 0; i < FallingObjects.size(); ++i) {
+		FallingObjects[i].Draw();
+	}
 }
 void FallingObjectCollection::Draw(vector<string> &tmpfield) {
-	vector<vector<int>> TmpField(SIZE_Y, vector<int>(SIZE_X, 0));
 	for (int i = 0; i < FallingObjects.size(); ++i) {
 		FallingObjects[i].Draw(tmpfield);
 	}

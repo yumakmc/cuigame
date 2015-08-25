@@ -54,10 +54,10 @@ bool FallingObject::Update(){//âÊñ Ç™Ç¢Ç…èoÇΩÇÁfalse ï‘Ç∑
 		return true;
 	}
 }
+void FallingObject::Draw() {
+	aDrawableConsole.draw(x, y, FALLINGREAL[type].c_str());
+}
 void FallingObject::Draw(vector<string> &tmpfield) {
-	if(y<19.9){
-		//tmpfield[int(y)][2*int(x)] = FALLINGREAL[type][0];
-		aDrawableConsole.draw(x, y, FALLINGREAL[type].c_str());
-		//tmpfield[int(y)][2 * int(x)+1] = FALLINGREAL[type][1];
-	}
+	aDrawableConsole.draw(x, y, FALLINGREAL[type].c_str());
+
 }
