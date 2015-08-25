@@ -8,6 +8,7 @@
 enum eMenu{
 	eMenu_Game,        //ゲーム
 	eMenu_Tranp,    //トランプ
+	eMenu_Rpg,//Ｒｐｇ
 	eMenu_Finish,//終了
 	eMenu_count//ここで要素数がわかる
 };

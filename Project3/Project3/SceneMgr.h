@@ -3,6 +3,7 @@
 #include <vector>
 #include "Menu.h"
 #include "Game.h"
+#include "Rpg.h"
 
 
 class SceneMgr :public SceneChanger, Task{
