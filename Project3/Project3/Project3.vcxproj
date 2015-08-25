@@ -122,6 +122,7 @@
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="ConsoleBuffer.cpp" />
     <ClCompile Include="DrawableConsole.cpp" />
+    <ClCompile Include="DrawBackground.cpp" />
     <ClCompile Include="FallingObjectCollection.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameBaseScene.cpp" />
@@ -130,6 +131,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="FallingObject.cpp" />
     <ClCompile Include="mt19937ar.cpp" />
+    <ClCompile Include="RpgGame.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="test.cpp" />
@@ -143,6 +145,7 @@
     <ClInclude Include="ConsoleBuffer.h" />
     <ClInclude Include="Data_Rand.h" />
     <ClInclude Include="DrawableConsole.h" />
+    <ClInclude Include="DrawBackGround.h" />
     <ClInclude Include="FallingObjectCollection.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="gameBaseScene.h" />
@@ -152,6 +155,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="FallingObject.h" />
     <ClInclude Include="mt19937ar.h" />
+    <ClInclude Include="RpgGame.h" />
     <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Task.h" />

@@ -14,7 +14,7 @@ struct Text_Detail {//テキスト一行分
 };
 struct Text_Set {//テキスト数行分　これにアクションやしゃべる人の情報が加わる
 	string name;
-	int action;
+	int background;
 	vector<Text_Detail> text_details;
 };
 
@@ -39,6 +39,8 @@ private:
 	int nowtext;
 
 	static const int TEXTNUM = 3;//同時に表示されるテキストの行
-	static const int NAMEUP = 15;
-	static const int NAMELEFT = 0;
+	static const int NAMEUP = 19;
+	static const int NAMELEFT = 2;
+
+	int count;
 };

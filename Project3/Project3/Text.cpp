@@ -2,6 +2,7 @@
 #include "Text.h"
 #include "Keyboard.h"
 #include "DrawableConsole.h"
+#include "DrawBackGround.h"
 #include <assert.h>
 #include <windows.h>
 using namespace std;
@@ -19,7 +20,7 @@ const vector < Text_Set >aad= {
 		}
 	},
 	{
-		"春",0,{
+		"春",1,{
 			{ "考えたんだけどさ………………", 0,0 },
 			{ "季節が４つってさ", 0,0 },
 			{ "絶対に多過ぎるよね", 0,0 },
@@ -27,6 +28,48 @@ const vector < Text_Set >aad= {
 			{ "秋は自分と被ってやがるし",  0, 0 },
 			{ "夏は………殺してやりたい",  0, 0 },
 			{ "………よし、やろう", 0, 0 },
+		}
+	},
+};
+const vector < Text_Set >bad = {
+	{
+		"春",0,{
+			{ "………ああそうだ", 0,0 },
+			{ "そうだった", 0,0 },
+			{ "思い出した", 0,0 },
+			{ "", 0, 0 },
+			{ "",  0, 0 },
+			{ "",  0, 0 },
+			{ "", 0, 0 },
+		}
+	},
+	{
+		"春",1,{
+			{ "この世界は自分のものだったんだ", 0,0 },
+			{ "全てが", 0,0 },
+			{ "この広大な地、", 0,0 },
+			{ "無限の空、", 0, 0 },
+			{ "無限の空、", 0, 0 },
+
+		}
+	},
+	{
+		"？",1,{
+			{ "それは違うな", 0,0 },
+		}
+	},
+	{
+		"春",1,{
+			{ "？", 0,0 },
+		}
+	},
+	{
+		"空",1,{
+			{ "空は自由だ", 0,0 },
+			{ "俺は何物にも囚われない", 0,0 },
+			{ "空は自由の象徴", 0,0 },
+			{ "空は自由の象徴", 0,0 },
+			{ "空は自由の象徴", 0,0 },
 		}
 	},
 };
@@ -68,11 +111,13 @@ const vector<vector<string>> ad = {
 Text::Text(vector<string> atexts, gameSceneChanger* changer, const int enemy = -1) :gameBaseScene(changer),texts(enemy==-1?atexts:ad[enemy]),textss(aad) {
 	nowline = 0;
 	nowtext = 0;
+	count = 0;
 }
 void Text::Initialize(){
 }
 
 void Text::Update(){
+	count++;
 	static bool Zispushed=false;
 	if (Keyboard_Get('Z')==1||Keyboard_Get(VK_CONTROL)){//z
 		if (nowline == textss[nowtext].text_details.size()-1){
@@ -91,6 +136,9 @@ void Text::Update(){
 	}
 }
 void Text::Draw(){
+	if (textss[nowtext].background) {
+		DrawBackGround(1);
+	}
 	aDrawableConsole.draw(NAMELEFT, NAMEUP, textss[nowtext].name.c_str());
 	for (int i = 0; i < TEXTNUM; ++i) {
 		if (nowline >= i) {
