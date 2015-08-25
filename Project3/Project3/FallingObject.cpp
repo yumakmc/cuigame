@@ -1,5 +1,6 @@
 #include "FallingObject.h"
 #include "Data_Rand.h"
+#include "DrawableConsole.h"
 #include <math.h>
 
 FallingObject::FallingObject() {
@@ -55,7 +56,8 @@ bool FallingObject::Update(){//âÊñ Ç™Ç¢Ç…èoÇΩÇÁfalse ï‘Ç∑
 }
 void FallingObject::Draw(vector<string> &tmpfield) {
 	if(y<19.9){
-		tmpfield[int(y)][2*int(x)] = FALLINGREAL[type][0];
-		tmpfield[int(y)][2 * int(x)+1] = FALLINGREAL[type][1];
+		//tmpfield[int(y)][2*int(x)] = FALLINGREAL[type][0];
+		aDrawableConsole.draw(x, y, FALLINGREAL[type].c_str());
+		//tmpfield[int(y)][2 * int(x)+1] = FALLINGREAL[type][1];
 	}
 }

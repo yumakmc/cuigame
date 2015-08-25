@@ -1,6 +1,7 @@
 #pragma once 
 #include "Text.h"
 #include "Keyboard.h"
+#include "DrawableConsole.h"
 #include <assert.h>
 #include <windows.h>
 using namespace std;
@@ -71,6 +72,8 @@ void Text::Draw(vector<string> &tmpfield) {
 	//string textline = detail[nowtext].text[nowline];
 	tmpfield[0].replace(0, texts[nowtext].size(), texts[nowtext]);
 	tmpfield[8].replace(0, 30, "‚y‚Å‚·‚·‚ß‚é@‚b‚s‚q‚ÅƒXƒLƒbƒv");//—vC³
+	aDrawableConsole.draw(0, 0, texts[nowtext].c_str());
+	aDrawableConsole.draw(0, 8, "‚y‚Å‚·‚·‚ß‚é@‚b‚s‚q‚ÅƒXƒLƒbƒv");
 	//if (nowline >= 1) {
 	//	//string textline = detail[nowtext].text[nowline-1];
 	//	//DrawString(TEXTLEFT, TEXTUP-TEXTUPSUKIMA, textline.c_str(), GetColor(255, 255, 255));

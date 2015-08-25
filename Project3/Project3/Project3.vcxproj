@@ -121,6 +121,7 @@
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="ConsoleBuffer.cpp" />
+    <ClCompile Include="DrawableConsole.cpp" />
     <ClCompile Include="FallingObjectCollection.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameBaseScene.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="ConsoleBuffer.h" />
     <ClInclude Include="Data_Rand.h" />
+    <ClInclude Include="DrawableConsole.h" />
     <ClInclude Include="FallingObjectCollection.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="gameBaseScene.h" />
