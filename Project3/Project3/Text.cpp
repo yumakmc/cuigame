@@ -6,6 +6,27 @@
 #include <windows.h>
 using namespace std;
 
+const vector < vector<TextSet> >aad= {
+	{
+		{ "考えたんだけどさ………………", 0,0},
+		{	"季節が４つってさ", 0,0 },
+		{"絶対に多過ぎるよね", 0,0 },
+		{"冬は糞寒いし", 0, 0},
+		{"秋は自分と被ってやがるし",  0, 0},
+		{"夏は………殺してやりたい",  0, 0},
+		{"………よし、やろう", 0, 0},
+	},
+	{
+		{ "考えたんだけどさ………………", 0,0 },
+		{ "季節が４つってさ", 0,0 },
+		{ "絶対に多過ぎるよね", 0,0 },
+		{ "冬は糞寒いし", 0, 0 },
+		{ "秋は自分と被ってやがるし",  0, 0 },
+		{ "夏は………殺してやりたい",  0, 0 },
+		{ "………よし、やろう", 0, 0 },
+	},
+};
+
 const vector<vector<string>> ad = {
 	{"考えたんだけどさ………………",
 	"季節が４つってさ",
@@ -40,7 +61,7 @@ const vector<vector<string>> ad = {
 	
 };
 
-Text::Text(vector<string> atexts, gameSceneChanger* changer, const int enemy = -1) :gameBaseScene(changer),texts(enemy==-1?atexts:ad[enemy]) {
+Text::Text(vector<string> atexts, gameSceneChanger* changer, const int enemy = -1) :gameBaseScene(changer),texts(enemy==-1?atexts:ad[enemy]),textss(aad) {
 	nowline = 0;
 	nowtext = 0;
 }
@@ -50,8 +71,8 @@ void Text::Initialize(){
 void Text::Update(){
 	static bool Zispushed=false;
 	if (Keyboard_Get('Z')==1||Keyboard_Get(VK_CONTROL)){//z
-		//if (nowline == detail[nowtext].text.size() - 1){
-			if (nowtext == texts.size()-1){
+		if (nowline == textss[nowtext].size()-1){
+			if (nowtext == textss.size()-1){
 				mgameSceneChanger->ChangeScene(eGameScene_CardGame);
 				return;
 			}
@@ -62,7 +83,7 @@ void Text::Update(){
 		}
 		else{
 			nowline++;
-		//}
+		}
 	}
 }
 void Text::Draw(){
@@ -70,10 +91,14 @@ void Text::Draw(){
 }
 void Text::Draw(vector<string> &tmpfield) {
 	//string textline = detail[nowtext].text[nowline];
-	tmpfield[0].replace(0, texts[nowtext].size(), texts[nowtext]);
-	tmpfield[8].replace(0, 30, "Ｚですすめる　ＣＴＲでスキップ");//要修正
 	aDrawableConsole.draw(0, 0, texts[nowtext].c_str());
+	//aDrawableConsole.draw(0, 1, textss[nowtext][nowline].text.c_str());
 	aDrawableConsole.draw(0, 8, "Ｚですすめる　ＣＴＲでスキップ");
+	for (int i = 0; i < TEXTNUM; ++i) {
+		if (nowline >= i) {
+			aDrawableConsole.draw(0, (TEXTNUM-i), textss[nowtext][nowline-i].text.c_str());
+		}
+	}
 	//if (nowline >= 1) {
 	//	//string textline = detail[nowtext].text[nowline-1];
 	//	//DrawString(TEXTLEFT, TEXTUP-TEXTUPSUKIMA, textline.c_str(), GetColor(255, 255, 255));

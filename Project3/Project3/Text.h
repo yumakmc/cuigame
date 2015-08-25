@@ -7,6 +7,12 @@
 #include <map>
 using namespace std;
 
+struct TextSet {
+	string text;
+	int color;
+	int speed;//流れる速度
+};
+
 class Text:public gameBaseScene{
 public:
 	//Text::Text(gameSceneChanger* changer);
@@ -21,7 +27,10 @@ public:
 private:
 
 	vector<string>texts;
+	vector<vector<TextSet> >textss;
 
 	int nowline;
 	int nowtext;
+
+	static const int TEXTNUM = 3;//同時に表示されるテキストの行
 };
