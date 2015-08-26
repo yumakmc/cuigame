@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include "gameSceneChanger.h"
 #include "gameBaseScene.h"
+#include "BackGround.h"
 #include <vector>
 #include <string>
 #include <map>
@@ -31,6 +32,7 @@ public:
 	void Draw(vector<string> &tmpfield)override;
 
 private:
+	BackGround abackground;
 
 	vector<Text_Set>texts;
 

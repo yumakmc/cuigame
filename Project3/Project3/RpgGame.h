@@ -1,5 +1,6 @@
 #pragma once
 #include "gameBaseScene.h"
+#include  "BackGround.h"
 #include <map>
 
 struct EnemyInfo {
@@ -46,7 +47,7 @@ private:
 
 	int op_rest_waittime;
 
-	
+	BackGround abackground;
 
 
 	int situation;//0:‘Îí‘O@5:‘Îí’†@10:‘ÎíŒã

@@ -2,7 +2,7 @@
 #include "Text.h"
 #include "Keyboard.h"
 #include "DrawableConsole.h"
-#include "DrawBackGround.h"
+#include "BackGround.h"
 #include <assert.h>
 #include <windows.h>
 using namespace std;
@@ -201,10 +201,11 @@ const vector<vector<vector<Text_Set>>> TEXT_ALL = {
 };
 #pragma endregion
 
-Text::Text(gameSceneChanger* changer, const int story, const int enemy = -1) :gameBaseScene(changer),texts(TEXT_ALL[story][enemy]) {
+Text::Text(gameSceneChanger* changer, const int story, const int enemy = -1) :gameBaseScene(changer),texts(TEXT_ALL[story][enemy]), abackground(TEXT_ALL[story][enemy][0].background) {
 	nowline = 0;
 	nowtext = 0;
 	count = 0;
+	;
 }
 void Text::Initialize(){
 }
@@ -221,6 +222,10 @@ void Text::Update(){
 			else{
 				nowtext++;
 				nowline = 0;
+				if (texts[nowtext].background != texts[nowtext - 1].background) {
+					//abackground = new BackGround(texts[nowtext].background);
+					abackground=*(new BackGround(texts[nowtext].background));
+				}
 			}
 		}
 		else{
@@ -230,8 +235,9 @@ void Text::Update(){
 }
 void Text::Draw(){
 	if (texts[nowtext].background) {
-		DrawBackGround(1);
+		
 	}
+	abackground.Draw();
 	aDrawableConsole.draw(NAMELEFT, NAMEUP, texts[nowtext].name.c_str());
 	for (int i = 0; i < TEXTNUM; ++i) {
 		if (nowline >= i) {
