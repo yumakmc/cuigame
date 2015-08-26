@@ -5,7 +5,7 @@
 
 Rpg::Rpg(SceneChanger* changer) : BaseScene(changer) {
 	nextenemy = 0;
-	mGameScene = new Text(this, nextenemy);
+	mGameScene = new Text(this,1, nextenemy);
 	MyMusic::PlayMusic(0);
 }
 void Rpg::Initialize() {
@@ -18,7 +18,7 @@ void Rpg::Update() {
 		mGameScene->Finalize();//現在のシーンの終了処理を実行
 		switch (mNextScene) {       //シーンによって処理を分岐
 		case eGameScene_Text:    //現在の画面がメニューなら
-			mGameScene = (gameBaseScene*) new Text(this, nextenemy);
+			mGameScene = (gameBaseScene*) new Text(this,1, nextenemy);
 			break;//以下略
 		case eGameScene_Main:
 			if (nextenemy == 3) {

@@ -18,7 +18,7 @@ Tranp::Tranp(SceneChanger* changer) : BaseScene(changer) {
 	d.push_back("秋は自分と被ってやがるし");
 	d.push_back("夏は………ぶち殺してやりたい");
 	d.push_back("………よし、やろう");
-	mGameScene = new Text(this,nextenemy);
+	mGameScene = new Text(this,0,nextenemy);
 }
 void Tranp::Initialize() {
 }
@@ -31,7 +31,7 @@ void Tranp::Update() {
 		switch (mNextScene) {       //シーンによって処理を分岐
 		case eGameScene_Text:    //現在の画面がメニューなら
 			if (flag)nextenemy--;
-			mGameScene = (gameBaseScene*) new Text( this, nextenemy);
+			mGameScene = (gameBaseScene*) new Text( this, 0,nextenemy);
 			break;//以下略
 		case eGameScene_Main:
 			if (nextenemy == 3) {

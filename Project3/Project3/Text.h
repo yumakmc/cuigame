@@ -23,7 +23,7 @@ class Text:public gameBaseScene{
 public:
 	//Text::Text(gameSceneChanger* changer);
 
-	Text::Text( gameSceneChanger* changer,const int enemy);
+	Text::Text( gameSceneChanger* changer,const int story,const int enemy);
 	void Initialize() override;
 	//void Finalize() override;
 	void Update() override;        //更新処理をオーバーライド。
