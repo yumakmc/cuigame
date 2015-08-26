@@ -2,6 +2,9 @@
 #include "Menu.h"
 #include "Keyboard.h"
 #include "DrawableConsole.h"
+
+#include "PlayMusic.h"
+
 #include <assert.h>
 #include <iostream>
 using namespace std;
@@ -12,10 +15,10 @@ const int BLANK_FOR_MENU_LEFT = 2;
 const int BLANK_FOR_MENU_RIGHT = 18;
 
 Menu::Menu(SceneChanger* changer) : BaseScene(changer),afoc(){
+	MyMusic::PlayMusic(-1);//âπè¡Ç∑
 	NowSelect = eMenu_Game;
 }
 void Menu::Initialize(){
-	
 }
 void Menu::Draw(){
 	//assert(false);

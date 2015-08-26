@@ -1,9 +1,12 @@
 #include "Rpg.h"
 #include "Keyboard.h"
 
+#include "PlayMusic.h"
+
 Rpg::Rpg(SceneChanger* changer) : BaseScene(changer) {
 	nextenemy = 0;
 	mGameScene = new Text(this, nextenemy);
+	MyMusic::PlayMusic(0);
 }
 void Rpg::Initialize() {
 }

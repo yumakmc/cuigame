@@ -131,6 +131,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="FallingObject.cpp" />
     <ClCompile Include="mt19937ar.cpp" />
+    <ClCompile Include="PlayMusic.cpp" />
     <ClCompile Include="Rpg.cpp" />
     <ClCompile Include="RpgGame.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="FallingObject.h" />
     <ClInclude Include="mt19937ar.h" />
+    <ClInclude Include="PlayMusic.h" />
     <ClInclude Include="Rpg.h" />
     <ClInclude Include="RpgGame.h" />
     <ClInclude Include="SceneChanger.h" />
@@ -166,6 +168,9 @@
     <ClInclude Include="Tranp.h" />
     <ClInclude Include="TranpGame.h" />
     <ClInclude Include="typedef.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Dummy.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
