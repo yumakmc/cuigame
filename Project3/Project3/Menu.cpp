@@ -28,8 +28,8 @@ void Menu::Draw(){
 			aDrawableConsole.draw(x, y, "@");
 		}
 	}
-	aDrawableConsole.draw(8, 12, "‚r‚s‚n‚q‚x‚P");
-	aDrawableConsole.draw(8, 13, "‚r‚s‚n‚q‚x‚Q");
+	aDrawableConsole.draw(8, 12, "‚r‚s‚n‚q‚x‚PƒoƒO—L");
+	aDrawableConsole.draw(8, 13, "‚r‚s‚n‚q‚x‚QƒoƒO‚ ‚è");
 	aDrawableConsole.draw(8, 14, "‚r‚s‚n‚q‚x‚R");
 	aDrawableConsole.draw(8, 16, "‚d‚w‚h‚s");
 	switch (NowSelect) {//Œ»İ‚Ì‘I‘ğó‘Ô‚É]‚Á‚Äˆ—‚ğ•ªŠò
