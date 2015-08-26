@@ -32,7 +32,7 @@ public:
 
 private:
 
-	vector<Text_Set>textss;
+	vector<Text_Set>texts;
 
 	int nowline;
 	int nowtext;

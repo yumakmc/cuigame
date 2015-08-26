@@ -108,7 +108,7 @@ const vector<vector<string>> ad = {
 	
 };
 
-Text::Text(gameSceneChanger* changer, const int enemy = -1) :gameBaseScene(changer),textss(aad) {
+Text::Text(gameSceneChanger* changer, const int enemy = -1) :gameBaseScene(changer),texts(aad) {
 	nowline = 0;
 	nowtext = 0;
 	count = 0;
@@ -120,8 +120,8 @@ void Text::Update(){
 	count++;
 	static bool Zispushed=false;
 	if (Keyboard_Get('Z')==1||Keyboard_Get(VK_CONTROL)){//z
-		if (nowline == textss[nowtext].text_details.size()-1){
-			if (nowtext == textss.size()-1){
+		if (nowline == texts[nowtext].text_details.size()-1){
+			if (nowtext == texts.size()-1){
 				mgameSceneChanger->ChangeScene(eGameScene_Main);
 				return;
 			}
@@ -136,13 +136,13 @@ void Text::Update(){
 	}
 }
 void Text::Draw(){
-	if (textss[nowtext].background) {
+	if (texts[nowtext].background) {
 		DrawBackGround(1);
 	}
-	aDrawableConsole.draw(NAMELEFT, NAMEUP, textss[nowtext].name.c_str());
+	aDrawableConsole.draw(NAMELEFT, NAMEUP, texts[nowtext].name.c_str());
 	for (int i = 0; i < TEXTNUM; ++i) {
 		if (nowline >= i) {
-			aDrawableConsole.draw(NAMELEFT + 2, NAMEUP + (TEXTNUM - i), textss[nowtext].text_details[nowline - i].text.c_str());
+			aDrawableConsole.draw(NAMELEFT + 2, NAMEUP + (TEXTNUM - i), texts[nowtext].text_details[nowline - i].text.c_str());
 		}
 	}
 	aDrawableConsole.draw(0, 0, "ÇyÇ≈Ç∑Ç∑ÇﬂÇÈÅ@ÇbÇsÇqÇ≈ÉXÉLÉbÉv");

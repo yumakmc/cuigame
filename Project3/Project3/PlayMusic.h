@@ -9,6 +9,5 @@ namespace MyMusic {
 		"Dummy.wav",//ダミー
 	};
 
-
 	bool PlayMusic(const int num);//基本無限ループ
 };

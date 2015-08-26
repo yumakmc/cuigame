@@ -13,7 +13,6 @@ static const int dx[4] = { -1,0,1,0 };
 static const int dy[4] = { 0,-1,0,1 };
 RpgGame::RpgGame(gameSceneChanger* changer,const int aopponent) :gameBaseScene(changer), opponent(aopponent),op_hp(GETENEMYINFO[opponent].hp), op_atk(GETENEMYINFO[opponent].atk), op_interval(GETENEMYINFO[opponent].interval){
 	Initialize();
-	;
 }
 
 void RpgGame::Initialize() {

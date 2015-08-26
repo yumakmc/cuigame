@@ -16,10 +16,7 @@ const double TPF = CLOCKS_PER_SEC/ FPS;
 int main(){
 	SceneMgr scenemgr;
 	scenemgr.Initialize();
-	//while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0){
 	clock_t time = 0;	
-	int i=0;	
-
 	CONSOLE_CURSOR_INFO info = {};
 
 	static ConsoleBuffer&	m_ConsoleBuff(ConsoleBuffer::instance());
@@ -27,6 +24,7 @@ int main(){
 	 TCHAR			m_OriginalTitle[1024];
 	// オリジナルのタイトルを取得
 	::GetConsoleTitle(m_OriginalTitle, sizeof m_OriginalTitle);
+
 	// 新しいタイトルを設定
 	const TCHAR* title("aaa");
 	ConsoleWindow	cwnd;
@@ -43,7 +41,6 @@ int main(){
 			time -= TPF;
 			Keyboard_Update();
 			scenemgr.Update();
-			//vector<string> TmpField(SIZE_Y,"　　　　　　　　　　　　　　　　　　　　");//空白の数はSIZE_Xの数と同じ　修正したいけど重くなりそう
 
 			m_ConsoleBuff.loadDefaultColor();// 規定描画色呼出
 			m_ConsoleBuff.clear();// 画面のクリア
