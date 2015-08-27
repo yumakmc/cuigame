@@ -130,6 +130,7 @@ void RpgGame::Draw() {
 			aDrawableConsole.draw(ATTACK_CENTER_X - 4, ATTACK_CENTER_Y + 5-i-1, To_ZenString(-op_damages[i].first).c_str());//“G‘Ì—Í
 		}
 	}
+	aDrawableConsole.draw(ATTACK_CENTER_X - 6, ATTACK_CENTER_Y + 4, (GETENEMYINFO[opponent].name+"‚Ì–½").c_str());//“G‘Ì—Í
 	aDrawableConsole.draw(ATTACK_CENTER_X - 5, ATTACK_CENTER_Y + 5, To_ZenString(op_hp).c_str());//“G‘Ì—Í
 	
 	for (int i = 0; i < my_damages.size(); ++i) {
@@ -137,6 +138,7 @@ void RpgGame::Draw() {
 			aDrawableConsole.draw(ATTACK_CENTER_X +5, ATTACK_CENTER_Y + 5 - i - 1, To_ZenString(-my_damages[i].first).c_str());//“G‘Ì—Í
 		}
 	}
+	aDrawableConsole.draw(ATTACK_CENTER_X + 3, ATTACK_CENTER_Y + 4, "t‚Ì–½");
 	aDrawableConsole.draw(ATTACK_CENTER_X + 4, ATTACK_CENTER_Y + 5, To_ZenString(my_hp).c_str());//Ž©‘Ì—Í
 
 	switch (opponent) {

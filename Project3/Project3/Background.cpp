@@ -83,7 +83,6 @@ void BackGround::DrawGreenWorld() {
 		aDrawableConsole.draw(0, i, str);
 	}
 	aDrawableConsole.draw(1, 16, "ëê");
-	aDrawableConsole.draw(4, 22, "ëê");
 	aDrawableConsole.draw(14, 18, "ëê");
 	aDrawableConsole.draw(17, 19, "ëê");
 	aDrawableConsole.draw(19, 21, "ëê");

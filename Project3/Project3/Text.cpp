@@ -135,7 +135,8 @@ const vector<vector<Text_Set>> TEXT_RPG = {
 				{ "………", 0,0 },
 				{ "空は自由だ", 0,0 },
 				{ "空は何物にも束縛されない", 0,0 },
-				{ "空は", 0,0 },
+				{ "それこそが空が空たる所以だ", 0,0 },
+				{ "俺を支配するなど思い上がりも甚だしい", 0,0 },
 			}
 		},
 	},
@@ -143,29 +144,36 @@ const vector<vector<Text_Set>> TEXT_RPG = {
 		{
 			"空",2,2,
 			{
-				{ "うぬぬ…", 0,0 },
+				{ "くぬぬ…", 0,0 },
 			}
 		},
 		{
 			"春",2,2,
 			{
+				{ "へへへ………", 0,0 },
+				{ "諦めて自分のものになりなさいな", 0,0 },
 				{ "", 0,0 },
-				{ "全てが", 0,0 },
-				{ "この広大な地、", 0,0 },
-				{ "無限の空が", 0, 0 },
-				{ "みんな…", 0, 0 },
+				{ "", 0, 0 },
+				{ "", 0, 0 },
+			}
+		},
+		{
+			"空",2,2,
+			{
+				{ "", 0,0 },
+			}
+		},
+		{
+			"春",2,2,
+			{
+				{ "これで今度こそ", 0,0 },
+				{ "自分が無限の空を手に入れたって", 0,0 },
 			}
 		},
 		{
 			"？",2,2,
 			{
-				{ "それは違うな", 0,0 },
-			}
-		},
-		{
-			"春",2,2,
-			{
-				{ "？", 0,0 },
+				{ "………？", 0,0 },
 			}
 		},
 		{
@@ -205,7 +213,7 @@ const vector<vector<Text_Set>> TEXT_RPG = {
 		{
 			"春",2,2,
 			{
-				{ "？", 0,0 },
+				{ "………？", 0,0 },
 			}
 		},
 		{
@@ -249,7 +257,6 @@ void Text::Update(){
 				nowline = 0;
 				aMusic.Play(texts[nowtext].music);
 				if (texts[nowtext].background != texts[nowtext - 1].background) {
-					//abackground = new BackGround(texts[nowtext].background);
 					abackground=*(new BackGround(texts[nowtext].background));
 				}
 			}
