@@ -191,32 +191,42 @@ void ConsoleBuffer::setColor(WORD textcolor, WORD bgcolor) const
 }
 
 // 文字列を描画先スクリーンバッファに書き込む カーソル位置動かさないためにいろいろ変更
-void ConsoleBuffer::writeString(const TCHAR* text) const
+void ConsoleBuffer::writeString(const TCHAR* text, const bool changebgcolor) const
 {
 	/*DWORD wbyte;
 	::WriteConsole(m_hConsoleOut, text, static_cast<DWORD>(_tcslen(text)), &wbyte, NULL);*/
-	CHAR_INFO  charInfo[1024 + 1];
+	CHAR_INFO  charInfo[2001],precharInfo[2001];
 	COORD      coordSize;
-	SMALL_RECT rcDest;
+	SMALL_RECT rcDest,prercDest;
 	int tsize = strlen(text);
+	
 	CONSOLE_SCREEN_BUFFER_INFO info = { 0 };
 	GetConsoleScreenBufferInfo(m_hConsoleOut, &info);
-	for (int i = 0; i < tsize; i++) {
-		charInfo[i].Char.UnicodeChar = text[i];
-		charInfo[i].Attributes = info.wAttributes;
-	}
-
 	// コピー元のサイズ
 	coordSize.X = tsize;
 	coordSize.Y = 1;
+	prercDest.Left = info.dwCursorPosition.X;
+	prercDest.Top = info.dwCursorPosition.Y;
+	prercDest.Right = info.dwCursorPosition.X + coordSize.X;
+	prercDest.Bottom = info.dwCursorPosition.Y + 1;
+	ReadConsoleOutput(m_hConsoleOut, precharInfo, { SHORT(tsize),1 }, { 0,0 }, &prercDest);
+	for (int i = 0; i < tsize; i++) {
+		charInfo[i].Char.UnicodeChar = text[i];
+		if (changebgcolor) {
+			charInfo[i].Attributes = info.wAttributes;
+		}
+		else {
+			charInfo[i].Attributes = (info.wAttributes&0x0f)|(precharInfo[i].Attributes&0xf0);
+		}
+		
+	}
+
+	
 
 	// コピー先の位置とサイズ
-	rcDest.Left = info.dwCursorPosition.X;
-	rcDest.Top = info.dwCursorPosition.Y;
-	rcDest.Right = info.dwCursorPosition.X + coordSize.X;
-	rcDest.Bottom = info.dwCursorPosition.Y + 1;
 
-	WriteConsoleOutput(m_hConsoleOut, charInfo, coordSize, { 0,0 }, &rcDest);
+
+	WriteConsoleOutput(m_hConsoleOut, charInfo, coordSize, { 0,0 }, &prercDest);
 }
 
 // 文字列の幅を取得（描画時の実セル数）

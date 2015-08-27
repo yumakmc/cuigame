@@ -37,7 +37,7 @@ public:
 	virtual void setDefaultColor(WORD textcolor, WORD bgcolor);		// 規定描画色設定
 	virtual void loadDefaultColor() const;	 						// 規定描画色呼出
 	virtual void setColor(WORD textcolor, WORD bgcolor) const;		// 描画色の設定
-	virtual void writeString(const TCHAR* text) const;				// 文字列を描画先スクリーンバッファに書き込む
+	virtual void writeString(const TCHAR* text,const bool changebgcolor=true) const;				// 文字列を描画先スクリーンバッファに書き込む
 	virtual unsigned short getStringWdith(const TCHAR* str) const;	// 文字列の幅を取得（描画時の実セル数）
 
 private:

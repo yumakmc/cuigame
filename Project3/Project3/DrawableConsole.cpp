@@ -36,21 +36,37 @@ void DrawableConsole::setDrawPosition(POS x, POS y) const
 // テキスト描画
 void DrawableConsole::draw(const TCHAR* text) const
 {
-	m_ConsoleBuff.writeString(text);
+		m_ConsoleBuff.writeString(text,true);
 }
 // テキスト描画（座標付）
 void DrawableConsole::draw(DRAW_POS pos, const TCHAR* text) const
 {
 	setDrawPosition(pos);
-	m_ConsoleBuff.writeString(text);
+	m_ConsoleBuff.writeString(text, true);
 }
 // テキスト描画（座標付）
 void DrawableConsole::draw(POS x, POS y, const TCHAR* text) const
 {
 	setDrawPosition(x, y);
-	m_ConsoleBuff.writeString(text);
+	m_ConsoleBuff.writeString(text, true);
 }
-
+// テキスト描画
+void DrawableConsole::drawb(const TCHAR* text, const bool changebgcolor) const
+{
+		m_ConsoleBuff.writeString(text, changebgcolor);
+}
+// テキスト描画（座標付）
+void DrawableConsole::drawb(DRAW_POS pos, const TCHAR* text, const bool changebgcolor) const
+{
+	setDrawPosition(pos);
+	m_ConsoleBuff.writeString(text, changebgcolor);
+}
+// テキスト描画（座標付）
+void DrawableConsole::drawb(POS x, POS y, const TCHAR* text, const bool changebgcolor) const
+{
+	setDrawPosition(x, y);
+	m_ConsoleBuff.writeString(text, changebgcolor);
+}
 // テキスト描画（書式付）
 void DrawableConsole::drawf(const TCHAR* formatText, ...) const
 {
@@ -60,7 +76,7 @@ void DrawableConsole::drawf(const TCHAR* formatText, ...) const
 	va_start(args, formatText);
 
 	_vstprintf_s(text, (sizeof text / sizeof TCHAR), formatText, args);
-	m_ConsoleBuff.writeString(text);
+	m_ConsoleBuff.writeString(text, true);
 
 	va_end(args);
 }
@@ -74,7 +90,7 @@ void DrawableConsole::drawf(DRAW_POS pos, const TCHAR* formatText, ... ) const
 
 	setDrawPosition(pos);
 	_vstprintf_s(text, (sizeof text / sizeof TCHAR), formatText, args);
-	m_ConsoleBuff.writeString(text);
+	m_ConsoleBuff.writeString(text, true);
 
 	va_end(args);
 }
