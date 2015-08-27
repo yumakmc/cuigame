@@ -26,7 +26,6 @@ ConsoleBuffer::ConsoleBuffer()
 		if(m_hWorkBuffer == INVALID_HANDLE_VALUE) {
 			throw;
 		}
-
 	} catch(...) {
 		throw Common::ERR_CONSTRUCT;
 	}
@@ -191,11 +190,33 @@ void ConsoleBuffer::setColor(WORD textcolor, WORD bgcolor) const
 	::SetConsoleTextAttribute(m_hConsoleOut, static_cast<WORD>(textcolor | (bgcolor << 4)));
 }
 
-// 文字列を描画先スクリーンバッファに書き込む
+// 文字列を描画先スクリーンバッファに書き込む カーソル位置動かさないためにいろいろ変更
 void ConsoleBuffer::writeString(const TCHAR* text) const
 {
-	DWORD wbyte;
-	::WriteConsole(m_hConsoleOut, text, static_cast<DWORD>(_tcslen(text)), &wbyte, NULL);
+	/*DWORD wbyte;
+	::WriteConsole(m_hConsoleOut, text, static_cast<DWORD>(_tcslen(text)), &wbyte, NULL);*/
+	CHAR_INFO  charInfo[1024 + 1];
+	COORD      coordSize;
+	SMALL_RECT rcDest;
+	int tsize = strlen(text);
+	CONSOLE_SCREEN_BUFFER_INFO info = { 0 };
+	GetConsoleScreenBufferInfo(m_hConsoleOut, &info);
+	for (int i = 0; i < tsize; i++) {
+		charInfo[i].Char.UnicodeChar = text[i];
+		charInfo[i].Attributes = info.wAttributes;
+	}
+
+	// コピー元のサイズ
+	coordSize.X = tsize;
+	coordSize.Y = 1;
+
+	// コピー先の位置とサイズ
+	rcDest.Left = info.dwCursorPosition.X;
+	rcDest.Top = info.dwCursorPosition.Y;
+	rcDest.Right = info.dwCursorPosition.X + coordSize.X;
+	rcDest.Bottom = info.dwCursorPosition.Y + 1;
+
+	WriteConsoleOutput(m_hConsoleOut, charInfo, coordSize, { 0,0 }, &rcDest);
 }
 
 // 文字列の幅を取得（描画時の実セル数）

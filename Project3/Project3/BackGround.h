@@ -1,4 +1,5 @@
 #pragma once
+#include "ConsoleBuffer.h"
 
 class BackGround {
 public:
@@ -12,6 +13,8 @@ public:
 		 count = a.count;
 	}
 private:
+	void DrawDarkCheck();
+	void DrawGreenWorld();
 	int scene;
 	int count;
 };
