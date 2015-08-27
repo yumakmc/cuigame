@@ -3,7 +3,7 @@
 #include "Keyboard.h"
 #include "DrawableConsole.h"
 
-#include "PlayMusic.h"
+#include "Music.h"
 
 #include <assert.h>
 #include <iostream>
@@ -14,8 +14,11 @@ const int BLANK_FOR_MENU_DOWN = 18;
 const int BLANK_FOR_MENU_LEFT = 2;
 const int BLANK_FOR_MENU_RIGHT = 18;
 
+extern bool HaveColor;//BackGroundより　extern参照　BackGroundで色がつけばtrueに変わる。　
+
 Menu::Menu(SceneChanger* changer) : BaseScene(changer),afoc(){
-	MyMusic::PlayMusic(-1);//音消す
+	//MyMusic::PlayMusic(-1);//音消す
+	aMusic.Play(-1);
 	NowSelect = eMenu_Game;
 }
 void Menu::Initialize(){
@@ -34,6 +37,7 @@ void Menu::Draw(){
 	aDrawableConsole.draw(8, 16, "ＥＸＩＴ");
 	switch (NowSelect) {//現在の選択状態に従って処理を分岐
 	case eMenu_Game://ゲーム選択中なら　そのうちかーげーに変更したい　実装だるそう
+		
 		aDrawableConsole.draw(5, 12, "●");
 		break;
 	case eMenu_Tranp://トランプ選択中なら	

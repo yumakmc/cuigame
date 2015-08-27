@@ -75,10 +75,10 @@
     <ClCompile Include="Rpg.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="PlayMusic.cpp">
+    <ClCompile Include="Background.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Background.cpp">
+    <ClCompile Include="Music.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,15 +155,21 @@
     <ClInclude Include="Rpg.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PlayMusic.h">
+    <ClInclude Include="BackGround.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="BackGround.h">
+    <ClInclude Include="Music.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Dummy.wav">
+      <Filter>リソース ファイル</Filter>
+    </Media>
+    <Media Include="pop.wav">
+      <Filter>リソース ファイル</Filter>
+    </Media>
+    <Media Include="sad_dream.wav">
       <Filter>リソース ファイル</Filter>
     </Media>
   </ItemGroup>

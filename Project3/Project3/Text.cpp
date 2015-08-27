@@ -3,6 +3,7 @@
 #include "Keyboard.h"
 #include "DrawableConsole.h"
 #include "BackGround.h"
+#include "Music.h"
 #include <assert.h>
 #include <windows.h>
 using namespace std;
@@ -12,7 +13,7 @@ using namespace std;
 const vector<vector<Text_Set>> TEXT_TRANP = {
 	{
 		{
-			"",0,
+			"",0,0,
 			{
 				{ "考えたんだけどさ………………", 0,0 },
 				{ "季節が４つってさ", 0,0 },
@@ -26,7 +27,7 @@ const vector<vector<Text_Set>> TEXT_TRANP = {
 
 	},{
 		{
-			"",0,
+			"",0,0,
 			{
 				{ "よし倒せた………あいつなら当然か", 0,0 },
 				{ "………次はどうしようか", 0,0 },
@@ -38,7 +39,7 @@ const vector<vector<Text_Set>> TEXT_TRANP = {
 		},
 	},{
 		{
-			"",0,
+			"",0,0,
 			{
 				{ "まさか二人とも倒せるとは………", 0,0 },
 				{ "あー　で、残った奴が………", 0,0 },
@@ -50,7 +51,7 @@ const vector<vector<Text_Set>> TEXT_TRANP = {
 		},
 	},{
 		{
-			"",0,
+			"",0,0,
 			{
 				{ "こうして", 0,0 },
 				{ "世界には春だけが残りましたとさ", 0,0 },
@@ -66,19 +67,20 @@ const vector<vector<Text_Set>> TEXT_TRANP = {
 const vector<vector<Text_Set>> TEXT_RPG = {
 	{
 		{
-			"春",0,
+			"春",0,3,
 			{
 				{ "………………", 0,0 },
-				{ "あれ", 0,0 },
-				{ "ここどこだ", 0,0 },
+				{ "あれ………", 0,0 },
+				{ "ここ………どこだ", 0,0 },
 				{ "………………", 0,0 },
-				{ "とにかくここから出よう", 0,0 },
+				{ "とにかく………ここから出なきゃならない", 0,0 },
+				{ "そんな気がする", 0,0 },
 			}
 		},
 	},
 	{
 		{
-			"春",0,
+			"春",0,3,
 			{
 				{ "………ああそうだ", 0,0 },
 				{ "そうだった", 0,0 },
@@ -86,35 +88,51 @@ const vector<vector<Text_Set>> TEXT_RPG = {
 			}
 		},
 		{
-			"",1,
+			"",1,2,
 			{
 				{ "", 0,0 },
 			}
 		},
 		{
-			"春",1,
+			"春",1,2,
 			{
 				{ "この世界は自分のものだったんだ", 0,0 },
-				{ "この広大な地、", 0,0 },
-				{ "無限の空が", 0, 0 },
-				{ "全てが…", 0, 0 },
+				{ "この見渡す限りに広がる大地", 0,0 },
+				{ "今はみんな手に入れた………", 0, 0 },
 			}
 		},
 		{
-			"？",1,
+			"春",1,2,
 			{
+				{ "", 0,0 },
+			}
+		},
+		{
+			"春",1,2,
+			{
+				{ "それだけじゃない", 0,0 },
+				{ "この無限の空でさえ", 0,0 },
+				{ "全てが………", 0, 0 },
+				{ "ああ………", 0, 0 },
+			}
+		},
+		{
+			"？",1,2,
+			{
+				{ "………", 0,0 },
 				{ "それは違うな", 0,0 },
 			}
 		},
 		{
-			"春",1,
+			"春",1,2,
 			{
-				{ "？", 0,0 },
+				{ "なんだ？", 0,0 },
 			}
 		},
 		{
-			"空",1,
+			"空",1,2,
 			{
+				{ "………", 0,0 },
 				{ "空は自由だ", 0,0 },
 				{ "空は何物にも束縛されない", 0,0 },
 				{ "空は", 0,0 },
@@ -123,13 +141,13 @@ const vector<vector<Text_Set>> TEXT_RPG = {
 	},
 	{
 		{
-			"空",2,
+			"空",2,2,
 			{
 				{ "うぬぬ…", 0,0 },
 			}
 		},
 		{
-			"春",2,
+			"春",2,2,
 			{
 				{ "", 0,0 },
 				{ "全てが", 0,0 },
@@ -139,19 +157,19 @@ const vector<vector<Text_Set>> TEXT_RPG = {
 			}
 		},
 		{
-			"？",2,
+			"？",2,2,
 			{
 				{ "それは違うな", 0,0 },
 			}
 		},
 		{
-			"春",2,
+			"春",2,2,
 			{
 				{ "？", 0,0 },
 			}
 		},
 		{
-			"空",2,
+			"空",2,2,
 			{
 				{ "空は自由だ", 0,0 },
 				{ "空は何物にも囚われない", 0,0 },
@@ -161,7 +179,7 @@ const vector<vector<Text_Set>> TEXT_RPG = {
 	},
 	{
 		{
-			"空",2,
+			"空",2,2,
 			{
 				{ "………ああそうだ", 0,0 },
 				{ "そうだった", 0,0 },
@@ -169,7 +187,7 @@ const vector<vector<Text_Set>> TEXT_RPG = {
 			}
 		},
 		{
-			"春",2,
+			"春",2,2,
 			{
 				{ "この世界は自分のものだったんだ", 0,0 },
 				{ "全てが", 0,0 },
@@ -179,19 +197,19 @@ const vector<vector<Text_Set>> TEXT_RPG = {
 			}
 		},
 		{
-			"？",2,
+			"？",2,2,
 			{
 				{ "それは違うな", 0,0 },
 			}
 		},
 		{
-			"春",2,
+			"春",2,2,
 			{
 				{ "？", 0,0 },
 			}
 		},
 		{
-			"空",2,
+			"空",2,2,
 			{
 				{ "空は自由だ", 0,0 },
 				{ "空は何物にも囚われない", 0,0 },
@@ -211,6 +229,7 @@ Text::Text(gameSceneChanger* changer, const int story, const int enemy = -1) :ga
 	nowline = 0;
 	nowtext = 0;
 	count = 0;
+	aMusic.Play(texts[0].music);
 }
 void Text::Initialize(){
 }
@@ -228,6 +247,7 @@ void Text::Update(){
 			else{
 				nowtext++;
 				nowline = 0;
+				aMusic.Play(texts[nowtext].music);
 				if (texts[nowtext].background != texts[nowtext - 1].background) {
 					//abackground = new BackGround(texts[nowtext].background);
 					abackground=*(new BackGround(texts[nowtext].background));

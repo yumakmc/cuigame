@@ -13,9 +13,10 @@ struct Text_Detail {//テキスト一行分
 	int color;
 	int speed;//流れる速度
 };
-struct Text_Set {//テキスト数行分　これにアクションやしゃべる人の情報が加わる
+struct Text_Set {//テキスト数行分　これにアクションやしゃべる人の情報,背景、音楽が加わる
 	string name;
 	int background;
+	int music;
 	vector<Text_Detail> text_details;
 };
 

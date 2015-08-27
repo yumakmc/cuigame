@@ -3,6 +3,8 @@
 #include <string>
 using namespace std;
 
+bool HaveColor=false;//Menuでextern参照される　Menuの色の有無に使用
+
 BackGround::BackGround(){
 	BackGround(0);
 }
@@ -17,13 +19,13 @@ void BackGround::Draw() {
 	case 0:
 		break;
 	case 1:
+		HaveColor = true;
 		DrawGreenWorld();
 		DrawDarkCheck();
 		break;
 
 	case 2:
 		DrawGreenWorld();
-		
 	}
 }
 void BackGround::DrawDarkCheck() {
