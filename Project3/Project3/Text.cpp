@@ -277,7 +277,7 @@ void Text::Draw(){
 			aDrawableConsole.draw(NAMELEFT + 2, NAMEUP + (TEXTNUM - i), texts[nowtext].text_details[nowline - i].text.c_str());
 		}
 	}
-	aDrawableConsole.draw(0, 0, "Ｚですすめる　ＣＴＲでスキップ");
+	aDrawableConsole.drawb(0, 0, "Ｚですすめる　ＣＴＲでスキップ",false);
 }
 void Text::Draw(vector<string> &tmpfield) {	
 	assert(false);
