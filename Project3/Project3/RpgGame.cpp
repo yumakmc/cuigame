@@ -27,6 +27,21 @@ void RpgGame::Update() {
 		paralyzecount--;
 	}
 	else {
+#ifndef NDEBUG
+		if (Keyboard_Get('C') == 1) {//左、上、右、下
+			//ダメ与える処理
+			op_hp -= 1000;
+			//op_damages.push_back(make_pair(my_atk[i], DAMAGE_REMAIN_FRAME));
+			auto place = find_if(op_damages.begin(), op_damages.end(), [](const pair<int, int> a) {return a.second <= 0; });
+			if (place == op_damages.end()) {
+				op_damages.push_back(make_pair(1000, DAMAGE_REMAIN_FRAME));
+			}
+			else {
+				*place = make_pair(1000, DAMAGE_REMAIN_FRAME);
+			}
+		
+		}
+#endif
 		for (int i = 0; i < 4; ++i) {
 			if (my_rest_waittime[i]) {
 				my_rest_waittime[i]--;
