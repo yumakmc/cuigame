@@ -3,6 +3,8 @@
 
 #include "Music.h"
 
+extern bool RpgKillFrag;//RpgGameよりextern
+
 Rpg::Rpg(SceneChanger* changer) : BaseScene(changer) {
 	nextenemy = 0;
 	mGameScene = new Text(this,1, nextenemy);
@@ -18,15 +20,19 @@ void Rpg::Update() {
 		mGameScene->Finalize();//現在のシーンの終了処理を実行
 		switch (mNextScene) {       //シーンによって処理を分岐
 		case eGameScene_Text:    //現在の画面がメニューなら
+			if (RpgKillFrag) {
+				nextenemy++;
+				RpgKillFrag = false;
+			}
 			mGameScene = (gameBaseScene*) new Text(this,1, nextenemy);
 			break;//以下略
 		case eGameScene_Main:
+			
 			if (nextenemy == 3) {
 				mSceneChanger->ChangeScene(eScene_Menu);
 			}
 			else {
-				mGameScene = (gameBaseScene*) new RpgGame(this,nextenemy);
-				nextenemy++;
+				mGameScene = (gameBaseScene*) new rpggame::RpgGame(this,nextenemy);
 			}
 			break;//以下略
 		}
