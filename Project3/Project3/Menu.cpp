@@ -17,8 +17,7 @@ const int BLANK_FOR_MENU_RIGHT = 18;
 extern bool HaveColor;//BackGroundより　extern参照　BackGroundで色がつけばtrueに変わる。　
 
 Menu::Menu(SceneChanger* changer) : BaseScene(changer),afoc(){
-	//MyMusic::PlayMusic(-1);//音消す
-	aMusic.Play(-1);
+	aMusic.Play(4);
 	NowSelect = eMenu_Game;
 }
 void Menu::Initialize(){

@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Dummy.wav" />
+    <Media Include="op.wav" />
     <Media Include="pop.wav" />
     <Media Include="sad_dream.wav" />
   </ItemGroup>

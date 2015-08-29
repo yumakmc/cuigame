@@ -10,6 +10,7 @@ const vector<string> MUSICNAME = {
 	"Dummy.wav",//ダミー
 	"pop.wav",//背景に色がついたときの
 	"sad_dream.wav",//夢の中
+	"op.wav",//オープニング
 };
 
 namespace MyMusic {
@@ -23,6 +24,6 @@ public:
 	Music();
 	bool Play(const int num);
 private:
-	int nowmusic;
+	int nowmusic=0;
 
 }aMusic;

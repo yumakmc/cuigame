@@ -172,5 +172,8 @@
     <Media Include="sad_dream.wav">
       <Filter>リソース ファイル</Filter>
     </Media>
+    <Media Include="op.wav">
+      <Filter>リソース ファイル</Filter>
+    </Media>
   </ItemGroup>
 </Project>
