@@ -197,7 +197,7 @@ void ConsoleBuffer::writeString(const TCHAR* text, const bool changebgcolor) con
 	::WriteConsole(m_hConsoleOut, text, static_cast<DWORD>(_tcslen(text)), &wbyte, NULL);*/
 	CHAR_INFO  charInfo[2001],precharInfo[2001];
 	COORD      coordSize;
-	SMALL_RECT rcDest,prercDest;
+	SMALL_RECT prercDest;
 	int tsize = strlen(text);
 	
 	CONSOLE_SCREEN_BUFFER_INFO info = { 0 };
@@ -218,13 +218,8 @@ void ConsoleBuffer::writeString(const TCHAR* text, const bool changebgcolor) con
 		else {
 			charInfo[i].Attributes = (info.wAttributes&0x0f)|(precharInfo[i].Attributes&0xf0);
 		}
-		
 	}
-
-	
-
 	// コピー先の位置とサイズ
-
 
 	WriteConsoleOutput(m_hConsoleOut, charInfo, coordSize, { 0,0 }, &prercDest);
 }
