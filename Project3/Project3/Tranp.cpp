@@ -59,4 +59,3 @@ void Tranp::Draw(vector<string> &tmpfield) {
 void Tranp::ChangeScene(eGameScene NextScene) {
 	mNextScene = NextScene;
 }
-

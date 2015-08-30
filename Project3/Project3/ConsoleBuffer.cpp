@@ -2,7 +2,7 @@
 
 
 ConsoleBuffer::ConsoleBuffer()
-	: m_NowIndex(0), m_ScreenNum(0), m_hSrceenBuffer(NULL), m_DefaultTextColor(0x15), m_DefaultBgColor(0)
+	: m_NowIndex(0), m_ScreenNum(0), m_hSrceenBuffer(NULL), m_DefaultTextColor(0x0f), m_DefaultBgColor(0)
 {
 	// コンソール出力ハンドルを取得
 	try {

@@ -26,7 +26,7 @@ int main(){
 	::GetConsoleTitle(m_OriginalTitle, sizeof m_OriginalTitle);
 
 	// 新しいタイトルを設定
-	const TCHAR* title("aaa");
+	const TCHAR* title("黄色くなった時に上下左右キーで攻撃");
 	ConsoleWindow	cwnd;
 	cwnd.setTitle(title);
 	// カーソルを非表示
@@ -39,6 +39,8 @@ int main(){
 		time += aTimeManager.GetDifference();
 		if (time > TPF) {
 			time -= TPF;
+			time = min(time,TPF);
+			
 			Keyboard_Update();
 			scenemgr.Update();
 
@@ -46,7 +48,6 @@ int main(){
 			m_ConsoleBuff.clear();// 画面のクリア
 
 			scenemgr.Draw();
-			LPDWORD cell(0);
 			
 			m_ConsoleBuff.showScreen();// 描画先スクリーンバッファを表示
 			m_ConsoleBuff.resetWindowSize();
