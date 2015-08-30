@@ -11,6 +11,9 @@ namespace rpggame {
 	const int MY_ATTACK_CENTER_X = 19;
 	const int MY_ATTACK_CENTER_Y = 13;
 
+	const int MY_ATTACK_CENTER_X_L = 15;
+	const int MY_ATTACK_CENTER_X_R = 23;
+
 	const int OP_ATTACK_CENTER_X = 19;
 	const int OP_ATTACK_CENTER_Y = 6;
 
@@ -175,7 +178,6 @@ void RpgGame::Update() {
 }
 void RpgGame::Draw() {
 	abackground.Draw();
-	aDrawableConsole.draw(17, 2, "ìGÅF");
 	aDrawableConsole.draw(21, 2, AllInfos[opponent].opinfo.name.c_str());
 
 	for (int i = 0; i < op_causeddamages.size(); ++i) {
@@ -183,7 +185,7 @@ void RpgGame::Draw() {
 			aDrawableConsole.draw(MY_ATTACK_CENTER_X - 5, MY_ATTACK_CENTER_Y + 5-i-2, (" -"+To_ZenString(op_causeddamages[i].first)).c_str());//ìGëÃóÕ
 		}
 	}
-	aDrawableConsole.draw(MY_ATTACK_CENTER_X - 10, MY_ATTACK_CENTER_Y + 4, (AllInfos[opponent].opinfo.name+"ÇÃñΩ").c_str());
+	aDrawableConsole.draw(MY_ATTACK_CENTER_X - 10, MY_ATTACK_CENTER_Y + 4, (AllInfos[opponent].opinfo.name+"ÇÃÇgÇo").c_str());
 	aDrawableConsole.draw(MY_ATTACK_CENTER_X - 5, MY_ATTACK_CENTER_Y + 5, To_ZenString(op_hp).c_str());
 	
 	for (int i = 0; i < my_causeddamages.size(); ++i) {
@@ -191,33 +193,81 @@ void RpgGame::Draw() {
 			aDrawableConsole.draw(MY_ATTACK_CENTER_X +4, MY_ATTACK_CENTER_Y + 5 - i - 1, (" -" + To_ZenString(my_causeddamages[i].first)).c_str());//Ç±Ç¡ÇøÇÃëÃóÕ
 		}
 	}
-	aDrawableConsole.draw(MY_ATTACK_CENTER_X + 7, MY_ATTACK_CENTER_Y + 4, (AllInfos[opponent].myinfo.name+"ÇÃñΩ").c_str());
+	aDrawableConsole.draw(MY_ATTACK_CENTER_X + 7, MY_ATTACK_CENTER_Y + 4, (AllInfos[opponent].myinfo.name+"ÇÃÇgÇo").c_str());
 	aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4, MY_ATTACK_CENTER_Y + 5, To_ZenString(my_hp).c_str());//é©ëÃóÕ
 
 	switch (opponent) {
+	case 2:
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + dx[0], MY_ATTACK_CENTER_Y + dy[0], "Ç`");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + dx[1], MY_ATTACK_CENTER_Y + dy[1], "Çv");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + dx[2], MY_ATTACK_CENTER_Y + dy[2], "Çc");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + dx[3], MY_ATTACK_CENTER_Y + dy[3], "Çr");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4 + dx[0], MY_ATTACK_CENTER_Y + dy[0], "Å©");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4 + dx[1], MY_ATTACK_CENTER_Y + dy[1], "Å™");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4 + dx[2], MY_ATTACK_CENTER_Y + dy[2], "Å®");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4 + dx[3], MY_ATTACK_CENTER_Y + dy[3], "Å´");
+		break;
 	default:
 		aDrawableConsole.draw(MY_ATTACK_CENTER_X + dx[0], MY_ATTACK_CENTER_Y + dy[0], "Å©");
 		aDrawableConsole.draw(MY_ATTACK_CENTER_X + dx[1], MY_ATTACK_CENTER_Y + dy[1], "Å™");
 		aDrawableConsole.draw(MY_ATTACK_CENTER_X + dx[2], MY_ATTACK_CENTER_Y + dy[2], "Å®");
 		aDrawableConsole.draw(MY_ATTACK_CENTER_X + dx[3], MY_ATTACK_CENTER_Y + dy[3], "Å´");
 	}
-
+	
 	for (int i = 0; i < my_act.size(); ++i) {
 		string st = to_string(my_rest_waittime[i]);
 		if (st.size() % 2) {
 			st = " " + st;
 		}
-		
+
+		int ax;
+		if (my_act.size() == 4) {
+			ax = MY_ATTACK_CENTER_X;
+		}
+		else if(i<4) {
+			ax = MY_ATTACK_CENTER_X_L;
+		}
+		else {
+			ax = MY_ATTACK_CENTER_X_R;
+		}
+
 		if (my_rest_waittime[i]) {
-			aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[i], MY_ATTACK_CENTER_Y + 2 * dy[i], st.c_str());
+			aDrawableConsole.draw(ax + 2 * dx[i%4], MY_ATTACK_CENTER_Y + 2 * dy[i%4], st.c_str());
 		}
 		else {
 			aDrawableConsole.setColor(DrawableConsole::COLOR::C_BLACK, DrawableConsole::COLOR::C_LYELLOW);
-			aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[i], MY_ATTACK_CENTER_Y + 2 * dy[i], st.c_str());
+			aDrawableConsole.draw(ax + 2 * dx[i%4], MY_ATTACK_CENTER_Y + 2 * dy[i%4], st.c_str());
 			aDrawableConsole.loadDefaultColor();
 		}
-		
 	}
+	
+	for (int i = 0; i < my_act.size(); ++i) {
+		string st = to_string(my_rest_waittime[i]);
+		if (st.size() % 2) {
+			st = " " + st;
+		}
+		int ax;
+		if (my_act.size() == 4) {
+			ax = MY_ATTACK_CENTER_X;
+		}
+		else if (i<4) {
+			ax = MY_ATTACK_CENTER_X_L;
+		}
+		else {
+			ax = MY_ATTACK_CENTER_X_R;
+		}
+		if (my_rest_waittime[i]) {
+			aDrawableConsole.draw(ax + 2 * dx[i%4], MY_ATTACK_CENTER_Y + 2 * dy[i%4], st.c_str());
+		}
+		else {
+			aDrawableConsole.setColor(DrawableConsole::COLOR::C_BLACK, DrawableConsole::COLOR::C_LYELLOW);
+			aDrawableConsole.draw(ax + 2 * dx[i%4], MY_ATTACK_CENTER_Y + 2 * dy[i%4], st.c_str());
+			aDrawableConsole.loadDefaultColor();
+		}
+
+	}
+	
+	
 
 	switch (opponent) {
 	default:

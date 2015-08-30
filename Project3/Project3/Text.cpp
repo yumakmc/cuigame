@@ -262,7 +262,7 @@ void Text::Draw(){
 	}
 	aDrawableConsole.draw(0, 0, "ÇyÇ≈Ç∑Ç∑ÇﬂÇÈÅ@ÇbÇsÇqÇ≈ÉXÉLÉbÉv",false);
 }
-void Text::Draw(vector<string> &tmpfield) {	
+void Text::Draw(vector<string> &tmpfield) {
 	assert(false);
 	/*aDrawableConsole.draw(NAMELEFT, NAMEUP, textss[nowtext].name.c_str());
 	for (int i = 0; i < TEXTNUM; ++i) {
