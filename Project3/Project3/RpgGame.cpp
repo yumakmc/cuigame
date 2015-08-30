@@ -9,10 +9,12 @@ using namespace rpggame;
 
 namespace rpggame {
 	const int MY_ATTACK_CENTER_X = 19;
-	const int MY_ATTACK_CENTER_Y = 19;
+	const int MY_ATTACK_CENTER_Y = 13;
 
 	const int OP_ATTACK_CENTER_X = 19;
-	const int OP_ATTACK_CENTER_Y = 9;
+	const int OP_ATTACK_CENTER_Y = 6;
+
+	const int LOG_LINE_Y = 20;
 
 	const int PARALYZECOUNT = 10;
 
@@ -25,13 +27,13 @@ bool RpgKillFrag = false;
 RpgGame::RpgGame(gameSceneChanger* changer,const int aopponent) :gameBaseScene(changer), opponent(aopponent),op_hp(AllInfos[opponent].opinfo.hp), op_causeddamages(), my_causeddamages(), abackground(AllInfos[opponent].background), op_act(AllInfos[opponent].opinfo.acts), my_act(AllInfos[opponent].myinfo.acts), op_delay_waittime(),actionlog(){
 	aRand.init();
 	Initialize();
-	situation = 5;
+	situation = 0;
 	my_hp = AllInfos[opponent].myinfo.hp;
 	for (int i = 0; i < my_act.size();++i) {
 		my_rest_waittime.push_back(my_act[i].maxwaittime);
 	}
 	for (int i = 0; i < op_act.size(); ++i) {
-		op_delay_waittime.push_back(aRand.gen()%10);
+		op_delay_waittime.push_back(aRand.gen()% AllInfos[opponent].maxdelaytime);
 		op_rest_waittime.push_back(op_act[i].maxwaittime);
 	}
 }
@@ -41,6 +43,9 @@ void RpgGame::Initialize() {
 void RpgGame::Update() {
 	switch (situation) {
 	case 0://スタート画面
+		if (Keyboard_Get('Z') == 1) {
+			situation = 5;
+		}
 		break;
 	case 1://ヘルプ
 		break;
@@ -131,7 +136,7 @@ void RpgGame::Update() {
 				}
 				else {
 					MakeDamege(false, i);
-					op_delay_waittime[i] = aRand.gen() % 10;
+					op_delay_waittime[i] = aRand.gen() % AllInfos[opponent].maxdelaytime;
 				}
 				//ダメ与える処理
 			}
@@ -140,21 +145,28 @@ void RpgGame::Update() {
 		for_each(op_causeddamages.begin(), op_causeddamages.end(), [](pair<int, int> &a) {a.second--; });
 		for_each(my_causeddamages.begin(), my_causeddamages.end(), [](pair<int, int> &a) {a.second--; });
 		if (my_hp <= 0) {
-			mgameSceneChanger->ChangeScene(eGameScene_Text);
+			
 			situation = 11;
 			RpgKillFrag = false;
 			//終了処理
 		}
 		else if (op_hp <= 0) {
-			mgameSceneChanger->ChangeScene(eGameScene_Text);
 			situation = 10;
 			RpgKillFrag = true;
 			//終了処理
 		}
 		break;
 	case 10://勝ち
+		if (Keyboard_Get('Z') == 1) {
+			situation = 5;
+			mgameSceneChanger->ChangeScene(eGameScene_Text);
+		}
 		break;
 	case 11://負け
+		if (Keyboard_Get('Z') == 1) {
+			situation = 5;
+			mgameSceneChanger->ChangeScene(eGameScene_Text);
+		}
 		break;
 
 	default:
@@ -165,7 +177,6 @@ void RpgGame::Draw() {
 	abackground.Draw();
 	aDrawableConsole.draw(17, 2, "敵：");
 	aDrawableConsole.draw(21, 2, AllInfos[opponent].opinfo.name.c_str());
-	aDrawableConsole.draw(21, 22, AllInfos[opponent].myinfo.name.c_str());
 
 	for (int i = 0; i < op_causeddamages.size(); ++i) {
 		if (op_causeddamages[i].second >= 0) {
@@ -191,19 +202,21 @@ void RpgGame::Draw() {
 		aDrawableConsole.draw(MY_ATTACK_CENTER_X + dx[3], MY_ATTACK_CENTER_Y + dy[3], "↓");
 	}
 
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < my_act.size(); ++i) {
 		string st = to_string(my_rest_waittime[i]);
 		if (st.size() % 2) {
 			st = " " + st;
 		}
+		
 		if (my_rest_waittime[i]) {
-			aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[i], MY_ATTACK_CENTER_Y + 2 * dy[i], st.c_str(),false);
+			aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[i], MY_ATTACK_CENTER_Y + 2 * dy[i], st.c_str());
 		}
 		else {
 			aDrawableConsole.setColor(DrawableConsole::COLOR::C_BLACK, DrawableConsole::COLOR::C_LYELLOW);
 			aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[i], MY_ATTACK_CENTER_Y + 2 * dy[i], st.c_str());
 			aDrawableConsole.loadDefaultColor();
 		}
+		
 	}
 
 	switch (opponent) {
@@ -221,26 +234,36 @@ void RpgGame::Draw() {
 		}
 		aDrawableConsole.draw(OP_ATTACK_CENTER_X + 2 * dx[i], OP_ATTACK_CENTER_Y + 2 * dy[i], st.c_str());
 	}
+	aDrawableConsole.draw(0, LOG_LINE_Y, "--------------------------------------------------------------------------------");
+	aDrawableConsole.draw(1, LOG_LINE_Y+1, "ログ");
+	auto startit = actionlog.size() <= 3?actionlog.begin():actionlog.end()-4;
+	for (int i = 0; i < 4; ++i) {
+		if (startit+i == actionlog.end())break;
+		pair<int, Action> data(*(startit+i));
+		string st;
+		if (data.first) {
+			st = (AllInfos[opponent].opinfo.name + "に" + To_ZenString(data.second.dmg) + "のダメージ");
+			
+		}
+		else {		
+			st = (AllInfos[opponent].myinfo.name + "に" + To_ZenString(data.second.dmg) + "のダメージ");
+		}
+		aDrawableConsole.draw(5, LOG_LINE_Y + 1 + i, st.c_str());
+	}
 	switch (situation)
 	{
 	case 0:
-		aDrawableConsole.draw(15, 10, "　　　　　　　　　　");
-		aDrawableConsole.draw(15, 11, "Ｚを押してスタート　");
-		aDrawableConsole.draw(15, 12, "　　　　　　　　　　");
+		aDrawableConsole.draw(15, LOG_LINE_Y + 1, "Ｚ　を押してスタート", false);
 		break;
 	case 1:
 	case 5:
 		break;
 
 	case 10 :
-		aDrawableConsole.draw(15, 10, "　　　　　　　　　　");
-		aDrawableConsole.draw(15, 11, "　ＹＯＵ　　ＷＩＮ　");
-		aDrawableConsole.draw(15, 12, "　　　　　　　　　　");
+		aDrawableConsole.draw(15, LOG_LINE_Y + 1, "ＹＯＵ　　ＷＩＮ", false);
 		break;
 	case 11 :
-		aDrawableConsole.draw(15, 10, "　　　　　　　　　　");
-		aDrawableConsole.draw(15, 11, "　ＹＯＵ　ＬＯＳＥ　");
-		aDrawableConsole.draw(15, 12, "　　　　　　　　　　");
+		aDrawableConsole.draw(15, LOG_LINE_Y + 1, "ＹＯＵ　ＬＯＳＥ", false);
 		break;
 	default:
 		assert(false);
