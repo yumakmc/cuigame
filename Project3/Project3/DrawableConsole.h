@@ -40,12 +40,12 @@ public:
 	void setDrawPosition(DRAW_POS pos) const;		// 描画位置
 	void setDrawPosition(POS x, POS y) const;		// 描画位置
 
-	void draw(const TCHAR* text) const;								// テキスト描画
-	void draw(DRAW_POS pos, const TCHAR* text) const;	 			// テキスト描画（座標付）
-	void draw(POS x, POS y, const TCHAR* text) const;	 			// テキスト描画（座標付）
-	void drawb(const TCHAR* text, const bool changebgcolor) const;								// テキスト描画
-	void drawb(DRAW_POS pos, const TCHAR* text, const bool changebgcolor) const;	 			// テキスト描画（座標付）
-	void drawb(POS x, POS y, const TCHAR* text, const bool changebgcolor) const;	 			// テキスト描画（座標付）
+	void draw(const TCHAR* text, const bool changebgcolor=true) const;								// テキスト描画
+	void draw(DRAW_POS pos, const TCHAR* text, const bool changebgcolor=true) const;	 			// テキスト描画（座標付）
+	void draw(POS x, POS y, const TCHAR* text, const bool changebgcolor=true) const;	 			// テキスト描画（座標付）
+	//void drawb(const TCHAR* text, const bool changebgcolor) const;								// テキスト描画
+	//void drawb(DRAW_POS pos, const TCHAR* text, const bool changebgcolor) const;	 			// テキスト描画（座標付）
+	//void drawb(POS x, POS y, const TCHAR* text, const bool changebgcolor) const;	 			// テキスト描画（座標付）
 	void drawf(const TCHAR* formatText, ...) const;	 				// テキスト描画（書式付）
 	void drawf(DRAW_POS pos, const TCHAR* formatText, ...) const;	// テキスト描画（座標・書式付）	
 	void drawf(POS x, POS y, const TCHAR* formatText, ...) const;	// テキスト描画（座標・書式付）

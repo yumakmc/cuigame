@@ -197,7 +197,7 @@ void RpgGame::Draw() {
 			st = " " + st;
 		}
 		if (my_rest_waittime[i]) {
-			aDrawableConsole.drawb(MY_ATTACK_CENTER_X + 2 * dx[i], MY_ATTACK_CENTER_Y + 2 * dy[i], st.c_str(),true);
+			aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[i], MY_ATTACK_CENTER_Y + 2 * dy[i], st.c_str(),false);
 		}
 		else {
 			aDrawableConsole.setColor(DrawableConsole::COLOR::C_BLACK, DrawableConsole::COLOR::C_LYELLOW);
