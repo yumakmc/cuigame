@@ -9,13 +9,13 @@ using namespace rpggame;
 
 namespace rpggame {
 	const int MY_ATTACK_CENTER_X = 19;
-	const int MY_ATTACK_CENTER_Y = 13;
+	const int MY_ATTACK_CENTER_Y = 14;
 
-	const int MY_ATTACK_CENTER_X_L = 15;
-	const int MY_ATTACK_CENTER_X_R = 23;
+	const int MY_ATTACK_CENTER_X_L = 14;
+	const int MY_ATTACK_CENTER_X_R = 24;
 
 	const int OP_ATTACK_CENTER_X = 19;
-	const int OP_ATTACK_CENTER_Y = 6;
+	const int OP_ATTACK_CENTER_Y = 5;
 
 	const int LOG_LINE_Y = 20;
 
@@ -23,6 +23,18 @@ namespace rpggame {
 
 	static const int dx[4] = { -1,0,1,0 };
 	static const int dy[4] = { 0,-1,0,1 };
+
+	static vector<string> TO_KEY =
+	{
+		"Å©",
+		"Å™",
+		"Å®",
+		"Å´",
+		"Ç`",
+		"Çv",
+		"Çc",
+		"Çr",
+	};
 }
 
 bool RpgKillFrag = false;
@@ -67,7 +79,7 @@ void RpgGame::Update() {
 			}
 
 		}
-		if (Keyboard_Get('D') == 1) {//é©éE
+		if (Keyboard_Get('Q') == 1) {//é©éE
 									 //É_ÉÅó^Ç¶ÇÈèàóù
 			my_hp -= 1000;
 			//op_damages.push_back(make_pair(my_atk[i], DAMAGE_REMAIN_FRAME));
@@ -87,18 +99,32 @@ void RpgGame::Update() {
 		}
 		else
 		{
-			for (int i = 0; i < 4; ++i) {
+			for (int i = 0; i < my_act.size(); ++i) {
 				if (my_rest_waittime[i]) {
 					my_rest_waittime[i]--;
 				}
-				if (Keyboard_Get(VK_LEFT + i) == 1) {//ç∂ÅAè„ÅAâEÅAâ∫
+				int keynum;
+				if (i < 4) {
+					keynum = VK_LEFT + i;
+				}
+				else if (i == 4) {
+					keynum = 'A';
+				}
+				else if (i == 5) {
+					keynum = 'W';
+				}
+				else if (i == 6) {
+					keynum = 'D';
+				}
+				else if (i == 7) {
+					keynum = 'S';
+				}
+				if (Keyboard_Get(keynum) == 1) {//ç∂ÅAè„ÅAâEÅAâ∫
 					if (!my_rest_waittime[i]) {
-						//É_ÉÅó^Ç¶ÇÈèàóù
 						MakeDamege(true, i);
 					}
 					else {
 						paralyzecount = PARALYZECOUNT;
-						//ÇµÇ—ÇÍÇÈèàóù
 					}
 				}
 			}
@@ -148,7 +174,6 @@ void RpgGame::Update() {
 		for_each(op_causeddamages.begin(), op_causeddamages.end(), [](pair<int, int> &a) {a.second--; });
 		for_each(my_causeddamages.begin(), my_causeddamages.end(), [](pair<int, int> &a) {a.second--; });
 		if (my_hp <= 0) {
-			
 			situation = 11;
 			RpgKillFrag = false;
 			//èIóπèàóù
@@ -161,13 +186,11 @@ void RpgGame::Update() {
 		break;
 	case 10://èüÇø
 		if (Keyboard_Get('Z') == 1) {
-			situation = 5;
 			mgameSceneChanger->ChangeScene(eGameScene_Text);
 		}
 		break;
 	case 11://ïâÇØ
 		if (Keyboard_Get('Z') == 1) {
-			situation = 5;
 			mgameSceneChanger->ChangeScene(eGameScene_Text);
 		}
 		break;
@@ -178,112 +201,98 @@ void RpgGame::Update() {
 }
 void RpgGame::Draw() {
 	abackground.Draw();
-	aDrawableConsole.draw(21, 2, AllInfos[opponent].opinfo.name.c_str());
+	if (opponent == 2){
+		aDrawableConsole.draw(18, 0, AllInfos[opponent].opinfo.name.c_str());
+	}
+	else {
+		aDrawableConsole.draw(19, 0, AllInfos[opponent].opinfo.name.c_str());
+	}
+	aDrawableConsole.draw(19, 19, AllInfos[opponent].myinfo.name.c_str());
 
-	for (int i = 0; i < op_causeddamages.size(); ++i) {
+	for (int i = 0; i < min(6, op_causeddamages.size()); ++i) {
 		if (op_causeddamages[i].second >= 0) {
-			aDrawableConsole.draw(MY_ATTACK_CENTER_X - 5, MY_ATTACK_CENTER_Y + 5-i-2, (" -"+To_ZenString(op_causeddamages[i].first)).c_str());//ìGëÃóÕ
+			aDrawableConsole.draw(2, 6-i, (" -"+To_ZenString(op_causeddamages[i].first)).c_str());//ìGëÃóÕ
 		}
 	}
-	aDrawableConsole.draw(MY_ATTACK_CENTER_X - 10, MY_ATTACK_CENTER_Y + 4, (AllInfos[opponent].opinfo.name+"ÇÃÇgÇo").c_str());
-	aDrawableConsole.draw(MY_ATTACK_CENTER_X - 5, MY_ATTACK_CENTER_Y + 5, To_ZenString(op_hp).c_str());
+	aDrawableConsole.draw(2, 8, (AllInfos[opponent].opinfo.name+"ÇÃÇgÇo").c_str());
+	aDrawableConsole.draw(3, 7, To_ZenString(op_hp).c_str());
 	
-	for (int i = 0; i < my_causeddamages.size(); ++i) {
+	for (int i = 0; i <min(6, my_causeddamages.size()); ++i) {
 		if (my_causeddamages[i].second >= 0) {
-			aDrawableConsole.draw(MY_ATTACK_CENTER_X +4, MY_ATTACK_CENTER_Y + 5 - i - 1, (" -" + To_ZenString(my_causeddamages[i].first)).c_str());//Ç±Ç¡ÇøÇÃëÃóÕ
+			aDrawableConsole.draw(2, 13+i, (" -" + To_ZenString(my_causeddamages[i].first)).c_str());//Ç±Ç¡ÇøÇÃëÃóÕ
 		}
 	}
-	aDrawableConsole.draw(MY_ATTACK_CENTER_X + 7, MY_ATTACK_CENTER_Y + 4, (AllInfos[opponent].myinfo.name+"ÇÃÇgÇo").c_str());
-	aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4, MY_ATTACK_CENTER_Y + 5, To_ZenString(my_hp).c_str());//é©ëÃóÕ
+	aDrawableConsole.draw(2, 11, (AllInfos[opponent].myinfo.name+"ÇÃÇgÇo").c_str());
+	aDrawableConsole.draw(3, 12, To_ZenString(my_hp).c_str());//é©ëÃóÕ
 
-	switch (opponent) {
+	/*switch (opponent) {
 	case 2:
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + dx[0], MY_ATTACK_CENTER_Y + dy[0], "Ç`");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + dx[1], MY_ATTACK_CENTER_Y + dy[1], "Çv");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + dx[2], MY_ATTACK_CENTER_Y + dy[2], "Çc");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + dx[3], MY_ATTACK_CENTER_Y + dy[3], "Çr");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4 + dx[0], MY_ATTACK_CENTER_Y + dy[0], "Å©");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4 + dx[1], MY_ATTACK_CENTER_Y + dy[1], "Å™");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4 + dx[2], MY_ATTACK_CENTER_Y + dy[2], "Å®");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 4 + dx[3], MY_ATTACK_CENTER_Y + dy[3], "Å´");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + 2 * dx[0], MY_ATTACK_CENTER_Y + dy[0], TO_KEY[4]);
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + 2 * dx[1], MY_ATTACK_CENTER_Y + dy[1], "Çv");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + 2 * dx[2], MY_ATTACK_CENTER_Y + dy[2], "Çc");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_L + 2 * dx[3], MY_ATTACK_CENTER_Y + dy[3], "Çr");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_R + 2 * dx[0], MY_ATTACK_CENTER_Y + dy[0], "Å©");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_R + 2 * dx[1], MY_ATTACK_CENTER_Y + dy[1], "Å™");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_R + 2 * dx[2], MY_ATTACK_CENTER_Y + dy[2], "Å®");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X_R + 2 * dx[3], MY_ATTACK_CENTER_Y + dy[3], "Å´");
 		break;
 	default:
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X + dx[0], MY_ATTACK_CENTER_Y + dy[0], "Å©");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X + dx[1], MY_ATTACK_CENTER_Y + dy[1], "Å™");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X + dx[2], MY_ATTACK_CENTER_Y + dy[2], "Å®");
-		aDrawableConsole.draw(MY_ATTACK_CENTER_X + dx[3], MY_ATTACK_CENTER_Y + dy[3], "Å´");
-	}
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[0], MY_ATTACK_CENTER_Y + dy[0], "Å©");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[1], MY_ATTACK_CENTER_Y + dy[1], "Å™");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[2], MY_ATTACK_CENTER_Y + dy[2], "Å®");
+		aDrawableConsole.draw(MY_ATTACK_CENTER_X + 2 * dx[3], MY_ATTACK_CENTER_Y + dy[3], "Å´");
+	}*/
 	
 	for (int i = 0; i < my_act.size(); ++i) {
-		string st = to_string(my_rest_waittime[i]);
-		if (st.size() % 2) {
-			st = " " + st;
+		
+		string stt = to_string(my_rest_waittime[i]);
+		if (stt.size() % 2) {
+			stt = " " + stt;
 		}
-
-		int ax;
-		if (my_act.size() == 4) {
-			ax = MY_ATTACK_CENTER_X;
-		}
-		else if(i<4) {
-			ax = MY_ATTACK_CENTER_X_L;
-		}
-		else {
-			ax = MY_ATTACK_CENTER_X_R;
-		}
-
-		if (my_rest_waittime[i]) {
-			aDrawableConsole.draw(ax + 2 * dx[i%4], MY_ATTACK_CENTER_Y + 2 * dy[i%4], st.c_str());
-		}
-		else {
-			aDrawableConsole.setColor(DrawableConsole::COLOR::C_BLACK, DrawableConsole::COLOR::C_LYELLOW);
-			aDrawableConsole.draw(ax + 2 * dx[i%4], MY_ATTACK_CENTER_Y + 2 * dy[i%4], st.c_str());
-			aDrawableConsole.loadDefaultColor();
-		}
-	}
-	
-	for (int i = 0; i < my_act.size(); ++i) {
-		string st = to_string(my_rest_waittime[i]);
-		if (st.size() % 2) {
-			st = " " + st;
+		string std = to_string(my_act[i].dmg);
+		if (std.size() % 2) {
+			std = " " + std;
 		}
 		int ax;
 		if (my_act.size() == 4) {
 			ax = MY_ATTACK_CENTER_X;
 		}
 		else if (i<4) {
-			ax = MY_ATTACK_CENTER_X_L;
-		}
-		else {
 			ax = MY_ATTACK_CENTER_X_R;
 		}
+		else {	
+			ax = MY_ATTACK_CENTER_X_L;
+		}
+		//if (i == 0||i==4) {
+		//	aDrawableConsole.draw(ax, MY_ATTACK_CENTER_Y,"çU");
+		//}
+		//aDrawableConsole.draw(ax + 1 * dx[i % 4], MY_ATTACK_CENTER_Y + 1 * dy[i % 4], std.c_str());
+		aDrawableConsole.draw(ax + 2 * dx[i % 4], MY_ATTACK_CENTER_Y + 2 * dy[i % 4], TO_KEY[i].c_str());
 		if (my_rest_waittime[i]) {
-			aDrawableConsole.draw(ax + 2 * dx[i%4], MY_ATTACK_CENTER_Y + 2 * dy[i%4], st.c_str());
+			aDrawableConsole.draw(ax + 3 * dx[i % 4], MY_ATTACK_CENTER_Y + 3 * dy[i % 4], stt.c_str());
 		}
 		else {
 			aDrawableConsole.setColor(DrawableConsole::COLOR::C_BLACK, DrawableConsole::COLOR::C_LYELLOW);
-			aDrawableConsole.draw(ax + 2 * dx[i%4], MY_ATTACK_CENTER_Y + 2 * dy[i%4], st.c_str());
+			aDrawableConsole.draw(ax + 3 * dx[i % 4], MY_ATTACK_CENTER_Y + 3 * dy[i % 4], stt.c_str());
 			aDrawableConsole.loadDefaultColor();
 		}
 
 	}
-	
-	
-
-	switch (opponent) {
-	default:
-		aDrawableConsole.draw(OP_ATTACK_CENTER_X + dx[0], OP_ATTACK_CENTER_Y + dy[0], "Å©");
-		aDrawableConsole.draw(OP_ATTACK_CENTER_X + dx[1], OP_ATTACK_CENTER_Y + dy[1], "Å™");
-		aDrawableConsole.draw(OP_ATTACK_CENTER_X + dx[2], OP_ATTACK_CENTER_Y + dy[2], "Å®");
-		aDrawableConsole.draw(OP_ATTACK_CENTER_X + dx[3], OP_ATTACK_CENTER_Y + dy[3], "Å´");
-	}
 
 	for (int i = 0; i < 4; ++i) {
-		string st = to_string(op_rest_waittime[i]);
-		if (st.size() % 2) {
-			st = " " + st;
+		string stt = to_string(op_rest_waittime[i]);
+		if (stt.size() % 2) {
+			stt = " " + stt;
 		}
-		aDrawableConsole.draw(OP_ATTACK_CENTER_X + 2 * dx[i], OP_ATTACK_CENTER_Y + 2 * dy[i], st.c_str());
+		string std = to_string(op_act[i].dmg);
+		if (std.size() % 2) {
+			std = " " + std;
+		}
+		//aDrawableConsole.draw(OP_ATTACK_CENTER_X + 1 * dx[i], OP_ATTACK_CENTER_Y + 1 * dy[i], std.c_str());
+		aDrawableConsole.draw(OP_ATTACK_CENTER_X + 2 * dx[i], OP_ATTACK_CENTER_Y + 2 * dy[i], TO_KEY[i].c_str());
+		aDrawableConsole.draw(OP_ATTACK_CENTER_X + 3 * dx[i], OP_ATTACK_CENTER_Y + 3 * dy[i], stt.c_str());
 	}
+#pragma region LOG
 	aDrawableConsole.draw(0, LOG_LINE_Y, "--------------------------------------------------------------------------------");
 	aDrawableConsole.draw(1, LOG_LINE_Y+1, "ÉçÉO");
 	auto startit = actionlog.size() <= 3?actionlog.begin():actionlog.end()-4;
@@ -303,22 +312,23 @@ void RpgGame::Draw() {
 	switch (situation)
 	{
 	case 0:
-		aDrawableConsole.draw(15, LOG_LINE_Y + 1, "ÇyÅ@ÇâüÇµÇƒÉXÉ^Å[Ég", false);
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "ÇyÅ@ÇâüÇµÇƒÉXÉ^Å[Ég");
 		break;
 	case 1:
 	case 5:
 		break;
 
 	case 10 :
-		aDrawableConsole.draw(15, LOG_LINE_Y + 1, "ÇxÇnÇtÅ@Å@ÇvÇhÇm", false);
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "ÇxÇnÇtÅ@Å@ÇvÇhÇm");
 		break;
 	case 11 :
-		aDrawableConsole.draw(15, LOG_LINE_Y + 1, "ÇxÇnÇtÅ@ÇkÇnÇrÇd", false);
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "ÇxÇnÇtÅ@ÇkÇnÇrÇd");
 		break;
 	default:
 		assert(false);
 		break;
 	}
+#pragma endregion
 }
 	
 void RpgGame::MakeDamege(const bool  playerMake, const int atkNum) {
@@ -350,7 +360,7 @@ void RpgGame::MakeDamege(const bool  playerMake, const int atkNum) {
 		else {
 			*place = make_pair(damage, DAMAGE_REMAIN_FRAME);
 		}
-		actionlog.push_back(make_pair(playerMake, my_act[atkNum]));;
+		actionlog.push_back(make_pair(playerMake, my_act[atkNum]));
 	}
 }
 
