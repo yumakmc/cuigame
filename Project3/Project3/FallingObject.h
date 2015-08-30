@@ -1,6 +1,7 @@
 #pragma once
 #include "Task.h"
 #include "Data_Rand.h"
+#include "Common.h"
 #include <random>
 #include <vector>
 using namespace std;
@@ -29,4 +30,5 @@ private:
 	float x;
 	float y;
 	int type;
+	Common::Rand arand;
 };

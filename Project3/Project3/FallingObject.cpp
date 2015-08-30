@@ -8,25 +8,26 @@ FallingObject::FallingObject() {
 	FallingObject(type);
 }
 FallingObject::FallingObject(const int atype) {
+	arand.init();
 	type = atype;
 	x = rnd() % SIZE_X;
 	y = 0;
 	switch (type) {
 	case 1://â‘
-		vel_x = 0.6;
-		vel_y = 0.4;
+		vel_x = 0.4*(1+0.01*double(arand.gen()%100));
+		vel_y = 0.3*(1.0 + 0.01*double(arand.gen() % 100));
 		break;
 	case 2://åı
-		vel_x = 0.5;
-		vel_y = 1;
+		vel_x = 0.3*(1.0 + 0.01*double(arand.gen() % 100));
+		vel_y = 0.7 * (1.0 + 0.01*double(arand.gen() % 100));
 		break;
 	case 3://ót
-		vel_x = -0.8;
-		vel_y = 0.5;
+		vel_x = -0.5*(1.0 + 0.01*double(arand.gen() % 100));
+		vel_y = 0.3*(1.0 + 0.01*double(arand.gen() % 100));
 		break;
 	case 4://ê·
-		vel_x = 0.3;
-		vel_y = 0.2;
+		vel_x = 0.2*(1.0 + 0.01*double(arand.gen() % 100));
+		vel_y = 0.1*(1.0 + 0.01*double(arand.gen() % 100));
 		break;
 	}
 }
@@ -55,9 +56,10 @@ bool FallingObject::Update(){//âÊñ Ç™Ç¢Ç…èoÇΩÇÁfalse ï‘Ç∑
 	}
 }
 void FallingObject::Draw() {
-	aDrawableConsole.draw(x, y, FALLINGREAL[type].c_str());
+	aDrawableConsole.draw(DrawableConsole::POS(x), DrawableConsole::POS(y), FALLINGREAL[type].c_str());
 }
 void FallingObject::Draw(vector<string> &tmpfield) {
-	aDrawableConsole.draw(x, y, FALLINGREAL[type].c_str());
+	assert(false);
+	//aDrawableConsole.draw(x, y, FALLINGREAL[type].c_str());
 
 }
