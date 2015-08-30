@@ -23,12 +23,14 @@ public:
 		y = a.y;
 		type = a.type;
 	}
+	
 private:
 	random_device rnd;
 	float vel_x;
 	float vel_y;
 	float x;
 	float y;
+
 	int type;
 	Common::Rand arand;
 };

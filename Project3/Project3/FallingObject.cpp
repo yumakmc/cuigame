@@ -48,7 +48,7 @@ bool FallingObject::Update(){//‰æ–Ê‚ª‚¢‚Éo‚½‚çfalse •Ô‚·
 	x=fmod(x+SIZE_X, SIZE_X);
 
 	y += vel_y;
-	if (y > SIZE_Y) {
+	if (y > float(SIZE_Y)) {
 		return false;
 	}
 	else {
@@ -56,6 +56,10 @@ bool FallingObject::Update(){//‰æ–Ê‚ª‚¢‚Éo‚½‚çfalse •Ô‚·
 	}
 }
 void FallingObject::Draw() {
+	if (y > float(SIZE_Y)) {
+		int a=3;
+		a++;
+	}
 	aDrawableConsole.draw(DrawableConsole::POS(x), DrawableConsole::POS(y), FALLINGREAL[type].c_str());
 }
 void FallingObject::Draw(vector<string> &tmpfield) {

@@ -20,8 +20,8 @@ void FallingObjectCollection::Update() {
 			EraseCole.push_back(i);
 		}
 	}
-	for (int i = 0; i <EraseCole.size(); ++i) {
-		FallingObjects.erase(FallingObjects.begin() + EraseCole[i]);//=のオーバーライドが必要？めんどいからひまなときに
+	for (int i = EraseCole.size()-1; i >=0; --i) {
+		FallingObjects.erase(FallingObjects.begin() + EraseCole[i]);
 	}
 	if (count % 3 == 0) {
 		FallingObject a(count / 90 + 1);
@@ -34,6 +34,7 @@ void FallingObjectCollection::Draw() {
 	}
 }
 void FallingObjectCollection::Draw(vector<string> &tmpfield) {
+	assert(false);
 	for (int i = 0; i < FallingObjects.size(); ++i) {
 		FallingObjects[i].Draw(tmpfield);
 	}
