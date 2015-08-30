@@ -8,9 +8,10 @@
 #include <utility>
 using namespace std;
 namespace  rpggame {
+	
 	struct Action {
-		int maxwaittime;
 		int dmg;
+		int maxwaittime;
 	};
 
 	struct CharaInfo {
@@ -84,8 +85,9 @@ namespace  rpggame {
 
 		BackGround abackground;
 
-		int situation;//0:対戦前　5:対戦中　10:対戦後
+		int situation;//0:対戦前 1:help　5:対戦中　10:勝ち　11:負け
 
 		Common::Rand aRand;
+		vector<pair<bool, Action>> actionlog;
 	};
 }
