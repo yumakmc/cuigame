@@ -69,10 +69,10 @@ void BackGround::DrawGreenWorld() {
 	for (int i = 0; i < 25; ++i) {
 		aDrawableConsole.draw(0, i, str);
 	}
-	aDrawableConsole.draw(7, 5, "‰_‰_‰_‰_");
-	aDrawableConsole.draw(5, 6, "‰_‰_‰_‰_‰_‰_‰_‰_");
-	aDrawableConsole.draw(5, 7, "‰_‰_‰_‰_‰_‰_‰_‰_‰_");
-	aDrawableConsole.draw(7, 8, "‰_‰_‰_‰_");
+	aDrawableConsole.draw(8, 3, "‰_‰_‰_‰_");
+	aDrawableConsole.draw(6, 4, "‰_‰_‰_‰_‰_‰_‰_‰_");
+	aDrawableConsole.draw(6, 5, "‰_‰_‰_‰_‰_‰_‰_‰_‰_");
+	aDrawableConsole.draw(8, 6, "‰_‰_‰_‰_");
 	aDrawableConsole.draw(31, 11, "‰_‰_‰_‰_");
 	aDrawableConsole.draw(31, 12, "‰_‰_‰_‰_");
 
@@ -82,15 +82,15 @@ void BackGround::DrawGreenWorld() {
 	for (int i = 16; i < 25; ++i) {
 		aDrawableConsole.draw(0, i, str);
 	}
-	aDrawableConsole.draw(1, 16, "‘");
-	aDrawableConsole.draw(14, 18, "‘");
-	aDrawableConsole.draw(17, 19, "‘");
-	aDrawableConsole.draw(19, 21, "‘");
-	aDrawableConsole.draw(23, 16, "‘");
-	aDrawableConsole.draw(27, 22, "‘");
-	aDrawableConsole.draw(30, 17, "‘");
-	aDrawableConsole.draw(33, 23, "‘");
-	aDrawableConsole.draw(34, 24, "‘");
+	//aDrawableConsole.draw(1, 16, "‘");
+	//aDrawableConsole.draw(14, 18, "‘");
+	//aDrawableConsole.draw(17, 19, "‘");
+	//aDrawableConsole.draw(19, 21, "‘");
+	//aDrawableConsole.draw(23, 16, "‘");
+	//aDrawableConsole.draw(27, 22, "‘");
+	//aDrawableConsole.draw(30, 17, "‘");
+	//aDrawableConsole.draw(33, 23, "‘");
+	//aDrawableConsole.draw(34, 24, "‘");
 
 	aDrawableConsole.setColor(DrawableConsole::COLOR::C_DRED, DrawableConsole::COLOR::C_LYELLOW);//‘¾—z
 	aDrawableConsole.draw(29, 0, "@@@@@@@@@@@");

@@ -3,9 +3,8 @@
 #include "DrawableConsole.h"
 #include <math.h>
 
-FallingObject::FallingObject() {
-	type=rnd() % 4+1;
-	FallingObject(type);
+FallingObject::FallingObject():FallingObject(rnd() % 4 + 1) {
+	
 }
 FallingObject::FallingObject(const int atype) {
 	arand.init();
@@ -48,7 +47,7 @@ bool FallingObject::Update(){//‰æ–Ê‚ª‚¢‚Éo‚½‚çfalse •Ô‚·
 	x=fmod(x+SIZE_X, SIZE_X);
 
 	y += vel_y;
-	if (y > float(SIZE_Y)) {
+	if (y > float(SIZE_Y)-0.00001) {
 		return false;
 	}
 	else {
@@ -56,14 +55,10 @@ bool FallingObject::Update(){//‰æ–Ê‚ª‚¢‚Éo‚½‚çfalse •Ô‚·
 	}
 }
 void FallingObject::Draw() {
-	if (y > float(SIZE_Y)) {
-		int a=3;
-		a++;
-	}
+	assert(y < float(SIZE_Y));
 	aDrawableConsole.draw(DrawableConsole::POS(x), DrawableConsole::POS(y), FALLINGREAL[type].c_str());
 }
 void FallingObject::Draw(vector<string> &tmpfield) {
 	assert(false);
 	//aDrawableConsole.draw(x, y, FALLINGREAL[type].c_str());
-
 }

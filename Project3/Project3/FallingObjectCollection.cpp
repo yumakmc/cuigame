@@ -24,7 +24,7 @@ void FallingObjectCollection::Update() {
 		FallingObjects.erase(FallingObjects.begin() + EraseCole[i]);
 	}
 	if (count % 3 == 0) {
-		FallingObject a(count / 90 + 1);
+		FallingObject a;
 		FallingObjects.push_back(a);
 	}
 }
