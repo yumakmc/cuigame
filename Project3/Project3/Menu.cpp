@@ -33,6 +33,7 @@ void Menu::Draw(){
 	aDrawableConsole.draw(15, 12, "‚r‚s‚n‚q‚x‚PƒoƒO—L@");
 	aDrawableConsole.draw(15, 13, "‚r‚s‚n‚q‚x‚QƒoƒO‚ ‚è");
 	aDrawableConsole.draw(15, 14, "‚r‚s‚n‚q‚x‚R@@@@");
+	aDrawableConsole.draw(15, 15, "‚l‚t‚r‚h‚b@‚q‚n‚n‚l");
 	aDrawableConsole.draw(15, 16, "@@@‚d‚w‚h‚s@@@");
 	switch (NowSelect) {//Œ»Ý‚Ì‘I‘ðó‘Ô‚É]‚Á‚Äˆ—‚ð•ªŠò
 	case eMenu_Game://ƒQ[ƒ€‘I‘ð’†‚È‚ç@‚»‚Ì‚¤‚¿‚©[‚°[‚É•ÏX‚µ‚½‚¢@ŽÀ‘•‚¾‚é‚»‚¤
@@ -44,6 +45,9 @@ void Menu::Draw(){
 		break;
 	case eMenu_Rpg://RPG‘I‘ð’†‚È‚ç	
 		aDrawableConsole.draw(13, 14, "œ");
+		break;
+	case eMenu_Musicroom://‰¹ŠyŽº‘I‘ð’†‚È‚ç	
+		aDrawableConsole.draw(13, 15, "œ");
 		break;
 	case eMenu_Finish://I—¹‘I‘ð’†‚È‚ç	
 		aDrawableConsole.draw(13, 16, "œ");
@@ -102,6 +106,9 @@ void Menu::Update(){
 			break;
 		case eMenu_Rpg://Ý’è‘I‘ð’†‚È‚ç
 			mSceneChanger->ChangeScene(eScene_Rpg);
+			break;
+		case eMenu_Musicroom://Ý’è‘I‘ð’†‚È‚ç
+			mSceneChanger->ChangeScene(eScene_Musicroom);
 			break;
 		case eMenu_Finish:
 			exit(1);

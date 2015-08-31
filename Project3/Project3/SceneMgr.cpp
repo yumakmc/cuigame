@@ -29,6 +29,9 @@ void SceneMgr::Update(){
 		case eScene_Rpg:
 			mScene = (BaseScene*) new Rpg(this);
 			break;
+		case eScene_Musicroom:
+			mScene = (BaseScene*) new Musicroom(this);
+			break;
 		}
 		mNextScene = eScene_None;    //次のシーン情報をクリア
 		mScene->Initialize();    //シーンを初期化

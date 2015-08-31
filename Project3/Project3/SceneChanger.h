@@ -5,6 +5,7 @@ typedef enum {
 	eScene_Game,    //ƒQ[ƒ€‰æ–Ê
 	eScene_Tranp,   //ƒgƒ‰ƒ“ƒv‰æ–Ê
 	eScene_Rpg,     //RPG‰æ–Ê
+	eScene_Musicroom,
 	eScene_Config,  //İ’è‰æ–Ê
 
 	eScene_None,    //–³‚µ

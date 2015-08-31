@@ -9,6 +9,7 @@ enum eMenu{
 	eMenu_Game,        //ƒQ[ƒ€
 	eMenu_Tranp,    //ƒgƒ‰ƒ“ƒv
 	eMenu_Rpg,//‚q‚‚‡
+	eMenu_Musicroom,//‚l‚t‚r‚h‚b‚q‚n‚n‚l
 	eMenu_Finish,//I—¹
 	eMenu_count//‚±‚±‚Å—v‘f”‚ª‚í‚©‚é
 };

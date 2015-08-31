@@ -4,6 +4,7 @@
 #include "Menu.h"
 #include "Game.h"
 #include "Rpg.h"
+#include "Musicroom.h"
 
 
 class SceneMgr :public SceneChanger, Task{
