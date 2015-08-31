@@ -95,7 +95,6 @@ void RpgGame::Update() {
 			else {
 				*place = make_pair(1000, DAMAGE_REMAIN_FRAME);
 			}
-
 		}
 #endif
 #pragma region MY_ATTACK
@@ -272,13 +271,14 @@ void RpgGame::Draw() {
 		//	aDrawableConsole.draw(ax, MY_ATTACK_CENTER_Y,"çU");
 		//}
 		//aDrawableConsole.draw(ax + 1 * dx[i % 4], MY_ATTACK_CENTER_Y + 1 * dy[i % 4], std.c_str());
-		aDrawableConsole.draw(ax + 2 * dx[i % 4], MY_ATTACK_CENTER_Y + 2 * dy[i % 4], TO_KEY[i].c_str());
+		aDrawableConsole.draw(ax + 3 * dx[i % 4], MY_ATTACK_CENTER_Y + 3 * dy[i % 4], stt.c_str());
 		if (my_rest_waittime[i]) {
-			aDrawableConsole.draw(ax + 3 * dx[i % 4], MY_ATTACK_CENTER_Y + 3 * dy[i % 4], stt.c_str());
+			
+			aDrawableConsole.draw(ax + 2 * dx[i % 4], MY_ATTACK_CENTER_Y + 2 * dy[i % 4], TO_KEY[i].c_str());
 		}
 		else {
 			aDrawableConsole.setColor(DrawableConsole::COLOR::C_BLACK, DrawableConsole::COLOR::C_LYELLOW);
-			aDrawableConsole.draw(ax + 3 * dx[i % 4], MY_ATTACK_CENTER_Y + 3 * dy[i % 4], stt.c_str());
+			aDrawableConsole.draw(ax + 2 * dx[i % 4], MY_ATTACK_CENTER_Y + 2 * dy[i % 4], TO_KEY[i].c_str());
 			aDrawableConsole.loadDefaultColor();
 		}
 

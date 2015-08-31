@@ -9,8 +9,6 @@
 #include <iostream>
 using namespace std;
 
-
-
 Musicroom::Musicroom(SceneChanger* changer) : BaseScene(changer){
 	aMusic.Play(-1);
 	NowSelect = 0;
@@ -26,7 +24,6 @@ void Musicroom::Draw() {
 	aDrawableConsole.draw(15, 15, "‚l‚t‚r‚h‚b@‚S");
 	aDrawableConsole.draw(15, 16, "‚a‚`‚b‚j‚s‚n‚l‚d‚m‚t");
 	aDrawableConsole.draw(13, 12+NowSelect, "œ");
-
 }
 
 void Musicroom::Update() {
