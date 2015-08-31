@@ -175,5 +175,8 @@
     <Media Include="op.wav">
       <Filter>リソース ファイル</Filter>
     </Media>
+    <Media Include="lastboss.wav">
+      <Filter>リソース ファイル</Filter>
+    </Media>
   </ItemGroup>
 </Project>

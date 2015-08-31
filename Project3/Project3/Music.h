@@ -14,6 +14,7 @@ namespace MyMusic {
 		"pop.wav",//背景に色がついたときの
 		"sad_dream.wav",//夢の中
 		"op.wav",//オープニング
+		"lastboss.wav",//ラスボス
 	};
 };
 
