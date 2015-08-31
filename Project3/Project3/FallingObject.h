@@ -3,13 +3,28 @@
 #include "Data_Rand.h"
 #include "Common.h"
 #include "ConsoleBuffer.h"
+#include "DrawableConsole.h"
 #include <random>
 #include <vector>
 using namespace std;
+
+struct FallingObjectInfo{
+	string ch;
+	DrawableConsole::COLOR color;
+};
+
+static map<int, FallingObjectInfo> FALLINGREAL = {
+	{ 0,{"Å@",DrawableConsole::COLOR::C_WHITE }},
+	{ 1,{"â‘",DrawableConsole::COLOR::C_LPINK } },
+	{ 2,{"åı",DrawableConsole::COLOR::C_LYELLOW } },
+	{ 3,{"ót",DrawableConsole::COLOR::C_LGREEN } },
+	{ 4,{"ê·",DrawableConsole::COLOR::C_WHITE } },
+};
+
 class FallingObject{
 public:
-	FallingObject();
-	FallingObject(const int atype);
+	FallingObject(const bool havecolor);
+	FallingObject(const int atype, const bool havecolor);
 	FallingObject(const FallingObject &rhs);
 	virtual ~FallingObject() ;
 	virtual void Initialize();    
@@ -35,6 +50,8 @@ private:
 	float vel_y;
 	float x;
 	float y;
+
+	const bool color;
 
 	int type;
 	Common::Rand arand;

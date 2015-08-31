@@ -1,7 +1,7 @@
 #include "FallingObjectCollection.h"
 #include <assert.h>
 
-FallingObjectCollection::FallingObjectCollection():FallingObjects() {
+FallingObjectCollection::FallingObjectCollection(const bool havecolor):FallingObjects(),color(havecolor) {
 
 }
 FallingObjectCollection::~FallingObjectCollection() {
@@ -24,7 +24,7 @@ void FallingObjectCollection::Update() {
 		FallingObjects.erase(FallingObjects.begin() + EraseCole[i]);
 	}
 	if (count % 3 == 0) {
-		FallingObject a;
+		FallingObject a(color);
 		FallingObjects.push_back(a);
 	}
 }
