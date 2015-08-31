@@ -6,7 +6,7 @@
 FallingObject::FallingObject():FallingObject(rnd() % 4 + 1) {
 	
 }
-FallingObject::FallingObject(const int atype) {
+FallingObject::FallingObject(const int atype): min_x(0), max_x(80/2), min_y(0), max_y(25) {
 	arand.init();
 	type = atype;
 	x = rnd() % SIZE_X;
@@ -30,7 +30,7 @@ FallingObject::FallingObject(const int atype) {
 		break;
 	}
 }
-FallingObject::FallingObject(const FallingObject &a) {
+FallingObject::FallingObject(const FallingObject &a) : min_x(0), max_x(80 / 2), min_y(0), max_y(25) {
 	type = a.type;
 	x = a.x;
 	y = a.y;
@@ -44,10 +44,10 @@ void FallingObject::Initialize() {
 							   
 bool FallingObject::Update(){//‰æ–Ê‚ª‚¢‚Éo‚½‚çfalse •Ô‚·
 	x += vel_x;
-	x=fmod(x+SIZE_X, SIZE_X);
+	x=fmod(x+ max_x, max_x);
 
 	y += vel_y;
-	if (y > float(SIZE_Y)-0.00001) {
+	if (y > float(max_y)-0.00001) {
 		return false;
 	}
 	else {
@@ -55,7 +55,7 @@ bool FallingObject::Update(){//‰æ–Ê‚ª‚¢‚Éo‚½‚çfalse •Ô‚·
 	}
 }
 void FallingObject::Draw() {
-	assert(y < float(SIZE_Y));
+	assert(y < float(max_y));
 	aDrawableConsole.draw(DrawableConsole::POS(x), DrawableConsole::POS(y), FALLINGREAL[type].c_str());
 }
 void FallingObject::Draw(vector<string> &tmpfield) {

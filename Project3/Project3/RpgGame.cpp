@@ -2,6 +2,7 @@
 #include "Keyboard.h"
 #include "DrawableConsole.h"
 #include "BackGround.h"
+#include "Music.h"
 #include <string>
 #include <algorithm>
 
@@ -50,6 +51,9 @@ RpgGame::RpgGame(gameSceneChanger* changer,const int aopponent) :gameBaseScene(c
 	for (int i = 0; i < op_act.size(); ++i) {
 		op_delay_waittime.push_back(aRand.gen()% AllInfos[opponent].maxdelaytime);
 		op_rest_waittime.push_back(op_act[i].maxwaittime);
+	}
+	if (opponent == 2) {
+		aMusic.Play(5);
 	}
 }
 
@@ -211,7 +215,7 @@ void RpgGame::Draw() {
 
 	for (int i = 0; i < min(6, op_causeddamages.size()); ++i) {
 		if (op_causeddamages[i].second >= 0) {
-			aDrawableConsole.draw(2, 6-i, (" -"+To_ZenString(op_causeddamages[i].first)).c_str());//“G‘Ì—Í
+			aDrawableConsole.draw(3, 6-i, (" -"+To_ZenString(op_causeddamages[i].first)).c_str());//“G‘Ì—Í
 		}
 	}
 	aDrawableConsole.draw(2, 8, (AllInfos[opponent].opinfo.name+"‚Ì‚g‚o").c_str());
@@ -219,7 +223,7 @@ void RpgGame::Draw() {
 	
 	for (int i = 0; i <min(6, my_causeddamages.size()); ++i) {
 		if (my_causeddamages[i].second >= 0) {
-			aDrawableConsole.draw(2, 13+i, (" -" + To_ZenString(my_causeddamages[i].first)).c_str());//‚±‚Á‚¿‚Ì‘Ì—Í
+			aDrawableConsole.draw(3, 13+i, (" -" + To_ZenString(my_causeddamages[i].first)).c_str());//‚±‚Á‚¿‚Ì‘Ì—Í
 		}
 	}
 	aDrawableConsole.draw(2, 11, (AllInfos[opponent].myinfo.name+"‚Ì‚g‚o").c_str());

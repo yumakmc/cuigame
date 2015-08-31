@@ -11,8 +11,8 @@ using namespace std;
 
 const int BLANK_FOR_MENU_UP = 10;
 const int BLANK_FOR_MENU_DOWN = 18;
-const int BLANK_FOR_MENU_LEFT = 2;
-const int BLANK_FOR_MENU_RIGHT = 18;
+const int BLANK_FOR_MENU_LEFT =10;
+const int BLANK_FOR_MENU_RIGHT = 30;
 
 extern bool HaveColor;//BackGround‚æ‚è@externQÆ@BackGround‚ÅF‚ª‚Â‚¯‚Îtrue‚É•Ï‚í‚éB@
 
@@ -30,23 +30,23 @@ void Menu::Draw(){
 			aDrawableConsole.draw(x, y, "@");
 		}
 	}
-	aDrawableConsole.draw(8, 12, "‚r‚s‚n‚q‚x‚PƒoƒO—L");
-	aDrawableConsole.draw(8, 13, "‚r‚s‚n‚q‚x‚QƒoƒO‚ ‚è");
-	aDrawableConsole.draw(8, 14, "‚r‚s‚n‚q‚x‚R");
-	aDrawableConsole.draw(8, 16, "‚d‚w‚h‚s");
+	aDrawableConsole.draw(15, 12, "‚r‚s‚n‚q‚x‚PƒoƒO—L@");
+	aDrawableConsole.draw(15, 13, "‚r‚s‚n‚q‚x‚QƒoƒO‚ ‚è");
+	aDrawableConsole.draw(15, 14, "‚r‚s‚n‚q‚x‚R@@@@");
+	aDrawableConsole.draw(15, 16, "@@@‚d‚w‚h‚s@@@");
 	switch (NowSelect) {//Œ»İ‚Ì‘I‘ğó‘Ô‚É]‚Á‚Äˆ—‚ğ•ªŠò
 	case eMenu_Game://ƒQ[ƒ€‘I‘ğ’†‚È‚ç@‚»‚Ì‚¤‚¿‚©[‚°[‚É•ÏX‚µ‚½‚¢@À‘•‚¾‚é‚»‚¤
 		
-		aDrawableConsole.draw(5, 12, "œ");
+		aDrawableConsole.draw(13, 12, "œ");
 		break;
 	case eMenu_Tranp://ƒgƒ‰ƒ“ƒv‘I‘ğ’†‚È‚ç	
-		aDrawableConsole.draw(5, 13, "œ");
+		aDrawableConsole.draw(13, 13, "œ");
 		break;
 	case eMenu_Rpg://RPG‘I‘ğ’†‚È‚ç	
-		aDrawableConsole.draw(5, 14, "œ");
+		aDrawableConsole.draw(13, 14, "œ");
 		break;
 	case eMenu_Finish://I—¹‘I‘ğ’†‚È‚ç	
-		aDrawableConsole.draw(5, 16, "œ");
+		aDrawableConsole.draw(13, 16, "œ");
 		break;
 	}
 }

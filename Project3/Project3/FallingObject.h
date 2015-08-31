@@ -2,6 +2,7 @@
 #include "Task.h"
 #include "Data_Rand.h"
 #include "Common.h"
+#include "ConsoleBuffer.h"
 #include <random>
 #include <vector>
 using namespace std;
@@ -25,6 +26,10 @@ public:
 	}
 	
 private:
+	const int min_x;
+	const int max_x;
+	const int min_y;
+	const int max_y;
 	random_device rnd;
 	float vel_x;
 	float vel_y;

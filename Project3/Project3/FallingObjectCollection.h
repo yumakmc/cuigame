@@ -1,6 +1,7 @@
 #pragma once
 #include "FallingObject.h"
 #include  "Data_Rand.h"
+#include "ConsoleBuffer.h"
 #include <vector>
 using namespace std;
 
