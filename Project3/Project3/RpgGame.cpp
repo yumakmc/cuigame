@@ -60,6 +60,7 @@ RpgGame::RpgGame(gameSceneChanger* changer,const int aopponent) :gameBaseScene(c
 void RpgGame::Initialize() {
 }
 void RpgGame::Update() {
+	abackground.Update();
 	switch (situation) {
 	case 0://スタート画面
 		if (Keyboard_Get('Z') == 1) {

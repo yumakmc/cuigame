@@ -9,7 +9,7 @@ FallingObject::FallingObject(const bool havecolor):FallingObject(rnd() % 4 + 1,h
 FallingObject::FallingObject(const int atype, const bool havecolor): min_x(0), max_x(80/2), min_y(0), max_y(25),color(havecolor) {
 	arand.init();
 	type = atype;
-	x = rnd() % SIZE_X;
+	x = rnd() % max_x;
 	y = 0;
 	switch (type) {
 	case 1://‰Ô

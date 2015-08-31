@@ -7,6 +7,7 @@ using namespace std;
 
 class FallingObjectCollection:public Task {
 public:
+	FallingObjectCollection(int atype, const bool havecolor);
 	FallingObjectCollection(const bool havecolor=false);
 	~FallingObjectCollection();
 	void Initialize() override;    //初期化処理をオーバーライド。
@@ -19,5 +20,6 @@ private:
 	int count;
 
 	const bool color;
+	const int type;
 
 };

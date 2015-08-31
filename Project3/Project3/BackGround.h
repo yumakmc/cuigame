@@ -1,5 +1,6 @@
 #pragma once
 #include "ConsoleBuffer.h"
+#include "FallingObjectCollection.h"
 
 class BackGround {
 public:
@@ -13,8 +14,10 @@ public:
 		 count = a.count;
 	}
 private:
+	void DrawFallingFlower();
 	void DrawDarkCheck();
 	void DrawGreenWorld();
 	int scene;
 	int count;
+	FallingObjectCollection afoc;
 };

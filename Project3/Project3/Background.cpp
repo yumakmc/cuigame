@@ -8,11 +8,21 @@ bool HaveColor=false;//Menuでextern参照される　Menuの色の有無に使用
 BackGround::BackGround(){
 	BackGround(0);
 }
-BackGround::BackGround(const int num):scene(num) {
+BackGround::BackGround(const int num):scene(num),afoc(1,true) {
 	count = 0;
 }
 void BackGround::Update() {
 	count++;
+	switch (scene) {
+	case 0:
+		break;
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		afoc.Update();
+	}
 }
 void BackGround::Draw() {
 	switch (scene) {
@@ -26,7 +36,14 @@ void BackGround::Draw() {
 
 	case 2:
 		DrawGreenWorld();
+		break;
+	case 3:
+		DrawGreenWorld();
+		DrawFallingFlower();
 	}
+}
+void BackGround::DrawFallingFlower() {
+	afoc.Draw();
 }
 void BackGround::DrawDarkCheck() {
 	//aDrawableConsole.setColor(DrawableConsole::COLOR::C_WHITE, DrawableConsole::COLOR::C_BLACK);//黒
