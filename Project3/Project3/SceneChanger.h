@@ -5,7 +5,8 @@ typedef enum {
 	eScene_Game,    //ゲーム画面
 	eScene_Tranp,   //トランプ画面
 	eScene_Rpg,     //RPG画面
-	eScene_Musicroom,
+	eScene_Rogue,   //ローグ画面
+	eScene_Musicroom,//音楽室
 	eScene_Config,  //設定画面
 
 	eScene_None,    //無し

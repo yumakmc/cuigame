@@ -29,6 +29,9 @@ void SceneMgr::Update(){
 		case eScene_Rpg:
 			mScene = (BaseScene*) new Rpg(this);
 			break;
+		case eScene_Rogue:
+			mScene = (BaseScene*) new Rogue(this);
+			break;
 		case eScene_Musicroom:
 			mScene = (BaseScene*) new Musicroom(this);
 			break;

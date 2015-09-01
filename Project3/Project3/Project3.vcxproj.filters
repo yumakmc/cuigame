@@ -84,6 +84,12 @@
     <ClCompile Include="Musicroom.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Rogue.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RogueGame.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GetTime.h">
@@ -167,6 +173,12 @@
     <ClInclude Include="Musicroom.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Rogue.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RogueGame.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Dummy.wav">
@@ -184,5 +196,13 @@
     <Media Include="lastboss.wav">
       <Filter>リソース ファイル</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="500px-Flower.bmp">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="2.bmp">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
 </Project>

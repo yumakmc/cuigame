@@ -133,6 +133,8 @@
     <ClCompile Include="mt19937ar.cpp" />
     <ClCompile Include="Music.cpp" />
     <ClCompile Include="Musicroom.cpp" />
+    <ClCompile Include="Rogue.cpp" />
+    <ClCompile Include="RogueGame.cpp" />
     <ClCompile Include="Rpg.cpp" />
     <ClCompile Include="RpgGame.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
@@ -160,6 +162,8 @@
     <ClInclude Include="mt19937ar.h" />
     <ClInclude Include="Music.h" />
     <ClInclude Include="Musicroom.h" />
+    <ClInclude Include="Rogue.h" />
+    <ClInclude Include="RogueGame.h" />
     <ClInclude Include="Rpg.h" />
     <ClInclude Include="RpgGame.h" />
     <ClInclude Include="SceneChanger.h" />
@@ -177,6 +181,10 @@
     <Media Include="op.wav" />
     <Media Include="pop.wav" />
     <Media Include="sad_dream.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="2.bmp" />
+    <Image Include="500px-Flower.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

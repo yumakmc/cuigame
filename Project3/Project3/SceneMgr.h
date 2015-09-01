@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Rpg.h"
 #include "Musicroom.h"
+#include "Rogue.h"
 
 
 class SceneMgr :public SceneChanger, Task{
