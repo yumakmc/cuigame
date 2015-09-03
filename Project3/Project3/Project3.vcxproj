@@ -135,6 +135,7 @@
     <ClCompile Include="Musicroom.cpp" />
     <ClCompile Include="Rogue.cpp" />
     <ClCompile Include="RogueGame.cpp" />
+    <ClCompile Include="RogueGameParty.cpp" />
     <ClCompile Include="Rpg.cpp" />
     <ClCompile Include="RpgGame.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
@@ -164,6 +165,8 @@
     <ClInclude Include="Musicroom.h" />
     <ClInclude Include="Rogue.h" />
     <ClInclude Include="RogueGame.h" />
+    <ClInclude Include="RogueGameParty.h" />
+    <ClInclude Include="RogueGameTable.h" />
     <ClInclude Include="Rpg.h" />
     <ClInclude Include="RpgGame.h" />
     <ClInclude Include="SceneChanger.h" />

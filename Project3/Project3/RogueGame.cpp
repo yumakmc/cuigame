@@ -9,42 +9,40 @@
 using namespace roguegame;
 
 namespace roguegame {
-	const int MY_ATTACK_CENTER_X = 19;
-	const int MY_ATTACK_CENTER_Y = 14;
-
-	const int MY_ATTACK_CENTER_X_L = 14;
-	const int MY_ATTACK_CENTER_X_R = 24;
-
-	const int OP_ATTACK_CENTER_X = 19;
-	const int OP_ATTACK_CENTER_Y = 5;
-
-	const int LOG_LINE_Y = 20;
-
-	const int PARALYZECOUNT = 10;
-
-	static const int dx[4] = { -1,0,1,0 };
-	static const int dy[4] = { 0,-1,0,1 };
-
-	static vector<string> TO_KEY =
-	{
-		"Å©",
-		"Å™",
-		"Å®",
-		"Å´",
-		"Ç`",
-		"Çv",
-		"Çc",
-		"Çr",
-	};
+	//static const int dx[4] = { -1,0,1,0 };
+	//static const int dy[4] = { 0,-1,0,1 };
+	//static vector<string> TO_KEY =
+	//{
+	//	"Å©",
+	//	"Å™",
+	//	"Å®",
+	//	"Å´",
+	//	"Ç`",
+	//	"Çv",
+	//	"Çc",
+	//	"Çr",
+	//};
 }
 
+RogueGame::RogueGame(gameSceneChanger* changer) :gameBaseScene(changer), abackground(2), myparty(),opparty() {
+	myparty.AddMember(0);
+	myparty.AddMember(1);
+	opparty.AddMember(4);
+	MyChara a(0);
 
-
-RogueGame::RogueGame(gameSceneChanger* changer) :gameBaseScene(changer), actionlog(), abackground(2){
 	aRand.init();
 	Initialize();
+	
 
-		aMusic.Play(5);
+	int c = TABLE<0, 100>::next_exp;
+
+	
+	if (c == 5051) {
+		int k=0;
+		k++;
+	}
+	
+	aMusic.Play(5);
 
 }
 
@@ -52,6 +50,8 @@ void RogueGame::Initialize() {
 }
 void RogueGame::Update() {
 	abackground.Update();
+	myparty.Update();
+	opparty.Update();
 	switch (situation) {
 	case 0://ÉXÉ^Å[ÉgâÊñ 
 		if (Keyboard_Get('Z') == 1) {
@@ -78,17 +78,11 @@ void RogueGame::Update() {
 }
 void RogueGame::Draw() {
 	abackground.Draw();
-
-
-
-	
-
-
-	
-
+	myparty.Draw();
+	opparty.Draw();
 	
 #pragma region LOG
-	aDrawableConsole.draw(0, LOG_LINE_Y, "--------------------------------------------------------------------------------");
+	/*aDrawableConsole.draw(0, LOG_LINE_Y, "--------------------------------------------------------------------------------");
 	aDrawableConsole.draw(1, LOG_LINE_Y + 1, "ÉçÉO");
 	auto startit = actionlog.size() <= 3 ? actionlog.begin() : actionlog.end() - 4;
 	for (int i = 0; i < 4; ++i) {
@@ -116,7 +110,7 @@ void RogueGame::Draw() {
 	default:
 		assert(false);
 		break;
-	}
+	}*/
 #pragma endregion
 }
 

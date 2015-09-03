@@ -13,11 +13,26 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Rogue">
+      <UniqueIdentifier>{318e05d1-43be-4f2a-954e-d6b7f3c933b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tranp">
+      <UniqueIdentifier>{317afd4b-b7e0-458b-a4d4-167b8aa91277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rpg">
+      <UniqueIdentifier>{3d44ed77-5210-46db-ba8e-10c8ec41539a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackGrounds">
+      <UniqueIdentifier>{8e992be3-f0a2-4128-8123-b5d499c43ae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{f3d4db6c-27b0-4cb5-852f-b7cb75d826cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{e2ac1f2b-81dd-429e-b93c-2156c1dc762a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Tranp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="BaseScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -42,62 +57,62 @@
     <ClCompile Include="test.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Keyboard.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="FallingObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="FallingObjectCollection.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Text.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TranpGame.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="ConsoleBuffer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Common.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="mt19937ar.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DrawableConsole.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="RpgGame.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Rpg.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Music.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Musicroom.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Rogue.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Rogue</Filter>
     </ClCompile>
     <ClCompile Include="RogueGame.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Rogue</Filter>
+    </ClCompile>
+    <ClCompile Include="RogueGameParty.cpp">
+      <Filter>Rogue</Filter>
+    </ClCompile>
+    <ClCompile Include="Tranp.cpp">
+      <Filter>Tranp</Filter>
+    </ClCompile>
+    <ClCompile Include="TranpGame.cpp">
+      <Filter>Tranp</Filter>
+    </ClCompile>
+    <ClCompile Include="Rpg.cpp">
+      <Filter>Rpg</Filter>
+    </ClCompile>
+    <ClCompile Include="RpgGame.cpp">
+      <Filter>Rpg</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>BackGrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="FallingObject.cpp">
+      <Filter>BackGrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="FallingObjectCollection.cpp">
+      <Filter>BackGrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Music.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="mt19937ar.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GetTime.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Tranp.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -125,31 +140,10 @@
     <ClInclude Include="Task.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Keyboard.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="FallingObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="FallingObjectCollection.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Data_Rand.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Text.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TranpGame.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="ConsoleBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="mt19937ar.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="typedef.h">
@@ -158,26 +152,59 @@
     <ClInclude Include="DrawableConsole.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="RpgGame.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Rpg.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="BackGround.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Music.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Musicroom.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Rogue.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Rogue</Filter>
     </ClInclude>
     <ClInclude Include="RogueGame.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Rogue</Filter>
+    </ClInclude>
+    <ClInclude Include="RogueGameParty.h">
+      <Filter>Rogue</Filter>
+    </ClInclude>
+    <ClInclude Include="RogueGameTable.h">
+      <Filter>Rogue</Filter>
+    </ClInclude>
+    <ClInclude Include="TranpGame.h">
+      <Filter>Tranp</Filter>
+    </ClInclude>
+    <ClInclude Include="Tranp.h">
+      <Filter>Tranp</Filter>
+    </ClInclude>
+    <ClInclude Include="RpgGame.h">
+      <Filter>Rpg</Filter>
+    </ClInclude>
+    <ClInclude Include="Rpg.h">
+      <Filter>Rpg</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>BackGrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="FallingObject.h">
+      <Filter>BackGrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="FallingObjectCollection.h">
+      <Filter>BackGrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="mt19937ar.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GetTime.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Music.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Data_Rand.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
