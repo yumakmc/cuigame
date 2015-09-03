@@ -36,7 +36,7 @@ namespace  roguegame {
 
 		int situation;
 
-		vector<string> actionlog;
+		vector<string> *actionlog;
 
 		Common::Rand aRand;
 		data adata;

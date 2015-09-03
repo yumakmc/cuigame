@@ -46,13 +46,13 @@ namespace roguegame {
 }
 
 RogueGame::RogueGame(gameSceneChanger* changer) 
-	:gameBaseScene(changer), abackground(2), myparty(PARTY_LEFT, MY_PARTY_UP),opparty(PARTY_LEFT, OP_PARTY_UP), actionlog(){
+	:gameBaseScene(changer), abackground(2), actionlog(new vector<string>), myparty(PARTY_LEFT, MY_PARTY_UP,actionlog),opparty(PARTY_LEFT, OP_PARTY_UP,actionlog){
+	actionlog->push_back("s");
 
 	myparty.AddMember(0);
 	myparty.AddMember(1);
 	opparty.AddMember(4);
 	opparty.AddMember(5);
-	MyChara a(0);
 
 	aRand.init();
 	Initialize();
@@ -78,13 +78,24 @@ void RogueGame::Update() {
 	switch (situation) {
 	case 0://ƒXƒ^[ƒg‰æ–Ê
 		if (Keyboard_Get('Z') == 1) {
-			actionlog.push_back("“~‚Í€‚ÉAt‚ª¶‚Ü‚ê‚½");
+			actionlog->push_back("t‚ª¶‚Ü‚êA“~‚Í€‚É‚½");
 			situation = 5;
 		}
 		break;
 	case 1://ƒwƒ‹ƒv
 		break;
-	case 5:
+	case 5://‚±‚¿‚ç‚ÌUŒ‚‘I‘ğ’†
+		if (Keyboard_Get('A') == 1) {
+			myparty.Act(A_Attack);
+		}
+		else if (Keyboard_Get('D') == 1) {
+			myparty.Act(A_Defence);
+		}
+		else if (Keyboard_Get('S') == 1) {
+			myparty.Act(A_Special);
+		}
+		break;
+	case 6://‘Šè‚Ì‘ÎÛ‚ğ‘I‘ğ’†
 		break;
 	default:
 		break;
@@ -136,6 +147,7 @@ void RogueGame::Draw() {
 		}
 	}
 #pragma endregion
+
 #pragma region LINE
 	for (int i = 0; i < 25; ++i) {
 		aDrawableConsole.draw(PARTY_LEFT - 1, i, " |");
@@ -145,10 +157,8 @@ void RogueGame::Draw() {
 	}
 	aDrawableConsole.draw(0, LOG_LINE_Y, "--------------------------------------------------");
 #pragma endregion
-	
-	
+
 	myparty.Draw();
-	
 	opparty.Draw();
 	
 	switch (situation)
@@ -172,26 +182,23 @@ void RogueGame::Draw() {
 #pragma region LOG
 	
 	aDrawableConsole.draw(1, LOG_LINE_Y + 1, "ƒƒO");
-	auto startit = actionlog.size() <= 3 ? actionlog.begin() : actionlog.end() - 4;
+	auto startit = actionlog->size() <= 3 ? actionlog->begin() : actionlog->end() - 4;
 	for (int i = 0; i < 4; ++i) {
-		if (startit + i == actionlog.end())break;
-		string st= *startit;
-
-		aDrawableConsole.draw(5, LOG_LINE_Y + 1 + i, st.c_str());
+		if (startit + i == actionlog->end())break;
+		aDrawableConsole.draw(5, LOG_LINE_Y + 1 + i, *(startit + i));
 	}
 	switch (situation)
 	{
 	case 0:
 		break;
 	case 1:
+		break;
 	case 5:
 		break;
 
 	case 10:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "‚x‚n‚t@@‚v‚h‚m");
 		break;
 	case 11:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "‚x‚n‚t@‚k‚n‚r‚d");
 		break;
 	default:
 		assert(false);

@@ -2,7 +2,7 @@
 #include<assert.h>
 
 
-Chara::Chara(const int aid) :id(aid), name(DATES[aid].name) {
+Chara::Chara(const int aid, vector<string> *aactionlog) :id(aid), name(DATES[aid].name),actionlog(aactionlog) {
 	atk = TABLE<0, 0>::atk;
 	def = TABLE<0, 0>::def;
 	now_hp = DATES[aid].fst_hp;
@@ -25,7 +25,21 @@ bool Chara::GainLife(const int alife) {
 	now_hp = max(now_hp + alife, max_hp);;
 	return true;
 }
-MyChara::MyChara(const int aid) :Chara(aid) {
+int Chara::Act(const Action type) {
+	switch (type) {
+	case A_Attack:
+		break;
+	case A_Defence:
+		break;
+	case A_Special:
+		break;
+
+	default:
+		assert(false);
+	}
+	return true;
+}
+MyChara::MyChara(const int aid, vector<string> *aactionlog) :Chara(aid,aactionlog){
 	level = DATES[aid].fst_level;
 	next_exp = 0;
 }
@@ -35,7 +49,7 @@ int MyChara::GainExp(const int aexp) {
 	}
 	return true;
 }
-Party::Party(const int aleft, const int aup) :members() {
+Party::Party(const int aleft, const int aup, vector<string> *aactionlog) :members(), actionlog(aactionlog){
 	LEFT = aleft;
 	UP = aup;
 	
@@ -63,15 +77,18 @@ bool Party::AddMember(const int aid) {
 		if (members[i] == NULL) {
 			Chara *a;
 			if (DATES[aid].isenemy) {
-				a = new Chara(aid);
+				a = new Chara(aid,actionlog);
 			}
-			members[i] = new MyChara(aid);
+			members[i] = new MyChara(aid, actionlog);
 			return true;
 		}
 	}
 	return false;
 }
-MyParty::MyParty(const int aleft, const int aup) :Party(aleft,aup) {
+int Party::Act(const Action type) {
+	return members[nowselect]->Act(type);
+}
+MyParty::MyParty(const int aleft, const int aup, vector<string> *aactionlog) :Party(aleft,aup,aactionlog) {
 	
 }
 void MyParty::Update() {
@@ -88,7 +105,6 @@ void MyParty::Draw() {
 			aDrawableConsole.draw(LEFT + 11, UP + 3 * i, "NextExp ");
 			aDrawableConsole.draw(LEFT + 5, UP + 3 * i, Common::To_ZString(a->next_exp).c_str());
 		}
-		
 	}
 }
 vector<int > MyParty::GetAliveMemberId() {
@@ -101,7 +117,7 @@ vector<int > MyParty::GetAliveMemberId() {
 	}
 	return AliveId;
 }
-OpParty::OpParty(const int aleft, const int aup) : Party(aleft,aup) {
+OpParty::OpParty(const int aleft, const int aup, vector<string> *aactionlog) : Party(aleft,aup,aactionlog) {
 	
 }
 void OpParty::Update() {
