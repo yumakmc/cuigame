@@ -25,21 +25,20 @@ namespace  roguegame {
 	public:
 		RogueGame(gameSceneChanger* changer);
 		void Initialize() override;
-		//void Finalize() override;
 		void Update() override;        //更新処理をオーバーライド。
 		void Draw() override;            //描画処理をオーバーライド。
 	private:
 
 		MyParty myparty;
 		OpParty opparty;
-		string inline To_ZenString(const int anum);
 
 		BackGround abackground;
 
 		int situation;
 
+		vector<string> actionlog;
+
 		Common::Rand aRand;
 		data adata;
-
 	};
 }
