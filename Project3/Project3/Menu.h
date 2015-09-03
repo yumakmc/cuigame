@@ -24,5 +24,5 @@ public:
 	void Draw(vector<string> &tmpField) override;
 private:
 	eMenu NowSelect;
-	FallingObjectCollection afoc;
+	FallingObjectCollection fallingobjectcollection;
 };

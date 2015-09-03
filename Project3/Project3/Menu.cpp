@@ -16,7 +16,7 @@ const int BLANK_FOR_MENU_RIGHT = 30;
 
 extern bool HaveColor;//BackGround‚æ‚è@externQÆ@BackGround‚ÅF‚ª‚Â‚¯‚Îtrue‚É•Ï‚í‚éB@
 
-Menu::Menu(SceneChanger* changer) : BaseScene(changer),afoc(HaveColor){
+Menu::Menu(SceneChanger* changer) : BaseScene(changer),fallingobjectcollection(HaveColor){
 	aMusic.Play(4);
 	NowSelect = eMenu_Game;
 }
@@ -24,14 +24,14 @@ void Menu::Initialize(){
 }
 void Menu::Draw(){
 	//assert(false);
-	afoc.Draw();
+	fallingobjectcollection.Draw();
 	for (int y = BLANK_FOR_MENU_UP; y < BLANK_FOR_MENU_DOWN; ++y) {
 		for (int x = BLANK_FOR_MENU_LEFT; x < BLANK_FOR_MENU_RIGHT; ++x) {
 			aDrawableConsole.draw(x, y, "@");
 		}
 	}
 	aDrawableConsole.draw(15, 12, "‚r‚s‚n‚q‚x‚PƒoƒO—L@");
-	aDrawableConsole.draw(15, 13, "‚r‚s‚n‚q‚x‚QƒoƒO‚ ‚è");
+	aDrawableConsole.draw(15, 13, "‚r‚s‚n‚q‚x‚QƒoƒO—L@");
 	aDrawableConsole.draw(15, 14, "‚r‚s‚n‚q‚x‚R@@@@");
 	aDrawableConsole.draw(15, 15, "‚r‚s‚n‚q‚x‚S@@@@");
 	aDrawableConsole.draw(15, 16, "‚l‚t‚r‚h‚b@‚q‚n‚n‚l");
@@ -47,13 +47,12 @@ void Menu::Draw(){
 	case eMenu_Rpg://RPG‘I‘ğ’†‚È‚ç	
 		aDrawableConsole.draw(13, 14, "œ");
 		break;
-	case eMenu_Rogue://I—¹‘I‘ğ’†‚È‚ç	
+	case eMenu_Rogue://ƒ[ƒO‘I‘ğ’†‚È‚ç	
 		aDrawableConsole.draw(13, 15, "œ");
 		break;
 	case eMenu_Musicroom://‰¹Šyº‘I‘ğ’†‚È‚ç	
 		aDrawableConsole.draw(13, 16, "œ");
 		break;
-	
 	case eMenu_Finish://I—¹‘I‘ğ’†‚È‚ç	
 		aDrawableConsole.draw(13, 17, "œ");
 		break;
@@ -93,7 +92,7 @@ void Menu::Draw(vector<string> &tmpfield) {
 }
 
 void Menu::Update(){
-	afoc.Update();
+	fallingobjectcollection.Update();
 	if (Keyboard_Get(VK_DOWN) == 1){//‰ºƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
 		NowSelect = eMenu((int(NowSelect) + 1) % int(eMenu_count));//‘I‘ğó‘Ô‚ğˆê‚Â‰º‚°‚é
 	}else if (Keyboard_Get(VK_UP) == 1) {//ãƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
@@ -115,7 +114,7 @@ void Menu::Update(){
 		case eMenu_Rogue:
 			mSceneChanger->ChangeScene(eScene_Rogue);
 			break;
-		case eMenu_Musicroom://İ’è‘I‘ğ’†‚È‚ç
+		case eMenu_Musicroom:
 			mSceneChanger->ChangeScene(eScene_Musicroom);
 			break;
 		case eMenu_Finish:
