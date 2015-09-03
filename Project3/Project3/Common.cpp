@@ -1,6 +1,7 @@
 ﻿#include	<time.h>
 #include	<stdexcept>
 #include	<cstdio>
+#include <string>
 #include	"mt19937ar.h"
 #include	"Common.h"
 
@@ -79,5 +80,5 @@ namespace Common
 
 		return ret;
 	}
-
+	
 }

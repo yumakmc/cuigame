@@ -4,6 +4,7 @@
 #include	<cassert>
 #include	<tchar.h>
 #include	<windows.h>
+#include <string>
 #include	"typedef.h"
 
 using namespace Library;
@@ -104,6 +105,13 @@ namespace Common {
 		static BOOL WINAPI HandlerRoutine(DWORD dwCtrlType);
 		static CLOSEFUNC fn_close;
 	};
+	std::string inline To_ZString(const int anum) {
+		std::string st = std::to_string(anum);
+		if (st.size() % 2) {
+			st = " " + st;
+		}
+		return st;
+	}
 };
 
 #endif		// __COMMON_H__
