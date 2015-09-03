@@ -2,6 +2,7 @@
 #define	 __DRAWABLE_CONSOLE_H__
 
 #include	<Windows.h>
+#include <string>
 #include	"Common.h"
 #include	"ConsoleBuffer.h"
 
@@ -43,12 +44,14 @@ public:
 	void draw(const TCHAR* text, const bool changebgcolor=true) const;								// テキスト描画
 	void draw(DRAW_POS pos, const TCHAR* text, const bool changebgcolor=true) const;	 			// テキスト描画（座標付）
 	void draw(POS x, POS y, const TCHAR* text, const bool changebgcolor=true) const;	 			// テキスト描画（座標付）
-	//void drawb(const TCHAR* text, const bool changebgcolor) const;								// テキスト描画
-	//void drawb(DRAW_POS pos, const TCHAR* text, const bool changebgcolor) const;	 			// テキスト描画（座標付）
-	//void drawb(POS x, POS y, const TCHAR* text, const bool changebgcolor) const;	 			// テキスト描画（座標付）
 	void drawf(const TCHAR* formatText, ...) const;	 				// テキスト描画（書式付）
 	void drawf(DRAW_POS pos, const TCHAR* formatText, ...) const;	// テキスト描画（座標・書式付）	
 	void drawf(POS x, POS y, const TCHAR* formatText, ...) const;	// テキスト描画（座標・書式付）
+
+	void draw(const std::string text, const bool changebgcolor = true) const;								// テキスト描画
+	void draw(DRAW_POS pos, const std::string text, const bool changebgcolor = true) const;	 			// テキスト描画（座標付）
+	void draw(POS x, POS y, const std::string text, const bool changebgcolor = true) const;	 			// テキスト描画（座標付）
+
 
 	void setColor(COLOR textcolor, COLOR bgcolor) const;	 // 描画色設定
 	void setDefaultColor(COLOR textcolor, COLOR bgcolor);	 // 規定色設定

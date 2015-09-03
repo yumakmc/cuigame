@@ -38,11 +38,19 @@ void DrawableConsole::draw(const TCHAR* text,const bool changebgcolor) const
 {
 		m_ConsoleBuff.writeString(text, changebgcolor);
 }
+void DrawableConsole::draw(const std::string text, const bool changebgcolor) const
+{
+	draw(text.c_str(), changebgcolor);
+}
 // テキスト描画（座標付）
 void DrawableConsole::draw(DRAW_POS pos, const TCHAR* text, const bool changebgcolor) const
 {
 	setDrawPosition(pos);
 	m_ConsoleBuff.writeString(text, changebgcolor);
+}
+void DrawableConsole::draw(DRAW_POS pos, const std::string text, const bool changebgcolor) const
+{
+	draw(pos,text.c_str(), changebgcolor);
 }
 // テキスト描画（座標付）
 void DrawableConsole::draw(POS x, POS y, const TCHAR* text, const bool changebgcolor) const
@@ -50,23 +58,11 @@ void DrawableConsole::draw(POS x, POS y, const TCHAR* text, const bool changebgc
 	setDrawPosition(x, y);
 	m_ConsoleBuff.writeString(text, changebgcolor);
 }
-//// テキスト描画
-//void DrawableConsole::drawb(const TCHAR* text, const bool changebgcolor) const
-//{
-//		m_ConsoleBuff.writeString(text, changebgcolor);
-//}
-//// テキスト描画（座標付）
-//void DrawableConsole::drawb(DRAW_POS pos, const TCHAR* text, const bool changebgcolor) const
-//{
-//	setDrawPosition(pos);
-//	m_ConsoleBuff.writeString(text, changebgcolor);
-//}
-//// テキスト描画（座標付）
-//void DrawableConsole::drawb(POS x, POS y, const TCHAR* text, const bool changebgcolor) const
-//{
-//	setDrawPosition(x, y);
-//	m_ConsoleBuff.writeString(text, changebgcolor);
-//}
+void DrawableConsole::draw(POS x, POS y, const std::string text, const bool changebgcolor) const
+{
+	draw(x, y, text.c_str(),changebgcolor);
+}
+
 // テキスト描画（書式付）
 void DrawableConsole::drawf(const TCHAR* formatText, ...) const
 {
@@ -80,6 +76,7 @@ void DrawableConsole::drawf(const TCHAR* formatText, ...) const
 
 	va_end(args);
 }
+
 // テキスト描画（座標・書式付）
 void DrawableConsole::drawf(DRAW_POS pos, const TCHAR* formatText, ... ) const
 {
@@ -94,6 +91,7 @@ void DrawableConsole::drawf(DRAW_POS pos, const TCHAR* formatText, ... ) const
 
 	va_end(args);
 }
+
 // テキスト描画（座標・書式付）
 void DrawableConsole::drawf(POS x, POS y, const TCHAR* formatText, ... ) const
 {
@@ -108,6 +106,7 @@ void DrawableConsole::drawf(POS x, POS y, const TCHAR* formatText, ... ) const
 
 	va_end(args);
 }
+
 
 // 描画色設定
 void DrawableConsole::setColor(COLOR textcolor, COLOR bgcolor) const
