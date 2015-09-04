@@ -14,6 +14,16 @@ namespace  roguegame {
 		A_Defence,
 		A_Special,
 	};
+	enum Situation {
+		S_Opening,
+		S_Help,
+		S_ChoosingAction,
+		S_ChoosingTarget,
+		S_ChoosingMy,
+		S_OtherTurn,
+		S_Reading,
+		S_Ending,
+	};
 	struct data {
 		bool isenemy;
 		string name;
@@ -34,17 +44,15 @@ namespace  roguegame {
 	};
 	class Chara {
 	public:
-		Chara(const int aid, vector<string> *aactionlog);
+		Chara(const int aid, vector<string> *aactionlog, Situation *asituation);
 		bool GetDamage(const int admg);//éÄÇÒÇæÇ©Çï‘Ç∑
 		bool GainLife(const int alife);
 
-		int Act(const Action type);
-		bool Attack(Chara &atarget) {
-			return atarget.GetDamage(CalculateDmg(atarget));
-		}
-		inline int CalculateDmg(const Chara& atarget) {
-			return max(0,atk - atarget.def);
-		}
+		//int Act(const Action type);
+		//int SelectAction(const Action type);
+		/*virtual bool Attack(Chara &atarget);*/
+		//inline int CalculateDmg(const Chara& atarget);
+		
 		const int id;
 		const string name;
 		int atk;
@@ -52,38 +60,46 @@ namespace  roguegame {
 		int now_hp;
 		int max_hp;
 		bool isdead;
+		bool defending;
 	protected:
 		vector<string> *actionlog;
+		Situation *situation;
+	private:
+		
+		int nowfor;//0:Ç±Ç§Ç∞Ç´Å@//2:ì¡éÍ
 		
 	};
 	class MyChara :public Chara {
 	public:
-		MyChara(const int aid, vector<string> *aactionlog);
+		MyChara(const int aid, vector<string> *aactionlog, Situation *asituation);
 		int GainExp(const int aexp);//è„Ç™Ç¡ÇΩÉåÉxÉãÇï‘Ç∑
-
+		//bool Attack(Chara &atarget);
 		int level;
 		int next_exp;
 	};
 	class Party:public Task {
 	public:
-		Party(const int aleft,const int aup,vector<string> *aactionlog);
+		Party(const int aleft,const int aup,vector<string> *aactionlog, Situation *asituation);
 		virtual void Update(); 
 		virtual void Draw();
 		bool AddMember(const int aid);
-		int Act(const Action type);
+		Chara* GetMember(const int anum);
+		//int Act(const Action type);
 		int nowselect=0;
+		static const int maxmember = 4;
+		array<Chara*, maxmember> members;
 	protected:
 		int LEFT;
 		int UP;
-		static const int maxmember = 4;
-		array<Chara*, maxmember> members;
+
 		vector<string> *actionlog;
+		Situation *situation;
 	private:
-		
+		int nowchara;
 	};
 	class MyParty:public Party {
 	public:
-		MyParty(const int aleft, const int aup, vector<string> *aactionlog);
+		MyParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
 		void Update()override;
 		void Draw()override;
 		vector<int>GetAliveMemberId();
@@ -92,7 +108,7 @@ namespace  roguegame {
 	};
 	class OpParty :public Party {
 	public:
-		OpParty(const int aleft, const int aup, vector<string> *aactionlog);
+		OpParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
 		void Update()override;
 		void Draw()override;
 

@@ -27,6 +27,11 @@ namespace  roguegame {
 		void Initialize() override;
 		void Update() override;        //更新処理をオーバーライド。
 		void Draw() override;            //描画処理をオーバーライド。
+		bool Attack(Chara *from, Chara *to);
+		bool Attack(int fromnum, int tonum);
+		int Act(Chara *from, Chara *to,const Action type);
+		int SelectAction(const Action type);
+		inline int CalculateDmg(const Chara *from, const Chara *to);
 	private:
 
 		MyParty myparty;
@@ -34,11 +39,16 @@ namespace  roguegame {
 
 		BackGround abackground;
 
-		int situation;
+		Situation *situation;
 
 		vector<string> *actionlog;
 
 		Common::Rand aRand;
 		data adata;
+
+		int day = 0;
+
+		int nowplayernum=0;
+		Action nowaction;
 	};
 }
