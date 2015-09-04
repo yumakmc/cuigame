@@ -21,6 +21,7 @@ namespace  roguegame {
 		S_ChoosingTarget,
 		S_ChoosingMy,
 		S_OtherTurn,
+		S_TurnEnd,
 		S_Reading,
 		S_Ending,
 	};
@@ -31,7 +32,7 @@ namespace  roguegame {
 		int fst_level;
 	};
 
-	static const vector<data> DATES = {
+	static const vector<data> DETAILS = {
 		{ false,"èt",10,1 },
 		{ false,"âƒ",1000,50 },
 		{ false,"èH",100,30 },
@@ -46,7 +47,7 @@ namespace  roguegame {
 	public:
 		Chara(const int aid, vector<string> *aactionlog, Situation *asituation);
 		bool GetDamage(const int admg);//éÄÇÒÇæÇ©Çï‘Ç∑
-		bool GainLife(const int alife);
+		int GainLife(const int pluslife);
 
 		//int Act(const Action type);
 		//int SelectAction(const Action type);
@@ -65,9 +66,7 @@ namespace  roguegame {
 		vector<string> *actionlog;
 		Situation *situation;
 	private:
-		
-		int nowfor;//0:Ç±Ç§Ç∞Ç´Å@//2:ì¡éÍ
-		
+
 	};
 	class MyChara :public Chara {
 	public:
@@ -76,6 +75,8 @@ namespace  roguegame {
 		//bool Attack(Chara &atarget);
 		int level;
 		int next_exp;
+		int ai=0;
+		bool controlable = false;
 	};
 	class Party:public Task {
 	public:
@@ -84,14 +85,15 @@ namespace  roguegame {
 		virtual void Draw();
 		bool AddMember(const int aid);
 		Chara* GetMember(const int anum);
+		void DeleteMember(const int anum);
 		//int Act(const Action type);
 		int nowselect=0;
 		static const int maxmember = 4;
-		array<Chara*, maxmember> members;
+		
 	protected:
 		int LEFT;
 		int UP;
-
+		array<Chara*, maxmember> members;
 		vector<string> *actionlog;
 		Situation *situation;
 	private:

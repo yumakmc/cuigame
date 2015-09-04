@@ -107,17 +107,17 @@ void RogueGame::Update() {
 		break;
 	case S_Help://ヘルプ
 		break;
-	case S_ChoosingAction://こちらの攻撃選択中
-		
+	case S_ChoosingAction://こちらの攻撃選択中	
 		if (Keyboard_Get('A') == 1) {
-			SelectAction(A_Attack);
+			SelectAction(A_Attack);	
 		}
 		else if (Keyboard_Get('D') == 1) {
-			SelectAction(A_Defence);
+			SelectAction(A_Defence);		
 		}
 		else if (Keyboard_Get('S') == 1) {
 			SelectAction(A_Special);
 		}
+		
 		break;
 	case S_ChoosingTarget://相手の対象を選択中
 		if (Keyboard_Get('X') == 1) {
@@ -128,21 +128,29 @@ void RogueGame::Update() {
 			if (Keyboard_Get(i+48) == 1) {//
 				Chara* target;
 				if (opparty.maxmember > i) {
-					target = opparty.members[i];
+					target = opparty.GetMember(i);
 				}
 				else {
-					target = myparty.members[i-opparty.maxmember];
+					target = myparty.GetMember(i - opparty.maxmember);
 				}
 				if (target != NULL) {
 					*situation = S_ChoosingAction;//
-					Act(myparty.members[nowplayernum], target, nowaction);
+					Act(myparty.GetMember(nowplayernum), target, nowaction);
 				}
 				
 				break;
 			}
 		}
 		break;
-	
+	case S_OtherTurn://相手の対象を選択中
+		//他のターンの行動入れる。
+		
+		*situation = S_TurnEnd;
+		break;
+	case S_TurnEnd://相手の対象を選択中
+		day++;
+		*situation = S_ChoosingAction;
+		break;
 	default:
 		break;
 	}
@@ -165,7 +173,7 @@ void RogueGame::Draw() {
 	vector<int> AliveId(myparty.GetAliveMemberId());
 	for (int i = 0; i < 4; ++i) {
 		if (find(AliveId.begin(), AliveId.end(), i) != AliveId.end()) {
-			aDrawableConsole.draw(1 + 2 * i, 1, DATES[i].name.c_str());
+			aDrawableConsole.draw(1 + 2 * i, 1, DETAILS[i].name.c_str());
 		}
 	}
 	aDrawableConsole.draw(7, 0, Common::To_ZString(day)+"日/365日");
@@ -228,7 +236,10 @@ void RogueGame::Draw() {
 		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "味方の中から対象を選択せよ");
 		break;
 	case S_OtherTurn:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "待機");
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "相手のターン");
+		break;
+	case S_TurnEnd:
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "日が暮れた。日が明けた。");
 		break;
 	default:
 		assert(false);
@@ -246,9 +257,24 @@ void RogueGame::Draw() {
 	
 #pragma endregion
 }
+int RogueGame::Regenerate(Chara *from, Chara *to) {
+	const int pluslife = max(0,min(to->max_hp-to->now_hp,(day % 7 == Sun) ? from->max_hp / 2 * 3 : (from->max_hp / 2)));
+	if (from->id == 0&& DETAILS[to->id].isenemy) {//春がfrom,敵がtoなら
+		to->GainLife(pluslife);
+		//toからとれる経験値増える
+	}else {
+		to->GainLife(pluslife);
+	}
+	return pluslife;
+}
+int RogueGame::Regenerate(const int fromnum, const int tonum) {
+	Chara* from = fromnum >= 4 ? myparty.GetMember(fromnum - 4) : opparty.GetMember(fromnum);
+	Chara* to = tonum >= 4 ? myparty.GetMember(tonum - 4) : opparty.GetMember(tonum);
+	return Regenerate(from, to);
+}
 bool RogueGame::Attack(Chara *from, Chara *to) {
 	if (to->GetDamage(CalculateDmg(from,to))) {
-		if (!DATES[from->id].isenemy) {
+		if (!DETAILS[from->id].isenemy) {
 			MyChara *a = static_cast<MyChara*>(from);
 			a->GainExp(777);
 		}
@@ -257,9 +283,26 @@ bool RogueGame::Attack(Chara *from, Chara *to) {
 	return false;
 }
 bool RogueGame::Attack(const int fromnum, const int tonum) {
-	Chara* from = fromnum >= 4 ? myparty.members[fromnum - 4] : opparty.members[fromnum];
-	Chara* to = tonum >= 4 ? myparty.members[tonum - 4] : opparty.members[tonum];
+	Chara* from = fromnum >= 4 ? myparty.GetMember(fromnum - 4) : opparty.GetMember(fromnum);
+	Chara* to = tonum >= 4 ? myparty.GetMember(tonum - 4) : opparty.GetMember(tonum);
 	return Attack(from,to);
+}
+bool RogueGame::Special(Chara *from, Chara *to) {
+	//fromによって分岐
+	switch (from->id) {
+	case 0://春
+		Regenerate(from, to);//春は
+
+		break;
+	default:
+		;
+	}
+	return false;
+}
+bool RogueGame::Special(const int fromnum, const int tonum) {
+	Chara* from = fromnum >= 4 ? myparty.GetMember(fromnum - 4) : opparty.GetMember(fromnum);
+	Chara* to = tonum >= 4 ? myparty.GetMember(tonum - 4) : opparty.GetMember(tonum);
+	return Special(from, to);
 }
 int RogueGame::Act(Chara *from,Chara *to,const Action type) {
 	switch (type) {
@@ -272,26 +315,40 @@ int RogueGame::Act(Chara *from,Chara *to,const Action type) {
 			actionlog->push_back(from->name + "の防御" + to->name);
 			break;
 		case A_Special:
-
+			Special(from, to);
 			actionlog->push_back(from->name + "の特殊" + to->name);
 			break;
-		
 		default:
 			assert(false);
 		}
+
+
+	//死亡チェック
+	CheckDeadPlayer();
+
+	//一人しか操作できないという前提あり
+	
+	if (ChooseNextPlayer()) {//全員終わらなかったら
+		assert(false);//今のとこ来るはずない
+		*situation = S_ChoosingAction;
+	}
+	else {
 		*situation = S_OtherTurn;
-		return true;
+	}
+	return true;
 }
 int RogueGame::SelectAction(const Action type) {
-	myparty.members[nowplayernum]->defending = false;//特殊効果解除
+	myparty.GetMember(nowplayernum)->defending = false;//特殊効果解除
 	switch (type) {
 	case A_Attack:
 		nowaction = A_Attack;
 		*situation = S_ChoosingTarget;
 		break;
+
 	case A_Defence:
-		Act(myparty.members[nowplayernum], myparty.members[nowplayernum],A_Defence);
+		Act(myparty.GetMember(nowplayernum), myparty.GetMember(nowplayernum),A_Defence);
 		break;
+
 	case A_Special:
 		nowaction = A_Special;
 		*situation = S_ChoosingTarget;
@@ -303,8 +360,39 @@ int RogueGame::SelectAction(const Action type) {
 	return true;
 }
 inline int RogueGame::CalculateDmg(const Chara *from,const Chara *to) {
-	int realatk = (Date(day % 7) == (Thu)) ? from->atk * 2 : from->atk;
-	const int diff = max(0, realatk - to->def);
-	
-	return to->defending ? diff / 4 : diff;
+	if ((Date(day % 7) == (Sat))) {
+		return 0;
+	}
+	else {
+		int realatk = (Date(day % 7) == (Thu)) ? from->atk * 2 : from->atk;
+		int realdef = (Date(day % 7) == (Tur)) ? to->def * 2 : to->def;
+		const int diff = max(0, realatk - realdef);
+		return to->defending ? diff / 4 : diff;
+	}
+}
+bool RogueGame::ChooseNextPlayer() {
+	bool flag = false;
+	for (int i = nowplayernum + 1; i < myparty.maxmember; ++i) {
+		if (myparty.GetMember(i) == NULL) { break; }
+		if (!DETAILS[myparty.GetMember(i)->id].isenemy && (static_cast<MyChara*> (myparty.GetMember(i)))->controlable) {
+			nowplayernum = i;
+			flag = true;
+		}
+	}
+	return flag;
+}
+int RogueGame::CheckDeadPlayer() {
+	for (int i = 0; i < opparty.maxmember; ++i) {
+		Chara* aopchara = opparty.GetMember(i);
+		if (aopchara != NULL&&aopchara->isdead) {
+			opparty.DeleteMember(i);
+		}
+	}
+	for (int i = 0; i < myparty.maxmember; ++i) {
+		Chara* amychara = myparty.GetMember(i);
+		if (amychara != NULL&&amychara->isdead) {
+			//エンディング判定したい
+		}
+	}
+	return 0;
 }

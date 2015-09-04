@@ -29,9 +29,15 @@ namespace  roguegame {
 		void Draw() override;            //描画処理をオーバーライド。
 		bool Attack(Chara *from, Chara *to);
 		bool Attack(int fromnum, int tonum);
+		int Regenerate(Chara *from, Chara *to);
+		int Regenerate(const int fromnum, const int tonum);
+		bool Special(Chara *from, Chara *to);
+		bool Special(int fromnum, int tonum);
 		int Act(Chara *from, Chara *to,const Action type);
 		int SelectAction(const Action type);
 		inline int CalculateDmg(const Chara *from, const Chara *to);
+		bool ChooseNextPlayer();//全員終了したらfalse返す
+		int CheckDeadPlayer();//行動終了時に呼び出す　死亡チェックとかエンディング条件チェックとか
 	private:
 
 		MyParty myparty;

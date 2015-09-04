@@ -2,10 +2,10 @@
 #include<assert.h>
 
 
-Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DATES[aid].name),actionlog(aactionlog),situation(asituation) {
+Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DETAILS[aid].name),actionlog(aactionlog),situation(asituation) {
 	atk = TABLE<0, 0>::atk;
 	def = TABLE<0, 0>::def;
-	now_hp = DATES[aid].fst_hp;
+	now_hp = DETAILS[aid].fst_hp;
 	max_hp = TABLE<0, 0>::max_hp;
 	isdead = false;
 }
@@ -20,10 +20,11 @@ bool Chara::GetDamage(const int admg) {
 		return false;
 	}
 }
-bool Chara::GainLife(const int alife) {
-	assert(alife >= 0);
-	now_hp = max(now_hp + alife, max_hp);;
-	return true;
+int Chara::GainLife(const int pluslife) {
+	assert(pluslife >= 0);//0Ç≈Ç‡ÇnÇjÇ…ÇµÇƒÇÈÅ@Ç∆ÇËÇ‹
+	const int realpluslife = max(0,min(pluslife, max_hp - now_hp));
+	now_hp +=realpluslife;
+	return realpluslife;
 }
 //int Chara::Act(const Action type) {
 //	switch (type) {
@@ -51,14 +52,14 @@ bool Chara::GainLife(const int alife) {
 //	switch (type) {
 //	case A_Attack:
 //		*situation = S_ChoosingTarget;
-//		nowfor = 0;
+//	
 //		break;
 //	case A_Defence:
 //		Act(A_Defence);
 //		break;
 //	case A_Special:
 //		*situation = S_ChoosingTarget;
-//		nowfor = 2;
+//
 //		break;
 //
 //	default:
@@ -74,12 +75,15 @@ bool Chara::GainLife(const int alife) {
 //	return atarget.defending ? diff / 4 : diff;
 //}
 MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid,aactionlog, asituation){
-	level = DATES[aid].fst_level;
+	level = DETAILS[aid].fst_level;
 	next_exp = 0;
+	if (id == 0) {//ètÇ»ÇÁ
+		controlable = true;
+	}
 }
 int MyChara::GainExp(const int aexp) {
 	next_exp -= aexp;
-	while (next_exp <= 0) {
+	if(next_exp <= 0) {
 	}
 	return true;
 }
@@ -93,7 +97,6 @@ int MyChara::GainExp(const int aexp) {
 Party::Party(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation) :members(), actionlog(aactionlog),situation(asituation){
 	LEFT = aleft;
 	UP = aup;
-	
 }
 void Party::Update() {
 
@@ -117,7 +120,7 @@ void Party::Draw() {
 bool Party::AddMember(const int aid) {
 	for (int i = 0; i < maxmember; ++i) {
 		if (members[i] == NULL) {
-			if (DATES[aid].isenemy) {
+			if (DETAILS[aid].isenemy) {
 				
 			}
 			members[i] = new MyChara(aid, actionlog, situation);
@@ -125,6 +128,11 @@ bool Party::AddMember(const int aid) {
 		}
 	}
 	return false;
+}
+void Party::DeleteMember(const int anum) {
+	
+	members[anum] = NULL;
+
 }
 Chara* Party::GetMember(const int anum) {
 	return members[anum];
@@ -171,6 +179,7 @@ vector<int > MyParty::GetAliveMemberId() {
 	}
 	return AliveId;
 }
+
 OpParty::OpParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation) : Party(aleft,aup,aactionlog, asituation) {
 	
 }
