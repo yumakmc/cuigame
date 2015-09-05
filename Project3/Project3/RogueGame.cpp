@@ -31,19 +31,19 @@ namespace roguegame {
 	const int MAP_LEFT = 2;
 	const int MAP_UP = 2;
 
-	array<int, 91> EnemyMap = {//0:‹ó”’@@@4~“G
-		9,0,0,0,1,0,1,0,3,0,
-		0,0,0,2,0,1,0,1,0,0,
-		0,0,3,0,0,1,0,0,2,0,
-		0,0,0,0,0,2,0,0,0,0,
-		0,0,4,0,0,0,0,1,0,0,
-		0,0,1,0,4,0,2,0,0,0,
-		0,0,0,2,0,0,0,1,0,0,
-		0,0,3,0,0,0,1,0,0,0,
-		2,0,0,0,0,4,0,0,2,0,
+	array<int, 91> EnemyMap = {//0:‹ó”’@ @@4~“G
+		0,4,0,4,5,4,5,0,7,0,
+		0,0,0,6,0,5,0,5,0,4,
+		0,0,7,0,0,5,0,0,6,0,
+		0,0,0,0,0,6,0,0,0,0,
+		0,0,4,0,0,0,0,5,0,0,
+		0,0,5,0,4,0,6,0,0,0,
+		0,0,0,6,0,0,0,5,0,0,
+		0,0,7,0,0,0,5,0,0,0,
+		6,0,0,7,0,4,7,0,6,0,
 		0,
 	};
-	struct youbi {
+	struct name_and_descript {
 		string name;
 		string descript;
 	};
@@ -56,14 +56,26 @@ namespace roguegame {
 		Sun,
 		Mon,
 	};
-	static map<Date,youbi> YOUBI_DETAIL = {//day0: Œ—j“ú day1: ‰Î—j“ú‚Æ‚È‚é
-		{Thu,youbi{ "‰Î","UŒ‚—Í@‚Q”{" },   },
-		{Wed,youbi{ "…","Œ‚ªÎ‚Á‚Ä‚¢‚é" }, },
-		{Tur,youbi{ "–Ø","–hŒä—Í@‚Q”{" },	  },
-		{Fri,youbi{ "‹à","ŒoŒ±’l@‚Q”{" },	  },
-		{Sat,youbi{ "“y","–³“G" },			  },
-		{Sun,youbi{ "“ú","ˆ¤@‚R”{" },		},
-		{Mon,youbi{ "Œ","Œ‚ªÎ‚Á‚Ä‚¢‚é" }	 },
+	static map<Date, name_and_descript> YOUBI_DETAIL = {//day0: Œ—j“ú day1: ‰Î—j“ú‚Æ‚È‚é
+		{Thu,name_and_descript{ "‰Î","UŒ‚—Í@‚Q”{" },   },
+		{Wed,name_and_descript{ "…","Œ‚ªÎ‚Á‚Ä‚¢‚é" }, },
+		{Tur,name_and_descript{ "–Ø","–hŒä—Í@‚Q”{" },	  },
+		{Fri,name_and_descript{ "‹à","ŒoŒ±’l@‚Q”{" },	  },
+		{Sat,name_and_descript{ "“y","–³“G" },			  },
+		{Sun,name_and_descript{ "“ú","ˆ¤@‚R”{" },		},
+		{Mon,name_and_descript{ "Œ","Œ‚ªÎ‚Á‚Ä‚¢‚é" }	 },
+	};
+	static map<int, name_and_descript> CHIP_DETAIL = {//day0: Œ—j“ú day1: ‰Î—j“ú‚Æ‚È‚é
+		{ 0,name_and_descript{ "–³","‰½‚à‚È‚¢@‚Å‚à‰½‚Å‚à‚Å‚«‚é" }, },
+		{ 1,name_and_descript{ "‚ ","Œ‚ªÎ‚Á‚Ä‚¢‚é" }, },
+		{ 2,name_and_descript{ "‚¢","–hŒä—Í@‚Q”{" }, },
+		{ 3,name_and_descript{ "‚¤","ŒoŒ±’l@‚Q”{" }, },
+		{ 4,name_and_descript{ "‚S","–³“G" }, },
+		{ 5,name_and_descript{ "‚T","ˆ¤@‚R”{" }, },
+		{ 6,name_and_descript{ "‚U","Œ‚ªÎ‚Á‚Ä‚¢‚é" } },
+		{ 7,name_and_descript{ "‚V","–³“G" }, },
+		{ 8,name_and_descript{ "Œ","u‰´‚à‚¨‘O‚ç‚à‚İ‚ñ‚È‚¨‚µ‚Ü‚¢‚¾v" } },
+		{ 9,name_and_descript{ "t","€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
 	};
 
 }
@@ -182,23 +194,25 @@ void RogueGame::Draw() {
 #pragma endregion
 	
 #pragma region MAP
-	
+	array<int, 91> My_EnemyMap(EnemyMap);
+	My_EnemyMap[day] = 9;
 	for (int i = 0; i < 7; ++i) {
 		for (int j = 0; j < 13; ++j) {
+			string st = CHIP_DETAIL[My_EnemyMap[13 * i + j]].name;
 			if (i % 2) {
 				if (j != 12) {
-					aDrawableConsole.draw(11-j + MAP_LEFT, MAP_UP + 2 * (6 - i) + 1, Common::To_ZString(EnemyMap[9 * i + j]).c_str());
+					aDrawableConsole.draw(11-j + MAP_LEFT, MAP_UP + 2 * (6 - i) + 1, st);
 				}
 				else {
-					aDrawableConsole.draw(MAP_LEFT, MAP_UP + 2 * (6 - i), Common::To_ZString(EnemyMap[9 * i + j]).c_str());
+					aDrawableConsole.draw(MAP_LEFT, MAP_UP + 2 * (6 - i), st);
 				}
 			}
 			else {
 				if (j != 12) {
-					aDrawableConsole.draw(j + MAP_LEFT, MAP_UP + 2 * (6 - i) + 1, Common::To_ZString(EnemyMap[9 * i + j]).c_str());
+					aDrawableConsole.draw(j + MAP_LEFT, MAP_UP + 2 * (6 - i) + 1, st);
 				}
 				else {
-					aDrawableConsole.draw(11 + MAP_LEFT, MAP_UP + 2 * (6 - i), Common::To_ZString(EnemyMap[9 * i + j]).c_str());
+					aDrawableConsole.draw(11 + MAP_LEFT, MAP_UP + 2 * (6 - i), st);
 				}
 			}
 		}
@@ -231,9 +245,6 @@ void RogueGame::Draw() {
 		break;
 	case S_ChoosingTarget:
 		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "“G‚Ì’†‚©‚ç‘ÎÛ‚ğ‘I‘ğ‚¹‚æ");
-		break;
-	case S_ChoosingMy:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "–¡•û‚Ì’†‚©‚ç‘ÎÛ‚ğ‘I‘ğ‚¹‚æ");
 		break;
 	case S_OtherTurn:
 		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "‘Šè‚Ìƒ^[ƒ“");

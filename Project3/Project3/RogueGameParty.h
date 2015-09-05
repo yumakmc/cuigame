@@ -19,7 +19,6 @@ namespace  roguegame {
 		S_Help,
 		S_ChoosingAction,
 		S_ChoosingTarget,
-		S_ChoosingMy,
 		S_OtherTurn,
 		S_TurnEnd,
 		S_Reading,
