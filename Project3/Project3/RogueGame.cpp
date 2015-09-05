@@ -83,9 +83,10 @@ vector<string> *b=new vector<string>();//ここ汚い直したい
 Situation *c = new Situation(S_Opening);
 
 RogueGame::RogueGame(gameSceneChanger* changer) 
-	:gameBaseScene(changer), abackground(0), actionlog(b),situation(c) ,myparty(PARTY_LEFT, MY_PARTY_UP,b, c),opparty(PARTY_LEFT, OP_PARTY_UP,b, c){
+	:gameBaseScene(changer), abackground(0), actionlog(b),situation(c) ,myparty(PARTY_LEFT, MY_PARTY_UP,b, c),opparty(PARTY_LEFT, OP_PARTY_UP,b, c),nowplayernum(4){
 	Party a(PARTY_LEFT, MY_PARTY_UP, actionlog, situation);
 	myparty.AddMember(0);
+	myparty.GetMember(0)->controlable = true;
 	myparty.AddMember(1);
 	opparty.AddMember(4);
 	opparty.AddMember(5);
@@ -119,6 +120,14 @@ void RogueGame::Update() {
 		break;
 	case S_Help://ヘルプ
 		break;
+	case S_TurnStart:
+		////////////////////////////////////////////////
+		if (EnemyMap[day] >= 4) {
+			opparty.AddMember(EnemyMap[day]);
+		}
+		*situation = S_ChoosingAction;
+		break;
+
 	case S_ChoosingAction://こちらの攻撃選択中	
 		if (Keyboard_Get('A') == 1) {
 			SelectAction(A_Attack);	
@@ -138,30 +147,31 @@ void RogueGame::Update() {
 		}
 		for (int i = 0; i < myparty.maxmember + opparty.maxmember; ++i) {
 			if (Keyboard_Get(i+48) == 1) {//
-				Chara* target;
-				if (opparty.maxmember > i) {
-					target = opparty.GetMember(i);
-				}
-				else {
-					target = myparty.GetMember(i - opparty.maxmember);
-				}
+				Chara* target(GetMember(i));
+				
 				if (target != NULL) {
 					*situation = S_ChoosingAction;//
-					Act(myparty.GetMember(nowplayernum), target, nowaction);
+					Act(GetMember(nowplayernum), target, nowaction);
 				}
-				
 				break;
 			}
 		}
 		break;
-	case S_OtherTurn://相手の対象を選択中
+	case S_AllyTurn: {//相手の対象を選択中
 		//他のターンの行動入れる。
-		
-		*situation = S_TurnEnd;
+		MyChara* nowplayer = static_cast<MyChara*>(GetMember(nowplayernum));
+		Act(nowplayer, GetMember(nowplayer->nexttarget), nowplayer->nextaction);
+	}
+		break;
+	case S_EnemyTurn: {//相手の対象を選択中
+					//他のターンの行動入れる。
+		Chara* nowplayer(GetMember(nowplayernum));
+		Act(nowplayer, GetMember(nowplayer->nexttarget), nowplayer->nextaction);
+	}
 		break;
 	case S_TurnEnd://相手の対象を選択中
 		day++;
-		*situation = S_ChoosingAction;
+		*situation = S_TurnStart;
 		break;
 	default:
 		break;
@@ -240,14 +250,20 @@ void RogueGame::Draw() {
 	case S_Help:
 		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "ヘルプ画面");
 		break;
+	case S_TurnStart:
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "ターンスタート");
+		break;
 	case S_ChoosingAction:
 		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "行動を選択せよ");
 		break;
 	case S_ChoosingTarget:
 		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "敵の中から対象を選択せよ");
 		break;
-	case S_OtherTurn:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "相手のターン");
+	case S_AllyTurn:
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "味方のターン");
+		break;
+	case S_EnemyTurn:
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "敵のターン");
 		break;
 	case S_TurnEnd:
 		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "日が暮れた。日が明けた。");
@@ -279,8 +295,8 @@ int RogueGame::Regenerate(Chara *from, Chara *to) {
 	return pluslife;
 }
 int RogueGame::Regenerate(const int fromnum, const int tonum) {
-	Chara* from = fromnum >= 4 ? myparty.GetMember(fromnum - 4) : opparty.GetMember(fromnum);
-	Chara* to = tonum >= 4 ? myparty.GetMember(tonum - 4) : opparty.GetMember(tonum);
+	Chara* from =GetMember(fromnum);
+	Chara* to =GetMember(tonum);
 	return Regenerate(from, to);
 }
 bool RogueGame::Attack(Chara *from, Chara *to) {
@@ -294,8 +310,8 @@ bool RogueGame::Attack(Chara *from, Chara *to) {
 	return false;
 }
 bool RogueGame::Attack(const int fromnum, const int tonum) {
-	Chara* from = fromnum >= 4 ? myparty.GetMember(fromnum - 4) : opparty.GetMember(fromnum);
-	Chara* to = tonum >= 4 ? myparty.GetMember(tonum - 4) : opparty.GetMember(tonum);
+	Chara* from = GetMember(fromnum);
+	Chara* to = GetMember(tonum);
 	return Attack(from,to);
 }
 bool RogueGame::Special(Chara *from, Chara *to) {
@@ -311,8 +327,8 @@ bool RogueGame::Special(Chara *from, Chara *to) {
 	return false;
 }
 bool RogueGame::Special(const int fromnum, const int tonum) {
-	Chara* from = fromnum >= 4 ? myparty.GetMember(fromnum - 4) : opparty.GetMember(fromnum);
-	Chara* to = tonum >= 4 ? myparty.GetMember(tonum - 4) : opparty.GetMember(tonum);
+	Chara* from = GetMember(fromnum);
+	Chara* to = GetMember(tonum);
 	return Special(from, to);
 }
 int RogueGame::Act(Chara *from,Chara *to,const Action type) {
@@ -339,17 +355,12 @@ int RogueGame::Act(Chara *from,Chara *to,const Action type) {
 
 	//一人しか操作できないという前提あり
 	
-	if (ChooseNextPlayer()) {//全員終わらなかったら
-		assert(false);//今のとこ来るはずない
-		*situation = S_ChoosingAction;
-	}
-	else {
-		*situation = S_OtherTurn;
-	}
+	ChangeActMember(); //全員終わらなかったら
+	
 	return true;
 }
 int RogueGame::SelectAction(const Action type) {
-	myparty.GetMember(nowplayernum)->defending = false;//特殊効果解除
+	GetMember(nowplayernum)->defending = false;//特殊効果解除
 	switch (type) {
 	case A_Attack:
 		nowaction = A_Attack;
@@ -357,7 +368,7 @@ int RogueGame::SelectAction(const Action type) {
 		break;
 
 	case A_Defence:
-		Act(myparty.GetMember(nowplayernum), myparty.GetMember(nowplayernum),A_Defence);
+		Act(GetMember(nowplayernum), GetMember(nowplayernum),A_Defence);
 		break;
 
 	case A_Special:
@@ -381,15 +392,39 @@ inline int RogueGame::CalculateDmg(const Chara *from,const Chara *to) {
 		return to->defending ? diff / 4 : diff;
 	}
 }
-bool RogueGame::ChooseNextPlayer() {
+bool RogueGame::ChangeActMember() {
 	bool flag = false;
-	for (int i = nowplayernum + 1; i < myparty.maxmember; ++i) {
-		if (myparty.GetMember(i) == NULL) { break; }
-		if (!DETAILS[myparty.GetMember(i)->id].isenemy && (static_cast<MyChara*> (myparty.GetMember(i)))->controlable) {
-			nowplayernum = i;
+	while (1) {
+		nowplayernum++;
+		if (nowplayernum == myparty.maxmember + opparty.maxmember) {
+			nowplayernum = 0;
+		}
+
+		if (nowplayernum == opparty.maxmember) {
 			flag = true;
 		}
+		if (GetMember(nowplayernum) == NULL) {
+			continue;
+		}
+		else {
+			break;
+		}
 	}
+
+	if (nowplayernum < opparty.maxmember) {
+		*situation = S_EnemyTurn;
+	}
+	else {
+		if ((GetMember(nowplayernum))->controlable) {
+			*situation = S_ChoosingTarget;
+
+		}
+		else {
+			*situation = S_AllyTurn;
+		}
+	}
+	
+	
 	return flag;
 }
 int RogueGame::CheckDeadPlayer() {
@@ -406,4 +441,16 @@ int RogueGame::CheckDeadPlayer() {
 		}
 	}
 	return 0;
+}
+Chara* RogueGame::GetMember(int num) {
+	if (num < opparty.maxmember) {
+		return opparty.GetMember(num);
+	}
+	else if (num < opparty.maxmember + myparty.maxmember) {
+		return myparty.GetMember(num - opparty.maxmember);
+	}
+	else {
+		assert(false);
+		return NULL;
+	}
 }

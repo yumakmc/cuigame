@@ -17,9 +17,11 @@ namespace  roguegame {
 	enum Situation {
 		S_Opening,
 		S_Help,
+		S_TurnStart,
 		S_ChoosingAction,
 		S_ChoosingTarget,
-		S_OtherTurn,
+		S_AllyTurn,
+		S_EnemyTurn,
 		S_TurnEnd,
 		S_Reading,
 		S_Ending,
@@ -47,6 +49,7 @@ namespace  roguegame {
 		Chara(const int aid, vector<string> *aactionlog, Situation *asituation);
 		bool GetDamage(const int admg);//Ž€‚ñ‚¾‚©‚ð•Ô‚·
 		int GainLife(const int pluslife);
+		
 
 		//int Act(const Action type);
 		//int SelectAction(const Action type);
@@ -61,11 +64,14 @@ namespace  roguegame {
 		int max_hp;
 		bool isdead;
 		bool defending;
+		int nexttarget = 0;
+		Action nextaction=A_Attack;
+		bool controlable = false;
 	protected:
 		vector<string> *actionlog;
 		Situation *situation;
 	private:
-
+		
 	};
 	class MyChara :public Chara {
 	public:
@@ -75,7 +81,7 @@ namespace  roguegame {
 		int level;
 		int next_exp;
 		int ai=0;
-		bool controlable = false;
+		
 	};
 	class Party:public Task {
 	public:
