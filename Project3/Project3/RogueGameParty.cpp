@@ -1,4 +1,5 @@
 #include "RogueGameParty.h"
+#include "RogueGame.h"
 #include<assert.h>
 
 
@@ -8,6 +9,10 @@ Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :
 	now_hp = DETAILS[aid].fst_hp;
 	max_hp = TABLE<0, 0>::max_hp;
 	isdead = false;
+	ai = DETAILS[aid].fst_ai;
+	if (ai == Ai_Controlabel) {
+		controlable = true;
+	}
 }
 bool Chara::GetDamage(const int admg) {
 	assert(admg >= 0);
@@ -26,7 +31,7 @@ int Chara::GainLife(const int pluslife) {
 	now_hp +=realpluslife;
 	return realpluslife;
 }
-//int Chara::Act(const Action type) {
+//int Chara::Act(const ActionType type) {
 //	switch (type) {
 //	case A_Attack:
 //		
@@ -47,7 +52,7 @@ int Chara::GainLife(const int pluslife) {
 //	*situation = S_OtherTurn;
 //	return true;
 //}
-//int Chara::SelectAction(const Action type) {
+//int Chara::SelectAction(const ActionType type) {
 //	defending = false;//“ÁŽêŒø‰Ê‰ðœ
 //	switch (type) {
 //	case A_Attack:
@@ -137,9 +142,10 @@ void Party::DeleteMember(const int anum) {
 Chara* Party::GetMember(const int anum) {
 	return members[anum];
 }
-//int Party::Act(const Action type) {
+//int Party::Act(const ActionType type) {
 //	return members[nowselect]->SelectAction(type);
 //}
+
 MyParty::MyParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation) :Party(aleft,aup,aactionlog, asituation) {
 	
 }

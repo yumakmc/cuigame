@@ -4,15 +4,18 @@
 #include <array>
 #include "Task.h"
 #include "RogueGameTable.h"
+
 #include "DrawableConsole.h"
 #include "Common.h"
 using namespace std;
 using namespace roguegame;
 namespace  roguegame {
-	enum Action {
+	
+	enum ActionType {
 		A_Attack,
 		A_Defence,
 		A_Special,
+		A_Nothing,//‘Ò‹@
 	};
 	enum Situation {
 		S_Opening,
@@ -26,36 +29,45 @@ namespace  roguegame {
 		S_Reading,
 		S_Ending,
 	};
+	enum Ai {
+		Ai_Controlabel,
+		Ai_AttackEnemy,
+		Ai_AttackMy,
+		Ai_AttackSpring,
+		Ai_AttackSummer,
+		Ai_AttackFall,
+	};
 	struct data {
 		bool isenemy;
 		string name;
 		int fst_hp;
 		int fst_level;
+		Ai fst_ai;
 	};
 
 	static const vector<data> DETAILS = {
-		{ false,"t",10,1 },
-		{ false,"‰Δ",1000,50 },
-		{ false,"H",100,30 },
-		{ false,"“~",100,10 },
-		{ true,"—’",10,1 },
-		{ true,"¬θ¦Ξ",1000,50 },
-		{ true,"’†θ¦Ξ",100,30 },
-		{ true,"‘εθ¦Ξ",10,10 },
+		{ false,"t",10,1,Ai_Controlabel },
+		{ false,"‰Δ",1000,50,Ai_AttackSpring },
+		{ false,"H",100,30,Ai_AttackSummer },
+		{ false,"“~",100,10,Ai_AttackEnemy },
+		{ true,"—’",10,1,Ai_AttackMy },
+		{ true,"¬θ¦Ξ",1000,50 ,Ai_AttackMy },
+		{ true,"’†θ¦Ξ",100,30,Ai_AttackMy },
+		{ true,"‘εθ¦Ξ",10,10,Ai_AttackMy },
 
+	};
+	struct ActionInfo {
+		int targetnum;
+		ActionType type;
 	};
 	class Chara {
 	public:
 		Chara(const int aid, vector<string> *aactionlog, Situation *asituation);
 		bool GetDamage(const int admg);//€‚ρ‚Ύ‚©‚π•Τ‚·
 		int GainLife(const int pluslife);
+
 		
 
-		//int Act(const Action type);
-		//int SelectAction(const Action type);
-		/*virtual bool Attack(Chara &atarget);*/
-		//inline int CalculateDmg(const Chara& atarget);
-		
 		const int id;
 		const string name;
 		int atk;
@@ -64,9 +76,11 @@ namespace  roguegame {
 		int max_hp;
 		bool isdead;
 		bool defending;
-		int nexttarget = 0;
-		Action nextaction=A_Attack;
+		ActionInfo nextActionInfo = {
+			-1,A_Attack
+		};
 		bool controlable = false;
+		Ai ai;
 	protected:
 		vector<string> *actionlog;
 		Situation *situation;
@@ -91,7 +105,7 @@ namespace  roguegame {
 		bool AddMember(const int aid);
 		Chara* GetMember(const int anum);
 		void DeleteMember(const int anum);
-		//int Act(const Action type);
+		//int Act(const ActionType type);
 		int nowselect=0;
 		static const int maxmember = 4;
 		
