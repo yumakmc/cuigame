@@ -9,6 +9,9 @@
 using namespace roguegame;
 
 int EndingNum=-1;//extern‚ÅRogueEnding‚É“n‚·
+int LoveHp = 0;
+int KillNum = 0;
+int SpendDay=0;
 
 namespace roguegame {
 	const int LOG_LINE_Y = 20;
@@ -102,7 +105,6 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 	myparty.AddMember(0);
 	myparty.AddMember(1);
 	opparty.AddMember(4);
-	opparty.AddMember(5);
 
 	aRand.init();
 	Initialize();
@@ -319,6 +321,7 @@ int RogueGame::Attack(Chara *from, Chara *to) {
 	to->GetDamage(dmg);
 	if (dmg) {
 		if (!DETAILS[from->id].isenemy) {
+			KillNum++;
 			MyChara *a = static_cast<MyChara*>(from);
 			a->GainExp(777);
 		}
@@ -336,8 +339,12 @@ int RogueGame::Attack(const int fromnum, const int tonum) {
 int RogueGame::Special(Chara *from, Chara *to) {
 	//from‚É‚æ‚Á‚Ä•ªŠò
 	switch (from->id) {
-	case 0://t
-		return Regenerate(from, to);//t‚Í
+	case 0: {//t
+		const int regenehp = Regenerate(from, to);
+		LoveHp += regenehp;
+		return regenehp;
+	}
+
 
 	default:
 		;
