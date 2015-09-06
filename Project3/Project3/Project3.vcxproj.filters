@@ -111,6 +111,9 @@
     <ClCompile Include="mt19937ar.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="RogueEnding.cpp">
+      <Filter>Rogue</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Data_Rand.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="RogueEnding.h">
+      <Filter>Rogue</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

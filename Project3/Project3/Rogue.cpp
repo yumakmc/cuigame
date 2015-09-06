@@ -27,6 +27,10 @@ void Rogue::Update() {
 			mGameScene = (gameBaseScene*) new roguegame::RogueGame(this);
 			
 			break;//以下略
+		case eGameScene_Ending:
+			mGameScene = (gameBaseScene*) new roguegame::RogueEnding(this);
+
+			break;//以下略
 		}
 		mNextScene = eGameScene_None;    //次のシーン情報をクリア
 		mGameScene->Initialize();    //シーンを初期化

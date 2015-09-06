@@ -58,6 +58,7 @@ namespace  roguegame {
 		Common::Rand aRand;
 		data adata;
 
+		int season = 0;
 		int day = 0;
 
 

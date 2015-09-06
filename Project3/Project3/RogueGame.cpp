@@ -8,6 +8,8 @@
 
 using namespace roguegame;
 
+int EndingNum=-1;//externでRogueEndingに渡す
+
 namespace roguegame {
 	const int LOG_LINE_Y = 20;
 
@@ -459,6 +461,70 @@ int RogueGame::CheckDeadPlayer() {
 		Chara* amychara = myparty.GetMember(i);
 		if (amychara != NULL&&amychara->isdead) {
 			//エンディング判定したい
+			switch (season) {
+			case 0:
+				switch (amychara->id) {
+				case 0:
+					EndingNum = 0;
+					mgameSceneChanger->ChangeScene(eGameScene_Ending);
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+
+				case 3:
+					break;
+				}
+			case 1:
+				switch (amychara->id) {
+				case 0:
+					EndingNum = 1;
+					mgameSceneChanger->ChangeScene(eGameScene_Ending);
+					break;
+				case 1:
+					EndingNum = 2;
+					mgameSceneChanger->ChangeScene(eGameScene_Ending);
+					break;
+				case 2:
+					break;
+
+				case 3:
+					break;
+				}
+			case 2:
+				switch (amychara->id) {
+				case 0:
+					EndingNum = 3;
+					mgameSceneChanger->ChangeScene(eGameScene_Ending);
+					break;
+				case 1:
+					EndingNum = 4;
+					mgameSceneChanger->ChangeScene(eGameScene_Ending);
+					break;
+				case 2:
+					break;
+
+				case 3:
+					break;
+				}
+			case 3:
+				switch (amychara->id) {
+				case 0:
+					EndingNum = 5;
+					mgameSceneChanger->ChangeScene(eGameScene_Ending);
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+
+				case 3:
+					break;
+				}
+			}
+			
+			
 		}
 	}
 	return 0;

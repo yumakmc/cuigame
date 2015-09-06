@@ -6,6 +6,7 @@
 #include "gamebaseScene.h"
 #include "Text.h"
 #include "RogueGame.h"
+#include "RogueEnding.h"
 
 
 class Rogue :public gameSceneChanger, BaseScene {
