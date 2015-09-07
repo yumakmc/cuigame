@@ -21,7 +21,7 @@ namespace roguegame {
 			};
 		}
 	}
-	std::array<TableInfo, MaxLevel> TABLEA::Get(const int id) {
+	std::array<TableInfo, MaxLevel> TABLEA::Get(const int num) {
 		return tableinfos;
 	}
 }

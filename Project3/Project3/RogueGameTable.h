@@ -13,7 +13,7 @@ namespace  roguegame {
 	static class TABLEA {
 	public:
 		TABLEA();
-		std::array<TableInfo, MaxLevel> Get(const int id);
+		std::array<TableInfo, MaxLevel> Get(const int num);
 	private:
 		std::array<TableInfo, MaxLevel> tableinfos;
 

@@ -36,6 +36,8 @@ namespace roguegame {
 	const int MAP_LEFT = 2;
 	const int MAP_UP = 2;
 
+	const int DayPerSeason=91;
+
 	array<int, 91> EnemyMap = {//0:‹ó”’@ @@4~“G
 		0,4,0,4,5,4,5,0,7,0,
 		0,0,0,6,0,5,0,5,0,4,
