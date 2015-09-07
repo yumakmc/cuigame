@@ -24,12 +24,37 @@ namespace roguegame {
 
 	const int MAP_LEFT = 2;
 	const int MAP_UP = 2;
-
+	const int SeasonNum = 4;
 	const int DayPerSeason=91;
 
-	const float DEFENDINGRATE = 0.2;
-
-	array<int, 91> EnemyMap = {//0:空白　 　　4~敵
+	//防御してた時ダメがこれで割った数値になる。（切り捨て）%
+	const float DEFENDINGCUTOFF = 5;
+#pragma region ENEMYMAP
+	array<int, 91> SpringEnemyMap = {
+		0,4,0,0,5,0,0,0,0,4,
+		0,0,0,0,4,0,0,4,0,4,
+		0,0,5,0,0,5,0,0,7,0,
+		0,4,0,7,0,6,0,0,4,0,
+		0,0,4,0,0,0,0,5,0,0,
+		0,0,5,0,4,0,6,6,0,0,
+		0,0,0,6,0,0,0,5,0,0,
+		0,0,7,0,0,0,5,0,0,0,
+		6,0,0,7,0,4,7,0,6,0,
+		0,
+	};
+	array<int, 91> SummerEnemyMap = {
+		0,8,0,8,9,8,0,0,0,0,
+		0,0,0,10,0,9,0,9,0,8,
+		0,0,11,0,0,9,0,0,10,0,
+		0,8,0,0,0,10,0,0,8,0,
+		0,0,8,0,0,0,0,9,0,0,
+		0,0,9,0,8,0,10,10,0,0,
+		0,0,0,10,0,0,0,9,0,0,
+		0,0,11,0,0,0,9,0,0,0,
+		10,0,0,11,0,8,11,0,10,0,
+		0,
+	};
+	array<int, 91> FallEnemyMap = {
 		0,4,0,4,5,4,0,0,0,0,
 		0,0,0,6,0,5,0,5,0,4,
 		0,0,7,0,0,5,0,0,6,0,
@@ -41,7 +66,25 @@ namespace roguegame {
 		6,0,0,7,0,4,7,0,6,0,
 		0,
 	};
-	
+	array<int, 91> WinterEnemyMap = {
+		0,8,0,8,9,8,0,0,0,0,
+		0,0,0,10,0,9,0,9,0,8,
+		0,0,11,0,0,9,0,0,10,0,
+		0,8,0,0,0,10,0,0,8,0,
+		0,0,8,0,0,0,0,9,0,0,
+		0,0,9,0,8,0,10,10,0,0,
+		0,0,0,10,0,0,0,9,0,0,
+		0,0,11,0,0,0,9,0,0,0,
+		10,0,0,11,0,8,11,0,10,0,
+		0,
+	};
+	array<array<int, 91>, SeasonNum> EnemyMaps = {//0:空白　 　　4~敵
+		SpringEnemyMap,
+		SummerEnemyMap,
+		SpringEnemyMap,
+		SummerEnemyMap,
+	};
+#pragma endregion
 	enum Date {
 		Thu,
 		Wed,
@@ -128,9 +171,9 @@ void RogueGame::Update() {
 		break;
 	case S_TurnStart:
 		////////////////////////////////////////////////
-		if (EnemyMap[day] >= 4) {
+		if (EnemyMaps[season][day] >= 4) {
 			
-			opparty.AddMember(EnemyMap[day]);
+			opparty.AddMember(EnemyMaps[season][day]);
 		}
 		*situation = S_ChoosingAction;
 		break;
@@ -223,7 +266,7 @@ void RogueGame::Draw() {
 	
 #pragma endregion	
 #pragma region MAP
-	array<int, 91> My_EnemyMap(EnemyMap);
+	array<int, 91> My_EnemyMap(EnemyMaps[season]);
 	My_EnemyMap[day] = 9;
 	for (int i = 0; i < 7; ++i) {
 		for (int j = 0; j < 13; ++j) {
@@ -429,7 +472,7 @@ inline int RogueGame::CalculateDmg(const Chara *from,const Chara *to) {
 		int realatk = (YOUBI_DETAIL[Date(day % 7)].effect == (E_AtkUp)) ? from->atk * 2 : from->atk;
 		int realdef = (YOUBI_DETAIL[Date(day % 7)].effect == (E_DefUp)) ? to->def * 2 : to->def;
 		const int diff = max(0, realatk - realdef);
-		return to->defending ? diff * DEFENDINGRATE : diff;
+		return to->defending ? diff / DEFENDINGCUTOFF : diff;
 	}
 }
 bool RogueGame::ChangeActMember() {

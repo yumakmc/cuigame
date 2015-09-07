@@ -60,24 +60,24 @@ namespace  roguegame {
 	};
 
 	static const vector<data> DETAILS = {
-		{ false,"èt"   ,Ai_Controlabel ,  10,{ 1},{ 0, 0, 0, 10} },
+		{ false,"èt"   ,Ai_Controlabel ,  30,{ 1},{ 0, 0, 0, 10} },
 		{ false,"âƒ"   ,Ai_AttackSpring,1000,{50},{ 0, 0, 0, 10} },
 		{ false,"èH"   ,Ai_AttackSummer, 500,{30},{ 0, 0, 0, 10} },
 		{ false,"ì~"   ,Ai_AttackEnemy , 700,{40},{ 0, 0, 0, 10} },
 
-		{ true,"î~"    ,Ai_AttackMy	   ,  10,{ 0},{ 7, 4, 3,  5} },//ètÇÃâ‘
-		{ true,"‰ø"    ,Ai_AttackMy    ,  20,{ 0},{10, 5, 4, 10} },
-		{ true,"í÷"    ,Ai_AttackMy    ,  30,{ 0},{20, 9, 5, 20} },
-		{ true,"ç˜"	   ,Ai_AttackMy    ,  50,{ 0},{30, 8, 6, 30} },
+		{ true,"î~"    ,Ai_AttackMy	   ,  15,{ 0},{ 7, 6, 0,  15 } },//ètÇÃâ‘
+		{ true,"‰ø"    ,Ai_AttackMy    ,  25,{ 0},{10, 7, 3, 25 } },
+		{ true,"í÷"    ,Ai_AttackMy    ,  99,{ 0},{20, 17, 5, 99 } },
+		{ true,"ç˜"	   ,Ai_AttackMy    ,  80,{ 0},{30, 15, 15, 80 } },
 
 		{ true,"ó®"    ,Ai_AttackMy    ,  60,{ 0},{20, 9, 9, 60} },//âƒÇÃâ‘
 		{ true,"à®"    ,Ai_AttackMy    ,  70,{ 0},{10,20, 5, 70} },
-		{ true,"Â["    ,Ai_AttackMy    ,  30,{ 0},{30,15,30, 80} },
+		{ true,"Â["    ,Ai_AttackMy    ,  80,{ 0},{30,15,30, 80} },
 		{ true,"ò@"    ,Ai_AttackMy	   , 100,{ 0},{ 5,14,17,100} },
 
 		{ true,"óñ"    ,Ai_AttackMy    ,  60,{ 0 },{ 20, 9, 9, 60 } },//èHÇÃâ‘
 		{ true,"ãe"    ,Ai_AttackMy    ,  70,{ 0 },{ 10,20, 5, 70 } },
-		{ true,"îã"    ,Ai_AttackMy    ,  30,{ 0 },{ 30,15,30, 80 } },
+		{ true,"îã"    ,Ai_AttackMy    ,  80,{ 0 },{ 30,15,30, 80 } },
 		{ true,"ãk"    ,Ai_AttackMy	   , 100,{ 0 },{ 5,14,17,100 } },
 
 		{ true,"ïA"    ,Ai_AttackMy    ,  60,{ 0 },{ 20, 9, 9, 60 } },//ì~ÇÃâ‘
@@ -85,7 +85,7 @@ namespace  roguegame {
 
 		{ true,"è¨"    ,Ai_AttackMy    ,  60,{ 0 },{ 20, 9, 9, 60 } },//Ë¶êŒ
 		{ true,"íÜ"    ,Ai_AttackMy    ,  70,{ 0 },{ 10,20, 5, 70 } },
-		{ true,"ëÂ"    ,Ai_AttackMy    ,  30,{ 0 },{ 30,15,30, 80 } },
+		{ true,"ëÂ"    ,Ai_AttackMy    ,  80,{ 0 },{ 30,15,30, 80 } },
 		{ true,"Çl"    ,Ai_AttackMy	   , 100,{ 0 },{ 5,14,17,100 } },
 
 		{ true,"åé"    ,Ai_AttackMy	   , 100,{ 0 },{ 5,14,17,100 } },//åé
