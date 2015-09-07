@@ -1,6 +1,5 @@
 #include "RogueGameParty.h"
 #include "RogueGame.h"
-#include "RogueGameTable.h"
 #include<assert.h>
 
 

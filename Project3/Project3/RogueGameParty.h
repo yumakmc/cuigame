@@ -3,10 +3,9 @@
 #include <vector>
 #include <array>
 #include "Task.h"
-#include "RogueGameTable.h"
-
 #include "DrawableConsole.h"
 #include "Common.h"
+#include "RogueGameTable.h"
 using namespace std;
 using namespace roguegame;
 namespace  roguegame {

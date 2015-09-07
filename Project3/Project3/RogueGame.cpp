@@ -29,6 +29,7 @@ namespace roguegame {
 
 	//防御してた時ダメがこれで割った数値になる。（切り捨て）
 	const int DEFENDINGCUTOFF = 5;
+
 #pragma region ENEMYMAP
 	array<int, 91> SpringEnemyMap = {
 		0,4,0,0,0,5,0,0,0,4,
@@ -81,8 +82,8 @@ namespace roguegame {
 	array<array<int, 91>, SeasonNum> EnemyMaps = {//0:空白　 　　4~敵
 		SpringEnemyMap,
 		SummerEnemyMap,
-		SpringEnemyMap,
-		SummerEnemyMap,
+		FallEnemyMap,
+		WinterEnemyMap,
 	};
 #pragma endregion
 	enum Date {
@@ -142,13 +143,7 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 	
 
 	Initialize();
-	
-	//int c = TABLE<0, 100>::next_exp;
-	//
-	//if (c == 5051) {
-	//	int k=0;
-	//	k++;
-	//}
+
 	
 	aMusic.Play(5);
 }
@@ -190,7 +185,7 @@ void RogueGame::Update() {
 		}
 		
 		break;
-	case S_ChoosingTarget://相手の対象を選択中
+	case S_ChoosingTarget://対象を選択中
 		if (Keyboard_Get('X') == 1) {
 			*situation = S_ChoosingAction;
 			break;
@@ -211,11 +206,9 @@ void RogueGame::Update() {
 		
 		MyChara* nowplayer = static_cast<MyChara*>(GetMember(nowplayernum));
 		if (nowplayer->nextActionInfo.targetnum == -1 || GetMember(nowplayer->nextActionInfo.targetnum) == NULL) {
-			//DecideNextAction(nowplayer);
 			nowplayer->DecideNextAction(*this);
 		}
 		Act(nowplayer, GetMember(nowplayer->nextActionInfo.targetnum), nowplayer->nextActionInfo.type);
-		//DecideNextAction(nowplayer);
 		nowplayer->DecideNextAction(*this);
 	}
 		break;
@@ -367,8 +360,9 @@ int RogueGame::Regenerate(Chara *from, Chara *to) {
 	to->GainLife(pluslife);
 	if (from->id == 0&& DETAILS[to->id].isenemy) {//春がfrom,敵がtoなら
 		
-		static_cast<OpChara*>(to)->exp += pluslife;
 		//toからとれる経験値増える
+		static_cast<OpChara*>(to)->exp += pluslife;
+		
 	}
 	return pluslife;
 }
@@ -392,7 +386,6 @@ int RogueGame::Attack(Chara *from, Chara *to) {
 			}
 			myparty.GainExp(getexp);
 		}
-		return dmg;//////////////
 	}
 	return dmg;
 }
