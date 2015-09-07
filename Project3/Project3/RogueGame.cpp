@@ -28,7 +28,7 @@ namespace roguegame {
 	const int DayPerSeason=91;
 
 	//防御してた時ダメがこれで割った数値になる。（切り捨て）
-	const float DEFENDINGCUTOFF = 5;
+	const int DEFENDINGCUTOFF = 5;
 #pragma region ENEMYMAP
 	array<int, 91> SpringEnemyMap = {
 		0,4,0,0,0,5,0,0,0,4,
@@ -137,10 +137,10 @@ Situation *c = new Situation(S_Opening);
 RogueGame::RogueGame(gameSceneChanger* changer) 
 	:gameBaseScene(changer), abackground(0), actionlog(b),situation(c) ,myparty(PARTY_LEFT, MY_PARTY_UP,b, c),opparty(PARTY_LEFT, OP_PARTY_UP,b, c),nowplayernum(4){
 	Party a(PARTY_LEFT, MY_PARTY_UP, actionlog, situation);
-	myparty.AddMember(0);
-	opparty.AddMember(4);
+	myparty.AddMember(0,*this);
+	opparty.AddMember(4,*this);
+	
 
-	aRand.init();
 	Initialize();
 	
 	//int c = TABLE<0, 100>::next_exp;
@@ -173,7 +173,7 @@ void RogueGame::Update() {
 		////////////////////////////////////////////////
 		if (EnemyMaps[season][day] >= 4) {
 			
-			opparty.AddMember(EnemyMaps[season][day]);
+			opparty.AddMember(EnemyMaps[season][day],*this);
 		}
 		*situation = S_ChoosingAction;
 		break;
@@ -211,20 +211,24 @@ void RogueGame::Update() {
 		
 		MyChara* nowplayer = static_cast<MyChara*>(GetMember(nowplayernum));
 		if (nowplayer->nextActionInfo.targetnum == -1 || GetMember(nowplayer->nextActionInfo.targetnum) == NULL) {
-			DecideNextAction(nowplayer);
+			//DecideNextAction(nowplayer);
+			nowplayer->DecideNextAction(*this);
 		}
 		Act(nowplayer, GetMember(nowplayer->nextActionInfo.targetnum), nowplayer->nextActionInfo.type);
-		DecideNextAction(nowplayer);
+		//DecideNextAction(nowplayer);
+		nowplayer->DecideNextAction(*this);
 	}
 		break;
 	case S_EnemyTurn: {
 					
 		OpChara* nowplayer = static_cast<OpChara*>(GetMember(nowplayernum));
 		if (nowplayer->nextActionInfo.targetnum == -1 || GetMember(nowplayer->nextActionInfo.targetnum) == NULL) {
-			DecideNextAction(nowplayer);
+			//DecideNextAction(nowplayer);
+			nowplayer->DecideNextAction(*this);
 		}
 		Act(nowplayer, GetMember(nowplayer->nextActionInfo.targetnum), nowplayer->nextActionInfo.type);
-		DecideNextAction(nowplayer);
+		//DecideNextAction(nowplayer);
+		nowplayer->DecideNextAction(*this);
 	}
 		break;
 	case S_TurnEnd:
@@ -236,11 +240,11 @@ void RogueGame::Update() {
 			case 0:
 				assert(false);
 			case 1:
-				myparty.AddMember(1);
+				myparty.AddMember(1, *this);
 			case 2:
-				myparty.AddMember(2);
+				myparty.AddMember(2, *this);
 			case 3:
-				myparty.AddMember(3);
+				myparty.AddMember(3, *this);
 			}
 		}
 		*situation = S_TurnStart;
@@ -304,31 +308,35 @@ void RogueGame::Draw() {
 	opparty.Draw();
 #pragma endregion
 #pragma region COMAND
+
+	const int ax = 14;
+	const int ay = LOG_LINE_Y - 1;
 	switch (*situation)
 	{
+		
 	case S_Opening:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "Ｚ　を押してスタート");
+		aDrawableConsole.draw(ax, ay, "Ｚを押してスタート");
 		break;
 	case S_Help:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "ヘルプ画面");
+		aDrawableConsole.draw(ax, ay, "ヘルプ画面");
 		break;
 	case S_TurnStart:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "ターンスタート");
+		aDrawableConsole.draw(ax, ay, "ターンスタート");
 		break;
 	case S_ChoosingAction:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "行動の選択");
+		aDrawableConsole.draw(ax, ay, "行動の選択");
 		break;
 	case S_ChoosingTarget:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "対象の選択");
+		aDrawableConsole.draw(ax, ay, "対象の選択");
 		break;
 	case S_AllyTurn:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "味方のターン");
+		aDrawableConsole.draw(ax, ay, "味方のターン");
 		break;
 	case S_EnemyTurn:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "敵のターン");
+		aDrawableConsole.draw(ax, ay, "敵のターン");
 		break;
 	case S_TurnEnd:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "日が暮れた。日が明けた。");
+		aDrawableConsole.draw(ax, ay, "日が暮れた。日が明けた。");
 		break;
 	default:
 		assert(false);
@@ -591,7 +599,7 @@ int RogueGame::CheckDeadPlayer() {
 }
 
 //Nullが帰ってくることもあるので注意
-Chara* RogueGame::GetMember(int num) {
+Chara* RogueGame::GetMember(int num)const {
 	if (num < opparty.maxmember) {
 		return opparty.GetMember(num);
 	}
@@ -603,121 +611,4 @@ Chara* RogueGame::GetMember(int num) {
 		return NULL;
 	}
 }
-ActionInfo RogueGame::DecideNextAction(Chara* chara) {//何もしないなら０を返す
-	bool flag = false;
-	int nexttargetnum = chara->nextActionInfo.targetnum;
-	ActionType nextaction = A_Attack;
-	switch (chara->ai) {
-	case Ai_AttackEnemy: 
-	{
-		if (nexttargetnum >= opparty.maxmember) {//ai変わったときよう　上から攻撃
-			nexttargetnum = -1;
-		}
-		for (int i = 0; i < opparty.maxmember; ++i) {
-			nexttargetnum++;
-			if (nexttargetnum == opparty.maxmember) {
-				nexttargetnum = 0;
-			}
-			if (GetMember(nexttargetnum) == NULL) {
-				continue;
-			}
-			else {
-				chara->nextActionInfo = {
-					nexttargetnum,nextaction
-				};
-				return{ chara->nextActionInfo };
-			}
-			
-		}
-		chara->nextActionInfo = {
-			-1,A_Nothing
-		};
-		return{ chara->nextActionInfo };//攻撃しない
-	}
-			break;
-	case Ai_AttackMy:
-	{
-		if (nexttargetnum < opparty.maxmember) {//ai変わったときよう　上から攻撃
-			nexttargetnum = opparty.maxmember-1;
-		}
-		for (int i = 0; i < 4; ++i) {
-			nexttargetnum++;
-			if (nexttargetnum == opparty.maxmember+myparty.maxmember) {
-				nexttargetnum = 4;
-			}
-			if (GetMember(nexttargetnum) == NULL) {
-				continue;
-			}
-			else {
-				chara->nextActionInfo = {
-					nexttargetnum,nextaction
-				};
-				return{ chara->nextActionInfo };
-			}
-		}
-		chara->nextActionInfo = {
-			-1,A_Nothing
-		};
-		return{ chara->nextActionInfo };//攻撃しない
-	}
-		break;
-	case Ai_AttackSpring: //id0が春という前提
-	{
-		for (int i = 0; i < myparty.maxmember; ++i) {
-			
-			if (GetMember(opparty.maxmember + i) != NULL&&GetMember(opparty.maxmember + i)->id==0) {
-				chara->nextActionInfo = {
-					opparty.maxmember + i,nextaction
-				};
-				return{ chara->nextActionInfo };
-			}
-		}
-		chara->nextActionInfo = {
-			-1,A_Nothing
-		};
-		return{ chara->nextActionInfo };//攻撃しない
-	}
 
-		break;
-	case Ai_AttackSummer:
-	{
-		for (int i = 0; i < myparty.maxmember; ++i) {
-			if (GetMember(opparty.maxmember + i) != NULL&&GetMember(opparty.maxmember + i)->id == 1) {
-				chara->nextActionInfo = {
-					opparty.maxmember + i,nextaction
-				};
-				return{ chara->nextActionInfo };
-			}
-		}
-		chara->nextActionInfo = {
-			-1,A_Nothing
-		};
-		return{ chara->nextActionInfo };//攻撃しない
-	}
-		break;
-	case Ai_AttackFall:
-	{
-		for (int i = 0; i < myparty.maxmember; ++i) {
-
-			if (GetMember(opparty.maxmember + i) != NULL&&GetMember(opparty.maxmember + i)->id == 2) {
-				chara->nextActionInfo = {
-					opparty.maxmember + i,nextaction
-				};
-				return{ chara->nextActionInfo };
-			}
-		}
-		chara->nextActionInfo = {
-			-1,A_Nothing
-		};
-		return{ chara->nextActionInfo };//攻撃しない
-	}
-	}
-	chara->nextActionInfo = {
-		-1,A_Nothing
-	};
-	return{ chara->nextActionInfo };//攻撃しない
-}
-ActionInfo RogueGame::DecideNextAction(const int num) {
-	Chara* chara(GetMember(num));
-	return DecideNextAction(chara);
-}

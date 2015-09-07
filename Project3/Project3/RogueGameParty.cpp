@@ -28,6 +28,120 @@ int Chara::GainLife(const int pluslife) {
 	now_hp +=realpluslife;
 	return realpluslife;
 }
+ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
+	bool flag = false;
+	int nexttargetnum = nextActionInfo.targetnum;
+	ActionType nextaction = A_Attack;
+	switch (ai) {
+	case Ai_AttackEnemy:
+	{
+		if (nexttargetnum >= roguegame.opparty.maxmember) {//aiïœÇÌÇ¡ÇΩÇ∆Ç´ÇÊÇ§Å@è„Ç©ÇÁçUåÇ
+			nexttargetnum = -1;
+		}
+		for (int i = 0; i < roguegame.opparty.maxmember; ++i) {
+			nexttargetnum++;
+			if (nexttargetnum == roguegame.opparty.maxmember) {
+				nexttargetnum = 0;
+			}
+			if (roguegame.GetMember(nexttargetnum) == NULL) {
+				continue;
+			}
+			else {
+				nextActionInfo = {
+					nexttargetnum,nextaction
+				};
+				return{ nextActionInfo };
+			}
+
+		}
+		nextActionInfo = {
+			-1,A_Nothing
+		};
+		return{ nextActionInfo };//çUåÇÇµÇ»Ç¢
+	}
+	break;
+	case Ai_AttackMy:
+	{
+		if (nexttargetnum < roguegame.opparty.maxmember) {//aiïœÇÌÇ¡ÇΩÇ∆Ç´ÇÊÇ§Å@è„Ç©ÇÁçUåÇ
+			nexttargetnum = roguegame.opparty.maxmember - 1;
+		}
+		for (int i = 0; i < 4; ++i) {
+			nexttargetnum++;
+			if (nexttargetnum == roguegame.opparty.maxmember + roguegame.myparty.maxmember) {
+				nexttargetnum = 4;
+			}
+			if (roguegame.GetMember(nexttargetnum) == NULL) {
+				continue;
+			}
+			else {
+				nextActionInfo = {
+					nexttargetnum,nextaction
+				};
+				return{ nextActionInfo };
+			}
+		}
+		nextActionInfo = {
+			-1,A_Nothing
+		};
+		return{ nextActionInfo };//çUåÇÇµÇ»Ç¢
+	}
+	break;
+	case Ai_AttackSpring: //id0Ç™ètÇ∆Ç¢Ç§ëOíÒ
+	{
+		for (int i = 0; i < roguegame.myparty.maxmember; ++i) {
+
+			if (roguegame.GetMember(roguegame.opparty.maxmember + i) != NULL&&roguegame.GetMember(roguegame.opparty.maxmember + i)->id == 0) {
+				nextActionInfo = {
+					roguegame.opparty.maxmember + i,nextaction
+				};
+				return{ nextActionInfo };
+			}
+		}
+		nextActionInfo = {
+			-1,A_Nothing
+		};
+		return{ nextActionInfo };//çUåÇÇµÇ»Ç¢
+	}
+
+	break;
+	case Ai_AttackSummer:
+	{
+		for (int i = 0; i < roguegame.myparty.maxmember; ++i) {
+			if (roguegame.GetMember(roguegame.opparty.maxmember + i) != NULL&&roguegame.GetMember(roguegame.opparty.maxmember + i)->id == 1) {
+				nextActionInfo = {
+					roguegame.opparty.maxmember + i,nextaction
+				};
+				return{ nextActionInfo };
+			}
+		}
+		nextActionInfo = {
+			-1,A_Nothing
+		};
+		return{ nextActionInfo };//çUåÇÇµÇ»Ç¢
+	}
+	break;
+	case Ai_AttackFall:
+	{
+		for (int i = 0; i < roguegame.myparty.maxmember; ++i) {
+
+			if (roguegame.GetMember(roguegame.opparty.maxmember + i) != NULL&&roguegame.GetMember(roguegame.opparty.maxmember + i)->id == 2) {
+				nextActionInfo = {
+					roguegame.opparty.maxmember + i,nextaction
+				};
+				return{ nextActionInfo };
+			}
+		}
+		nextActionInfo = {
+			-1,A_Nothing
+		};
+		return{ nextActionInfo };//çUåÇÇµÇ»Ç¢
+	}
+	}
+	nextActionInfo = {
+		-1,A_Nothing
+	};
+	return{ nextActionInfo };//çUåÇÇµÇ»Ç¢
+}
 //int Chara::Act(const ActionType type) {
 //	switch (type) {
 //	case A_Attack:
@@ -134,7 +248,7 @@ void Party::Update() {
 }
 void Party::Draw() {
 }
-bool Party::AddMember(const int aid) {
+bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 	for (int i = 0; i < maxmember; ++i) {
 		if (members[i] == NULL) {
 			actionlog->push_back(DETAILS[aid].name + "Ç™â¡ÇÌÇ¡ÇΩ");
@@ -144,7 +258,7 @@ bool Party::AddMember(const int aid) {
 			else {
 				members[i] = new MyChara(aid, actionlog, situation);
 			}
-			
+			members[i]->DecideNextAction(roguegame);
 			return true;
 		}
 	}
@@ -155,7 +269,7 @@ void Party::DeleteMember(const int anum) {
 	members[anum] = NULL;
 
 }
-Chara* Party::GetMember(const int anum) {
+Chara* Party::GetMember(const int anum)const  {
 	return members[anum];
 }
 //int Party::Act(const ActionType type) {
@@ -187,7 +301,7 @@ void MyParty::Draw() {
 			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
 
 			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 1, "HP");
-			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
+			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(achara->max_hp)).c_str()));
 			if (!achara->controlable) {
 				aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 1, "ëŒè€");
 				aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 2, std::to_string(achara->nextActionInfo.targetnum)+":");
@@ -195,10 +309,10 @@ void MyParty::Draw() {
 		}
 	}
 }
-bool MyParty::AddMember(const int aid) {
+bool MyParty::AddMember(const int aid, const RogueGame &roguegame) {
 
 	assert(!DETAILS[aid].isenemy);
-	return Party::AddMember(aid);
+	return Party::AddMember(aid, roguegame);
 }
 vector<int > MyParty::GetAliveMemberId() {
 	vector<int> AliveId;
@@ -250,8 +364,8 @@ void OpParty::Draw(){
 		}
 	}
 }
-bool OpParty::AddMember(const int aid) {
+bool OpParty::AddMember(const int aid,const RogueGame &roguegame) {
 
 	assert(DETAILS[aid].isenemy);
-	return Party::AddMember(aid);
+	return Party::AddMember(aid,roguegame);
 }

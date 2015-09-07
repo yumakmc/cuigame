@@ -38,14 +38,15 @@ namespace  roguegame {
 		inline int CalculateDmg(const Chara *from, const Chara *to);
 		bool ChangeActMember();//全員終了したらfalse返す
 		int CheckDeadPlayer();//行動終了時に呼び出す　死亡チェックとかエンディング条件チェックとか
-		Chara* GetMember(int num);//上からnum番目のメンバーへのポインタを返す
+		Chara* GetMember(int num)const ;//上からnum番目のメンバーへのポインタを返す
 		ActionInfo DecideNextAction(Chara* chara);
 		ActionInfo DecideNextAction(const int num);
 
-	private:
-
 		MyParty myparty;
 		OpParty opparty;
+	private:
+
+		
 
 		BackGround abackground;
 
@@ -53,11 +54,8 @@ namespace  roguegame {
 
 		vector<string> *actionlog;
 
-		Common::Rand aRand;
-
 		int season = 0;
 		int day = 0;
-
 
 		int nowplayernum=4;
 

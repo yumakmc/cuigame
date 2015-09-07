@@ -10,6 +10,7 @@
 using namespace std;
 using namespace roguegame;
 namespace  roguegame {
+	class RogueGame;
 	
 	enum ActionType {
 		A_Attack,
@@ -114,6 +115,7 @@ namespace  roguegame {
 		};
 		bool controlable = false;
 		Ai ai;
+		ActionInfo DecideNextAction(const RogueGame& roguegame);
 	protected:
 		vector<string> *actionlog;
 		Situation *situation;
@@ -131,20 +133,21 @@ namespace  roguegame {
 	public:
 		MyChara(const int aid, vector<string> *aactionlog, Situation *asituation);
 		int GainExp(const int aexp);//è„Ç™Ç¡ÇΩÉåÉxÉãÇï‘Ç∑
-		bool LevelUp();
+		
 		//bool Attack(Chara &atarget);
 		int level;
 		int next_exp;
-		int ai=0;
-		
+		int ai;
+	private:
+		bool LevelUp();
 	};
 	class Party:public Task {
 	public:
 		Party(const int aleft,const int aup,vector<string> *aactionlog, Situation *asituation);
 		virtual void Update();
 		virtual void Draw();
-		bool AddMember(const int aid);
-		Chara* GetMember(const int anum);
+		bool AddMember(const int aid, const RogueGame &roguegame);
+		Chara* GetMember(const int anum)const;
 		void DeleteMember(const int anum);
 		//int Act(const ActionType type);
 		int nowselect=0;
@@ -165,7 +168,7 @@ namespace  roguegame {
 		MyParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
 		void Update()override;
 		void Draw()override;
-		bool AddMember(const int aid);
+		bool AddMember(const int aid, const RogueGame &roguegame);
 		vector<int>GetAliveMemberId();
 		int GainExp(const int exp);
 	private:
@@ -176,7 +179,7 @@ namespace  roguegame {
 		OpParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
 		void Update()override;
 		void Draw()override;
-		bool AddMember(const int aid);
+		bool AddMember(const int aid, const RogueGame &roguegame);
 
 	private:
 
