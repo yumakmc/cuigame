@@ -27,19 +27,19 @@ namespace roguegame {
 	const int SeasonNum = 4;
 	const int DayPerSeason=91;
 
-	//–hŒä‚µ‚Ä‚½ƒ_ƒ‚ª‚±‚ê‚ÅŠ„‚Á‚½”’l‚É‚È‚éBiØ‚èÌ‚Äj%
+	//–hŒä‚µ‚Ä‚½ƒ_ƒ‚ª‚±‚ê‚ÅŠ„‚Á‚½”’l‚É‚È‚éBiØ‚èÌ‚Äj
 	const float DEFENDINGCUTOFF = 5;
 #pragma region ENEMYMAP
 	array<int, 91> SpringEnemyMap = {
-		0,4,0,0,5,0,0,0,0,4,
-		0,0,0,0,4,0,0,4,0,4,
-		0,0,5,0,0,5,0,0,7,0,
-		0,4,0,7,0,6,0,0,4,0,
-		0,0,4,0,0,0,0,5,0,0,
-		0,0,5,0,4,0,6,6,0,0,
-		0,0,0,6,0,0,0,5,0,0,
-		0,0,7,0,0,0,5,0,0,0,
-		6,0,0,7,0,4,7,0,6,0,
+		0,4,0,0,0,5,0,0,0,4,
+		0,0,0,0,4,0,0,0,0,4,
+		0,0,4,0,0,5,0,0,7,0,
+		0,4,0,5,0,0,0,0,4,0,
+		0,0,5,0,0,0,0,5,0,0,
+		0,0,5,0,4,0,0,6,5,0,
+		0,0,0,5,0,0,0,5,0,0,
+		0,4,7,0,0,0,5,0,4,4,
+		4,0,0,0,0,4,5,0,5,0,
 		0,
 	};
 	array<int, 91> SummerEnemyMap = {
@@ -111,22 +111,22 @@ namespace roguegame {
 	};
 	static map<Date, name_and_descript> YOUBI_DETAIL = {//day0: Œ—j“ú day1: ‰Î—j“ú‚Æ‚È‚é
 		{Thu,name_and_descript{ "‰Î",E_AtkUp,"UŒ‚—Í@‚Q”{" },   },
-		{Wed,name_and_descript{ "…",E_sss,"Œ‚ªÎ‚Á‚Ä‚¢‚é" }, },
-		{Tur,name_and_descript{ "–Ø",E_DefUp,"–hŒä—Í@‚Q”{" },	  },
+		{Wed,name_and_descript{ "…",E_sss,"–¢İ’è" }, },
+		{Tur,name_and_descript{ "–Ø",E_Invin,"–³“G" },	  },
 		{Fri,name_and_descript{ "‹à",E_ExpUp,"ŒoŒ±’l@‚Q”{" },	  },
-		{Sat,name_and_descript{ "“y",E_Invin,"–³“G" },			  },
+		{Sat,name_and_descript{ "“y",E_DefUp,"–hŒä—Í@‚Q”{" },			  },
 		{Sun,name_and_descript{ "“ú",E_LoveUp,"ˆ¤@‚R”{" },		},
 		{Mon,name_and_descript{ "Œ",E_Moon,"Œ‚ªÎ‚Á‚Ä‚¢‚é" }	 },
 	};
 	static map<int, name_and_descript> CHIP_DETAIL = {//day0: Œ—j“ú day1: ‰Î—j“ú‚Æ‚È‚é
-		{ 0,name_and_descript{ "–³",E_AtkUp,"‰½‚à‚È‚¢@‚Å‚à‰½‚Å‚à‚Å‚«‚é" }, },
+		{ 0,name_and_descript{ "‚O",E_AtkUp,"‰½‚à‚È‚¢@‚Å‚à‰½‚Å‚à‚Å‚«‚é" }, },
 		{ 1,name_and_descript{ "‚ ",E_AtkUp,"Œ‚ªÎ‚Á‚Ä‚¢‚é" }, },
 		{ 2,name_and_descript{ "‚¢",E_AtkUp,"–hŒä—Í@‚Q”{" }, },
 		{ 3,name_and_descript{ "‚¤",E_AtkUp,"ŒoŒ±’l@‚Q”{" }, },
-		{ 4,name_and_descript{ "‚S",E_AtkUp,"–³“G" }, },
-		{ 5,name_and_descript{ "‚T",E_AtkUp,"ˆ¤@‚R”{" }, },
-		{ 6,name_and_descript{ "‚U",E_AtkUp,"Œ‚ªÎ‚Á‚Ä‚¢‚é" } },
-		{ 7,name_and_descript{ "‚V",E_AtkUp,"–³“G" }, },
+		{ 4,name_and_descript{ "”~",E_AtkUp,"–³“G" }, },
+		{ 5,name_and_descript{ "ä¿",E_AtkUp,"ˆ¤@‚R”{" }, },
+		{ 6,name_and_descript{ "’Ö",E_AtkUp,"Œ‚ªÎ‚Á‚Ä‚¢‚é" } },
+		{ 7,name_and_descript{ "÷",E_AtkUp,"–³“G" }, },
 		{ 8,name_and_descript{ "Œ",E_AtkUp,"u‰´‚à‚¨‘O‚ç‚à‚İ‚ñ‚È‚¨‚µ‚Ü‚¢‚¾v" } },
 		{ 9,name_and_descript{ "t",E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
 	};

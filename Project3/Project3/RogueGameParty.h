@@ -67,8 +67,8 @@ namespace  roguegame {
 
 		{ true,"î~"    ,Ai_AttackMy	   ,  15,{ 0},{ 7, 6, 0,  15 } },//ètÇÃâ‘
 		{ true,"‰ø"    ,Ai_AttackMy    ,  25,{ 0},{10, 7, 3, 25 } },
-		{ true,"í÷"    ,Ai_AttackMy    ,  99,{ 0},{20, 17, 5, 99 } },
-		{ true,"ç˜"	   ,Ai_AttackMy    ,  80,{ 0},{30, 15, 15, 80 } },
+		{ true,"í÷"    ,Ai_AttackMy    ,  90,{ 0},{70, 13, 0, 90 } },
+		{ true,"ç˜"	   ,Ai_AttackMy    ,  50,{ 0},{100, 9, 9, 50 } },
 
 		{ true,"ó®"    ,Ai_AttackMy    ,  60,{ 0},{20, 9, 9, 60} },//âƒÇÃâ‘
 		{ true,"à®"    ,Ai_AttackMy    ,  70,{ 0},{10,20, 5, 70} },

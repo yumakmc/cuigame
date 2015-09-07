@@ -133,20 +133,6 @@ void Party::Update() {
 
 }
 void Party::Draw() {
-	/*for (int i = 0; i < members.size(); ++i) {
-		if (members[i] != NULL) {
-			aDrawableConsole.draw(LEFT, UP + 3 * i, std::to_string(i)+":");
-			aDrawableConsole.draw(LEFT+1, UP + 3 * i, members[i]->name.c_str());
-
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 1, "U");
-			aDrawableConsole.draw(LEFT + 3, UP + 3 * i + 1, "Žç");
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 1, "HP");
-
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 2, Common::To_ZString(members[i]->atk).c_str());
-			aDrawableConsole.draw(LEFT + 3, UP + 3 * i + 2, Common::To_ZString(members[i]->def).c_str());
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, ((Common::To_ZString(members[i]->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
-		}
-	}*/
 }
 bool Party::AddMember(const int aid) {
 	for (int i = 0; i < maxmember; ++i) {
@@ -194,17 +180,17 @@ void MyParty::Draw() {
 			aDrawableConsole.draw(LEFT + 7, UP + 3 * i, "NextExp:");
 			aDrawableConsole.draw(LEFT + 11, UP + 3 * i, Common::To_ZString(achara->next_exp).c_str());
 
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 1, "U");
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 2, Common::To_ZString(achara->atk).c_str());
+			aDrawableConsole.draw(LEFT + 2, UP + 3 * i + 1, "U");
+			aDrawableConsole.draw(LEFT + 2, UP + 3 * i + 2, Common::To_ZString(achara->atk).c_str());
 
-			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 1, "Žç");
-			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
+			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 1, "Žç");
+			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
 
-			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 1, "HP");
-			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
+			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 1, "HP");
+			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
 			if (!achara->controlable) {
-				aDrawableConsole.draw(LEFT + 11, UP + 3 * i + 1, "‘ÎÛ");
-				aDrawableConsole.draw(LEFT + 11, UP + 3 * i + 2, Common::To_ZString(achara->nextActionInfo.type));
+				aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 1, "‘ÎÛ");
+				aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 2, std::to_string(achara->nextActionInfo.targetnum)+":");
 			}
 		}
 	}
@@ -244,22 +230,23 @@ void OpParty::Update() {
 void OpParty::Draw(){
 	for (int i = 0; i < members.size(); ++i) {
 		if (members[i] != NULL) {
+			OpChara *achara = static_cast<OpChara*> ((members[i]));
 			aDrawableConsole.draw(LEFT, UP + 3 * i, std::to_string(i) + ":");
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i, members[i]->name.c_str());
+			aDrawableConsole.draw(LEFT + 1, UP + 3 * i, achara->name.c_str());
 			aDrawableConsole.draw(LEFT + 9, UP + 3 * i, "Exp:");
-			aDrawableConsole.draw(LEFT + 11, UP + 3 * i, Common::To_ZString(static_cast<OpChara*>(members[i])->exp));
+			aDrawableConsole.draw(LEFT + 11, UP + 3 * i, Common::To_ZString(achara->exp));
 
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 1, "U");
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 2, Common::To_ZString(members[i]->atk).c_str());
+			aDrawableConsole.draw(LEFT + 2, UP + 3 * i + 1, "U");
+			aDrawableConsole.draw(LEFT + 2, UP + 3 * i + 2, Common::To_ZString(achara->atk).c_str());
 
-			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 1, "Žç");
-			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 2, Common::To_ZString(members[i]->def).c_str());
+			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 1, "Žç");
+			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
 
-			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 1, "HP");
-			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 2, (Common::To_ZString(members[i]->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)));
+			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 1, "HP");
+			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 2, (Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(achara->max_hp)));
 
-			aDrawableConsole.draw(LEFT + 11, UP + 3 * i + 1, "‘ÎÛ");
-			aDrawableConsole.draw(LEFT + 11, UP + 3 * i + 2, Common::To_ZString(members[i]->nextActionInfo.type));
+			aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 1, "‘ÎÛ");
+			aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 2, std::to_string(achara->nextActionInfo.targetnum) + ":");
 		}
 	}
 }
