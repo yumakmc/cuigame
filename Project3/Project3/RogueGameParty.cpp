@@ -5,8 +5,6 @@
 
 
 Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DETAILS[aid].name),actionlog(aactionlog),situation(asituation), infos(TABLE_A.Get(id)) {
-
-
 	isdead = false;
 	ai = DETAILS[aid].fst_ai;
 	if (ai == Ai_Controlabel) {
@@ -79,18 +77,17 @@ int Chara::GainLife(const int pluslife) {
 //	return atarget.defending ? diff / 4 : diff;
 //}
 OpChara::OpChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid, aactionlog, asituation){
-	exp = DETAILS[aid].exp;
-	atk = DETAILS[aid].atk;
-	def = DETAILS[aid].def;
-	max_hp = DETAILS[aid].max_hp;
+	exp = DETAILS[aid].opinfo.exp;
+	atk = DETAILS[aid].opinfo.atk;
+	def = DETAILS[aid].opinfo.def;
+	max_hp = DETAILS[aid].opinfo.max_hp;
 	now_hp = max_hp;
 	if (id == 0) {//春なら
 		controlable = true;
 	}
-
 }
 MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid,aactionlog, asituation){
-	level = DETAILS[aid].fst_level;
+	level = DETAILS[aid].myinfo.fst_level;
 	atk = infos[level].atk;
 	def = infos[level].def;
 	now_hp = DETAILS[aid].fst_hp;
@@ -105,8 +102,10 @@ int MyChara::GainExp(const int aexp) {
 	int num = 0;
 	while(next_exp <= 0) {
 		LevelUp();
-		next_exp += infos[level].exp;
 		num++;
+	}
+	if (num) {
+		actionlog->push_back(name + "は" + Common::To_ZString(level) + "にレベルアップした");
 	}
 	return num;
 }
@@ -115,7 +114,8 @@ bool MyChara::LevelUp() {
 	atk = infos[level].atk;
 	def = infos[level].def;
 	max_hp = infos[level].max_hp;
-	actionlog->push_back(name + "は" + Common::To_ZString(level) + "にレベルアップした");
+	next_exp += infos[level].exp;
+	
 	return true;
 }
 //bool MyChara::Attack(Chara &atarget){
@@ -133,7 +133,7 @@ void Party::Update() {
 
 }
 void Party::Draw() {
-	for (int i = 0; i < members.size(); ++i) {
+	/*for (int i = 0; i < members.size(); ++i) {
 		if (members[i] != NULL) {
 			aDrawableConsole.draw(LEFT, UP + 3 * i, std::to_string(i)+":");
 			aDrawableConsole.draw(LEFT+1, UP + 3 * i, members[i]->name.c_str());
@@ -146,11 +146,12 @@ void Party::Draw() {
 			aDrawableConsole.draw(LEFT + 3, UP + 3 * i + 2, Common::To_ZString(members[i]->def).c_str());
 			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, ((Common::To_ZString(members[i]->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
 		}
-	}
+	}*/
 }
 bool Party::AddMember(const int aid) {
 	for (int i = 0; i < maxmember; ++i) {
 		if (members[i] == NULL) {
+			actionlog->push_back(DETAILS[aid].name + "が加わった");
 			if (DETAILS[aid].isenemy) {
 				members[i] = new OpChara(aid, actionlog, situation);
 			}
@@ -188,19 +189,23 @@ void MyParty::Draw() {
 			MyChara *achara = static_cast<MyChara*> ((members[i]));
 			aDrawableConsole.draw(LEFT, UP + 3 * i, std::to_string(4+i) + ":");
 			aDrawableConsole.draw(LEFT + 1, UP + 3 * i, achara->name.c_str());
-
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 1, "攻");
-			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 1, "守");
-			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 1, "HP");
-
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 2, Common::To_ZString(achara->atk).c_str());
-			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
-			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
-			
 			aDrawableConsole.draw(LEFT + 3, UP + 3 * i, "Lv");
 			aDrawableConsole.draw(LEFT + 4, UP + 3 * i, Common::To_ZString(achara->level).c_str());
-			aDrawableConsole.draw(LEFT + 8, UP + 3 * i, "NextExp:");
-			aDrawableConsole.draw(LEFT + 13, UP + 3 * i, Common::To_ZString(achara->next_exp).c_str());
+			aDrawableConsole.draw(LEFT + 7, UP + 3 * i, "NextExp:");
+			aDrawableConsole.draw(LEFT + 11, UP + 3 * i, Common::To_ZString(achara->next_exp).c_str());
+
+			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 1, "攻");
+			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 2, Common::To_ZString(achara->atk).c_str());
+
+			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 1, "守");
+			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
+
+			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 1, "HP");
+			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
+			if (!achara->controlable) {
+				aDrawableConsole.draw(LEFT + 11, UP + 3 * i + 1, "対象");
+				aDrawableConsole.draw(LEFT + 11, UP + 3 * i + 2, Common::To_ZString(achara->nextActionInfo.type));
+			}
 		}
 	}
 }
@@ -241,14 +246,20 @@ void OpParty::Draw(){
 		if (members[i] != NULL) {
 			aDrawableConsole.draw(LEFT, UP + 3 * i, std::to_string(i) + ":");
 			aDrawableConsole.draw(LEFT + 1, UP + 3 * i, members[i]->name.c_str());
+			aDrawableConsole.draw(LEFT + 9, UP + 3 * i, "Exp:");
+			aDrawableConsole.draw(LEFT + 11, UP + 3 * i, Common::To_ZString(static_cast<OpChara*>(members[i])->exp));
 
 			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 1, "攻");
-			aDrawableConsole.draw(LEFT + 3, UP + 3 * i + 1, "守");
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 1, "HP");
-
 			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 2, Common::To_ZString(members[i]->atk).c_str());
-			aDrawableConsole.draw(LEFT + 3, UP + 3 * i + 2, Common::To_ZString(members[i]->def).c_str());
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, ((Common::To_ZString(members[i]->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
+
+			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 1, "守");
+			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 2, Common::To_ZString(members[i]->def).c_str());
+
+			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 1, "HP");
+			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 2, (Common::To_ZString(members[i]->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)));
+
+			aDrawableConsole.draw(LEFT + 11, UP + 3 * i + 1, "対象");
+			aDrawableConsole.draw(LEFT + 11, UP + 3 * i + 2, Common::To_ZString(members[i]->nextActionInfo.type));
 		}
 	}
 }

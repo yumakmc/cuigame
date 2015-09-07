@@ -30,12 +30,12 @@ namespace roguegame {
 	const float DEFENDINGRATE = 0.2;
 
 	array<int, 91> EnemyMap = {//0:空白　 　　4~敵
-		0,4,0,4,5,4,5,0,7,0,
+		0,4,0,4,5,4,0,0,0,0,
 		0,0,0,6,0,5,0,5,0,4,
 		0,0,7,0,0,5,0,0,6,0,
-		0,0,0,0,0,6,0,0,0,0,
+		0,4,0,0,0,6,0,0,4,0,
 		0,0,4,0,0,0,0,5,0,0,
-		0,0,5,0,4,0,6,0,0,0,
+		0,0,5,0,4,0,6,6,0,0,
 		0,0,0,6,0,0,0,5,0,0,
 		0,0,7,0,0,0,5,0,0,0,
 		6,0,0,7,0,4,7,0,6,0,
@@ -87,7 +87,6 @@ namespace roguegame {
 		{ 8,name_and_descript{ "月",E_AtkUp,"「俺もお前らもみんなおしまいだ」" } },
 		{ 9,name_and_descript{ "春",E_AtkUp,"死なないで下さい" }, },
 	};
-
 }
 vector<string> *b=new vector<string>();//ここ汚い直したい
 Situation *c = new Situation(S_Opening);
@@ -130,6 +129,7 @@ void RogueGame::Update() {
 	case S_TurnStart:
 		////////////////////////////////////////////////
 		if (EnemyMap[day] >= 4) {
+			
 			opparty.AddMember(EnemyMap[day]);
 		}
 		*situation = S_ChoosingAction;
@@ -137,7 +137,7 @@ void RogueGame::Update() {
 
 	case S_ChoosingAction://こちらの攻撃選択中	
 		if (Keyboard_Get('A') == 1) {
-			SelectAction(A_Attack);	
+			SelectAction(A_Attack);
 		}
 		else if (Keyboard_Get('D') == 1) {
 			SelectAction(A_Defence);		
@@ -164,8 +164,8 @@ void RogueGame::Update() {
 			}
 		}
 		break;
-	case S_AllyTurn: {//相手の対象を選択中
-		//他のターンの行動入れる。
+	case S_AllyTurn: {
+		
 		MyChara* nowplayer = static_cast<MyChara*>(GetMember(nowplayernum));
 		if (nowplayer->nextActionInfo.targetnum == -1 || GetMember(nowplayer->nextActionInfo.targetnum) == NULL) {
 			DecideNextAction(nowplayer);
@@ -174,8 +174,8 @@ void RogueGame::Update() {
 		DecideNextAction(nowplayer);
 	}
 		break;
-	case S_EnemyTurn: {//相手の対象を選択中
-					//他のターンの行動入れる。
+	case S_EnemyTurn: {
+					
 		OpChara* nowplayer = static_cast<OpChara*>(GetMember(nowplayernum));
 		if (nowplayer->nextActionInfo.targetnum == -1 || GetMember(nowplayer->nextActionInfo.targetnum) == NULL) {
 			DecideNextAction(nowplayer);
@@ -184,17 +184,30 @@ void RogueGame::Update() {
 		DecideNextAction(nowplayer);
 	}
 		break;
-	case S_TurnEnd://相手の対象を選択中
+	case S_TurnEnd:
 		day++;
+		SpendDay = day;
+		if (day % DayPerSeason==0) {
+			season++;
+			switch (season) {
+			case 0:
+				assert(false);
+			case 1:
+				myparty.AddMember(1);
+			case 2:
+				myparty.AddMember(2);
+			case 3:
+				myparty.AddMember(3);
+			}
+		}
 		*situation = S_TurnStart;
 		break;
 	default:
 		break;
 	}
-
-	
 }
 void RogueGame::Draw() {
+
 #pragma region BACK
 	abackground.Draw();
 	aDrawableConsole.draw(4, 0, "季節");
@@ -208,8 +221,7 @@ void RogueGame::Draw() {
 	aDrawableConsole.draw(7, 0, Common::To_ZString(day)+"日/365日");
 	aDrawableConsole.draw(13, 0, YOUBI_DETAIL[Date(day%7)].name + "曜日："+YOUBI_DETAIL[Date(day % 7)].descript);
 	
-#pragma endregion
-	
+#pragma endregion	
 #pragma region MAP
 	array<int, 91> My_EnemyMap(EnemyMap);
 	My_EnemyMap[day] = 9;
@@ -235,7 +247,6 @@ void RogueGame::Draw() {
 		}
 	}
 #pragma endregion
-
 #pragma region LINE
 	for (int i = 0; i < 25; ++i) {
 		aDrawableConsole.draw(PARTY_LEFT - 1, i, " |");
@@ -262,10 +273,10 @@ void RogueGame::Draw() {
 		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "ターンスタート");
 		break;
 	case S_ChoosingAction:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "行動を選択せよ");
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "行動の選択");
 		break;
 	case S_ChoosingTarget:
-		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "敵の中から対象を選択せよ");
+		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "対象の選択");
 		break;
 	case S_AllyTurn:
 		aDrawableConsole.draw(16, LOG_LINE_Y + 2, "味方のターン");
@@ -281,7 +292,6 @@ void RogueGame::Draw() {
 		break;
 	}
 #pragma endregion	
-
 #pragma region LOG
 	
 	aDrawableConsole.draw(1, LOG_LINE_Y + 1, "ログ");
@@ -292,14 +302,22 @@ void RogueGame::Draw() {
 	}
 	
 #pragma endregion
+
+#pragma region MANUAL
+
+	aDrawableConsole.draw(1, LOG_LINE_Y-1, "A:攻撃　D:防御　S:愛");
+
+#pragma endregion
+
 }
 int RogueGame::Regenerate(Chara *from, Chara *to) {
-	const int pluslife = max(0,min(to->max_hp-to->now_hp,(day % 7 == Sun) ? from->max_hp / 2 * 3 : (from->max_hp / 2)));
+	const int pluslife = max(0,min(to->max_hp-to->now_hp,(YOUBI_DETAIL[Date(day % 7)].effect==E_LoveUp) ? from->max_hp : (from->max_hp / 3)));
+
+	to->GainLife(pluslife);
 	if (from->id == 0&& DETAILS[to->id].isenemy) {//春がfrom,敵がtoなら
-		to->GainLife(pluslife);
+		
+		static_cast<OpChara*>(to)->exp += pluslife;
 		//toからとれる経験値増える
-	}else {
-		to->GainLife(pluslife);
 	}
 	return pluslife;
 }
@@ -312,12 +330,16 @@ int RogueGame::Regenerate(const int fromnum, const int tonum) {
 //ダメージを返す
 int RogueGame::Attack(Chara *from, Chara *to) {
 	const int dmg = CalculateDmg(from, to);
+	actionlog->push_back(from->name + "の攻撃　" + to->name + "に" + Common::To_ZString(dmg)+"のダメージ");
 	to->GetDamage(dmg);
 	if (dmg) {
 		if (to->isdead&&DETAILS[to->id].isenemy) {
 			KillNum++;
-			
-			myparty.GainExp(static_cast<OpChara*>(to)->exp);
+			int getexp = static_cast<OpChara*>(to)->exp;
+			if (YOUBI_DETAIL[Date(day % 7)].effect == E_ExpUp) {
+				getexp *= 2;
+			}
+			myparty.GainExp(getexp);
 		}
 		return dmg;//////////////
 	}
@@ -338,8 +360,6 @@ int RogueGame::Special(Chara *from, Chara *to) {
 		LoveHp += regenehp;
 		return regenehp;
 	}
-
-
 	default:
 		;
 	}
@@ -354,14 +374,13 @@ int RogueGame::Special(const int fromnum, const int tonum) {
 int RogueGame::Act(Chara *from,Chara *to,const ActionType type) {
 	switch (type) {
 		case A_Attack:
-			actionlog->push_back(from->name + "の攻撃　" + to->name + "に" + Common::To_ZString(Attack(from, to)));
+			Attack(from, to);
 			break;
 		case A_Defence:
 			from->defending = true;
-			actionlog->push_back(from->name + "の防御　" + to->name);
+			actionlog->push_back(from->name + "の防御");
 			break;
 		case A_Special:
-			Special(from, to);
 			actionlog->push_back(from->name + "の特殊　" + to->name + "に" + Common::To_ZString(Special(from, to)));
 			break;
 		case A_Nothing:
@@ -375,7 +394,6 @@ int RogueGame::Act(Chara *from,Chara *to,const ActionType type) {
 	//死亡チェック
 	CheckDeadPlayer();
 
-	//一人しか操作できないという前提あり
 	
 	ChangeActMember(); //全員終わらなかったら
 	
