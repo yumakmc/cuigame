@@ -106,6 +106,7 @@ namespace  roguegame {
 	public:
 		MyChara(const int aid, vector<string> *aactionlog, Situation *asituation);
 		int GainExp(const int aexp);//ã‚ª‚Á‚½ƒŒƒxƒ‹‚ğ•Ô‚·
+		bool LevelUp();
 		//bool Attack(Chara &atarget);
 		int level;
 		int next_exp;

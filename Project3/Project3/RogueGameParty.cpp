@@ -102,8 +102,20 @@ MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituatio
 }
 int MyChara::GainExp(const int aexp) {
 	next_exp -= aexp;
-	if(next_exp <= 0) {
+	int num = 0;
+	while(next_exp <= 0) {
+		LevelUp();
+		next_exp += infos[level].exp;
+		num++;
 	}
+	return num;
+}
+bool MyChara::LevelUp() {
+	level++;
+	atk = infos[level].atk;
+	def = infos[level].def;
+	max_hp = infos[level].max_hp;
+	actionlog->push_back(name + "は" + Common::To_ZString(level) + "にレベルアップした");
 	return true;
 }
 //bool MyChara::Attack(Chara &atarget){
