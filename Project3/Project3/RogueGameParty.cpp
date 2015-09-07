@@ -6,10 +6,7 @@
 
 Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DETAILS[aid].name),actionlog(aactionlog),situation(asituation), infos(TABLE_A.Get(id)) {
 
-	atk = TABLE<0, 0>::atk;
-	def = TABLE<0, 0>::def;
-	now_hp = DETAILS[aid].fst_hp;
-	max_hp = TABLE<0, 0>::max_hp;
+
 	isdead = false;
 	ai = DETAILS[aid].fst_ai;
 	if (ai == Ai_Controlabel) {
@@ -82,7 +79,11 @@ int Chara::GainLife(const int pluslife) {
 //	return atarget.defending ? diff / 4 : diff;
 //}
 OpChara::OpChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid, aactionlog, asituation){
-	exp = 100;
+	exp = DETAILS[aid].exp;
+	atk = DETAILS[aid].atk;
+	def = DETAILS[aid].def;
+	max_hp = DETAILS[aid].max_hp;
+	now_hp = max_hp;
 	if (id == 0) {//ètÇ»ÇÁ
 		controlable = true;
 	}
@@ -92,6 +93,7 @@ MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituatio
 	level = DETAILS[aid].fst_level;
 	atk = infos[level].atk;
 	def = infos[level].def;
+	now_hp = DETAILS[aid].fst_hp;
 	max_hp = infos[level].max_hp;
 	next_exp = infos[level].exp;
 	if (id == 0) {//ètÇ»ÇÁ
@@ -138,9 +140,12 @@ bool Party::AddMember(const int aid) {
 	for (int i = 0; i < maxmember; ++i) {
 		if (members[i] == NULL) {
 			if (DETAILS[aid].isenemy) {
-				new OpChara(aid, actionlog, situation);
+				members[i] = new OpChara(aid, actionlog, situation);
 			}
-			members[i] = new MyChara(aid, actionlog, situation);
+			else {
+				members[i] = new MyChara(aid, actionlog, situation);
+			}
+			
 			return true;
 		}
 	}
@@ -187,6 +192,11 @@ void MyParty::Draw() {
 		}
 	}
 }
+bool MyParty::AddMember(const int aid) {
+
+	assert(!DETAILS[aid].isenemy);
+	return Party::AddMember(aid);
+}
 vector<int > MyParty::GetAliveMemberId() {
 	vector<int> AliveId;
 	for (int i = 0; i < members.size(); ++i) {
@@ -229,4 +239,9 @@ void OpParty::Draw(){
 			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, ((Common::To_ZString(members[i]->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
 		}
 	}
+}
+bool OpParty::AddMember(const int aid) {
+
+	assert(DETAILS[aid].isenemy);
+	return Party::AddMember(aid);
 }

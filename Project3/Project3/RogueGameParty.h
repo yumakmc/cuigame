@@ -40,24 +40,29 @@ namespace  roguegame {
 	struct data {
 		bool isenemy;
 		string name;
+		Ai fst_ai;
 		int fst_hp;
+
+		//–΅•ϋκ—p
 		int fst_level;
 		int fst_exp;
-		Ai fst_ai;
-	};
-	struct opdata:data {
+
+		//“Gκ—p
 		int exp;
+		int atk;
+		int def;
+		int max_hp;
 	};
 
 	static const vector<data> DETAILS = {
-		{ false,"t",10,5,0,Ai_Controlabel },
-		{ false,"‰Δ",1000,50,0,Ai_AttackSpring },
-		{ false,"H",100,30,0,Ai_AttackSummer },
-		{ false,"“~",100,10,0,Ai_AttackEnemy },
-		{ true,"—’",10,1,5,Ai_AttackMy },
-		{ true,"¬θ¦Ξ",1000,50 ,10,Ai_AttackMy },
-		{ true,"’†θ¦Ξ",100,30,20,Ai_AttackMy },
-		{ true,"‘εθ¦Ξ",10,10,50,Ai_AttackMy },
+		{ false,"t"   ,Ai_Controlabel ,10  ,5 ,0,0,0,0,10 },
+		{ false,"‰Δ"   ,Ai_AttackSpring,1000,50,0,0,0,0,10 },
+		{ false,"H"   ,Ai_AttackSummer,100 ,30,0,0,0,0,10 },
+		{ false,"“~"   ,Ai_AttackEnemy ,100 ,10,0,0,0,0,10 },
+		{ true,"—’"    ,Ai_AttackMy	  ,10  ,1 ,5,5,5,3,10 },
+		{ true,"¬θ¦Ξ",Ai_AttackMy    ,1000,50,10,10,6,5,20 },
+		{ true,"’†θ¦Ξ",Ai_AttackMy    ,100 ,30,20,20,7,8,30 },
+		{ true,"‘εθ¦Ξ",Ai_AttackMy    ,10  ,10,50,30,10,10,50 },
 
 	};
 	struct ActionInfo {
@@ -70,7 +75,6 @@ namespace  roguegame {
 		bool GetDamage(const int admg);//€‚ρ‚Ύ‚©‚π•Τ‚·
 		int GainLife(const int pluslife);
 
-		
 
 		const int id;
 		const string name;
@@ -135,6 +139,7 @@ namespace  roguegame {
 		MyParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
 		void Update()override;
 		void Draw()override;
+		bool AddMember(const int aid);
 		vector<int>GetAliveMemberId();
 		int GainExp(const int exp);
 	private:
@@ -145,6 +150,7 @@ namespace  roguegame {
 		OpParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
 		void Update()override;
 		void Draw()override;
+		bool AddMember(const int aid);
 
 	private:
 
