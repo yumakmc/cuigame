@@ -1,9 +1,11 @@
 #include "RogueGameParty.h"
 #include "RogueGame.h"
+#include "RogueGameTable.h"
 #include<assert.h>
 
 
-Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DETAILS[aid].name),actionlog(aactionlog),situation(asituation) {
+Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DETAILS[aid].name),actionlog(aactionlog),situation(asituation), infos(TABLE_A.Get(id)) {
+
 	atk = TABLE<0, 0>::atk;
 	def = TABLE<0, 0>::def;
 	now_hp = DETAILS[aid].fst_hp;
@@ -81,7 +83,10 @@ int Chara::GainLife(const int pluslife) {
 //}
 MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid,aactionlog, asituation){
 	level = DETAILS[aid].fst_level;
-	next_exp = 0;
+	atk = infos[level].atk;
+	def = infos[level].def;
+	max_hp = infos[level].max_hp;
+	next_exp = infos[level].exp;
 	if (id == 0) {//t‚È‚ç
 		controlable = true;
 	}
@@ -161,12 +166,12 @@ void MyParty::Draw() {
 			aDrawableConsole.draw(LEFT + 1, UP + 3 * i, achara->name.c_str());
 
 			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 1, "U");
-			aDrawableConsole.draw(LEFT + 3, UP + 3 * i + 1, "Žç");
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 1, "HP");
+			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 1, "Žç");
+			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 1, "HP");
 
 			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 2, Common::To_ZString(achara->atk).c_str());
-			aDrawableConsole.draw(LEFT + 3, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
+			aDrawableConsole.draw(LEFT + 4, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
+			aDrawableConsole.draw(LEFT + 7, UP + 3 * i + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
 			
 			aDrawableConsole.draw(LEFT + 3, UP + 3 * i, "Lv");
 			aDrawableConsole.draw(LEFT + 4, UP + 3 * i, Common::To_ZString(achara->level).c_str());

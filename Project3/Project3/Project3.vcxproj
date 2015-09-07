@@ -137,6 +137,7 @@
     <ClCompile Include="RogueEnding.cpp" />
     <ClCompile Include="RogueGame.cpp" />
     <ClCompile Include="RogueGameParty.cpp" />
+    <ClCompile Include="RogueGameTable.cpp" />
     <ClCompile Include="Rpg.cpp" />
     <ClCompile Include="RpgGame.cpp" />
     <ClCompile Include="SceneChanger.cpp" />

@@ -84,8 +84,9 @@ namespace  roguegame {
 	protected:
 		vector<string> *actionlog;
 		Situation *situation;
+		//レベルアップに必要な経験値とかレベルによる攻撃力とか
+		array<TableInfo,MaxLevel> infos;
 	private:
-		
 	};
 	class MyChara :public Chara {
 	public:

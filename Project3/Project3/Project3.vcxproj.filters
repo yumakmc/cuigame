@@ -114,6 +114,9 @@
     <ClCompile Include="RogueEnding.cpp">
       <Filter>Rogue</Filter>
     </ClCompile>
+    <ClCompile Include="RogueGameTable.cpp">
+      <Filter>Rogue</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
