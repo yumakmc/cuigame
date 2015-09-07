@@ -42,18 +42,22 @@ namespace  roguegame {
 		string name;
 		int fst_hp;
 		int fst_level;
+		int fst_exp;
 		Ai fst_ai;
+	};
+	struct opdata:data {
+		int exp;
 	};
 
 	static const vector<data> DETAILS = {
-		{ false,"t",10,1,Ai_Controlabel },
-		{ false,"‰Δ",1000,50,Ai_AttackSpring },
-		{ false,"H",100,30,Ai_AttackSummer },
-		{ false,"“~",100,10,Ai_AttackEnemy },
-		{ true,"—’",10,1,Ai_AttackMy },
-		{ true,"¬θ¦Ξ",1000,50 ,Ai_AttackMy },
-		{ true,"’†θ¦Ξ",100,30,Ai_AttackMy },
-		{ true,"‘εθ¦Ξ",10,10,Ai_AttackMy },
+		{ false,"t",10,5,0,Ai_Controlabel },
+		{ false,"‰Δ",1000,50,0,Ai_AttackSpring },
+		{ false,"H",100,30,0,Ai_AttackSummer },
+		{ false,"“~",100,10,0,Ai_AttackEnemy },
+		{ true,"—’",10,1,5,Ai_AttackMy },
+		{ true,"¬θ¦Ξ",1000,50 ,10,Ai_AttackMy },
+		{ true,"’†θ¦Ξ",100,30,20,Ai_AttackMy },
+		{ true,"‘εθ¦Ξ",10,10,50,Ai_AttackMy },
 
 	};
 	struct ActionInfo {
@@ -88,6 +92,12 @@ namespace  roguegame {
 		array<TableInfo,MaxLevel> infos;
 	private:
 	};
+	class OpChara :public Chara {
+	public:
+		OpChara(const int aid, vector<string> *aactionlog, Situation *asituation);
+		int exp;
+
+	};
 	class MyChara :public Chara {
 	public:
 		MyChara(const int aid, vector<string> *aactionlog, Situation *asituation);
@@ -109,14 +119,15 @@ namespace  roguegame {
 		//int Act(const ActionType type);
 		int nowselect=0;
 		static const int maxmember = 4;
-		
+		array<Chara*, maxmember> members;
 	protected:
 		int LEFT;
 		int UP;
-		array<Chara*, maxmember> members;
+		
 		vector<string> *actionlog;
 		Situation *situation;
 	private:
+		
 		int nowchara;
 	};
 	class MyParty:public Party {
@@ -125,6 +136,7 @@ namespace  roguegame {
 		void Update()override;
 		void Draw()override;
 		vector<int>GetAliveMemberId();
+		int GainExp(const int exp);
 	private:
 		
 	};

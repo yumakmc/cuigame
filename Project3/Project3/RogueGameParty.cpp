@@ -81,6 +81,13 @@ int Chara::GainLife(const int pluslife) {
 //	const int diff = max(0, atk - atarget.def);
 //	return atarget.defending ? diff / 4 : diff;
 //}
+OpChara::OpChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid, aactionlog, asituation){
+	exp = 100;
+	if (id == 0) {//ètÇ»ÇÁ
+		controlable = true;
+	}
+
+}
 MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid,aactionlog, asituation){
 	level = DETAILS[aid].fst_level;
 	atk = infos[level].atk;
@@ -131,7 +138,7 @@ bool Party::AddMember(const int aid) {
 	for (int i = 0; i < maxmember; ++i) {
 		if (members[i] == NULL) {
 			if (DETAILS[aid].isenemy) {
-				
+				new OpChara(aid, actionlog, situation);
 			}
 			members[i] = new MyChara(aid, actionlog, situation);
 			return true;
@@ -190,6 +197,16 @@ vector<int > MyParty::GetAliveMemberId() {
 	}
 	return AliveId;
 }
+int MyParty::GainExp(const int exp) {
+	for (int i = 0; i < maxmember; ++i) {
+		MyChara* achara = static_cast<MyChara*>(members[i]);
+		if (achara != NULL) {
+			achara->GainExp(exp);
+		}
+		
+	}
+	return 1;
+}
 
 OpParty::OpParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation) : Party(aleft,aup,aactionlog, asituation) {
 	
@@ -198,5 +215,18 @@ void OpParty::Update() {
 
 }
 void OpParty::Draw(){
-	Party::Draw();
+	for (int i = 0; i < members.size(); ++i) {
+		if (members[i] != NULL) {
+			aDrawableConsole.draw(LEFT, UP + 3 * i, std::to_string(i) + ":");
+			aDrawableConsole.draw(LEFT + 1, UP + 3 * i, members[i]->name.c_str());
+
+			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 1, "çU");
+			aDrawableConsole.draw(LEFT + 3, UP + 3 * i + 1, "éÁ");
+			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 1, "HP");
+
+			aDrawableConsole.draw(LEFT + 1, UP + 3 * i + 2, Common::To_ZString(members[i]->atk).c_str());
+			aDrawableConsole.draw(LEFT + 3, UP + 3 * i + 2, Common::To_ZString(members[i]->def).c_str());
+			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, ((Common::To_ZString(members[i]->now_hp) + " /" + Common::To_ZString(members[i]->max_hp)).c_str()));
+		}
+	}
 }

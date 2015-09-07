@@ -21,22 +21,13 @@ namespace roguegame {
 	const int OP_PARTY_UP = 0;
 	//static const int dx[4] = { -1,0,1,0 };
 	//static const int dy[4] = { 0,-1,0,1 };
-	//static vector<string> TO_KEY =
-	//{
-	//	"←",
-	//	"↑",
-	//	"→",
-	//	"↓",
-	//	"Ａ",
-	//	"Ｗ",
-	//	"Ｄ",
-	//	"Ｓ",
-	//};
 
 	const int MAP_LEFT = 2;
 	const int MAP_UP = 2;
 
 	const int DayPerSeason=91;
+
+	const float DEFENDINGRATE = 0.2;
 
 	array<int, 91> EnemyMap = {//0:空白　 　　4~敵
 		0,4,0,4,5,4,5,0,7,0,
@@ -105,7 +96,6 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 	:gameBaseScene(changer), abackground(0), actionlog(b),situation(c) ,myparty(PARTY_LEFT, MY_PARTY_UP,b, c),opparty(PARTY_LEFT, OP_PARTY_UP,b, c),nowplayernum(4){
 	Party a(PARTY_LEFT, MY_PARTY_UP, actionlog, situation);
 	myparty.AddMember(0);
-	myparty.AddMember(1);
 	opparty.AddMember(4);
 
 	aRand.init();
@@ -186,7 +176,7 @@ void RogueGame::Update() {
 		break;
 	case S_EnemyTurn: {//相手の対象を選択中
 					//他のターンの行動入れる。
-		Chara* nowplayer(GetMember(nowplayernum));
+		OpChara* nowplayer = static_cast<OpChara*>(GetMember(nowplayernum));
 		if (nowplayer->nextActionInfo.targetnum == -1 || GetMember(nowplayer->nextActionInfo.targetnum) == NULL) {
 			DecideNextAction(nowplayer);
 		}
@@ -255,10 +245,11 @@ void RogueGame::Draw() {
 	}
 	aDrawableConsole.draw(0, LOG_LINE_Y, "--------------------------------------------------");
 #pragma endregion
-
+#pragma region PARTY
 	myparty.Draw();
 	opparty.Draw();
-	
+#pragma endregion
+#pragma region COMAND
 	switch (*situation)
 	{
 	case S_Opening:
@@ -289,6 +280,7 @@ void RogueGame::Draw() {
 		assert(false);
 		break;
 	}
+#pragma endregion	
 
 #pragma region LOG
 	
@@ -322,10 +314,10 @@ int RogueGame::Attack(Chara *from, Chara *to) {
 	const int dmg = CalculateDmg(from, to);
 	to->GetDamage(dmg);
 	if (dmg) {
-		if (!DETAILS[from->id].isenemy) {
+		if (to->isdead&&DETAILS[to->id].isenemy) {
 			KillNum++;
-			MyChara *a = static_cast<MyChara*>(from);
-			a->GainExp(777);
+			
+			myparty.GainExp(static_cast<OpChara*>(to)->exp);
 		}
 		return dmg;//////////////
 	}
@@ -419,7 +411,7 @@ inline int RogueGame::CalculateDmg(const Chara *from,const Chara *to) {
 		int realatk = (YOUBI_DETAIL[Date(day % 7)].effect == (E_AtkUp)) ? from->atk * 2 : from->atk;
 		int realdef = (YOUBI_DETAIL[Date(day % 7)].effect == (E_DefUp)) ? to->def * 2 : to->def;
 		const int diff = max(0, realatk - realdef);
-		return to->defending ? diff / 4 : diff;
+		return to->defending ? diff * DEFENDINGRATE : diff;
 	}
 }
 bool RogueGame::ChangeActMember() {
@@ -532,8 +524,6 @@ int RogueGame::CheckDeadPlayer() {
 					break;
 				}
 			}
-			
-			
 		}
 	}
 	return 0;
