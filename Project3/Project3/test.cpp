@@ -98,7 +98,7 @@ int main(){
 	::GetConsoleTitle(m_OriginalTitle, sizeof m_OriginalTitle);
 
 	// 新しいタイトルを設定
-	const TCHAR* title("黄色くなった時に上下左右キーで攻撃");
+	const TCHAR* title("91");
 	ConsoleWindow	cwnd;
 	cwnd.setTitle(title);
 	// カーソルを非表示

@@ -6,7 +6,7 @@
 Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DETAILS[aid].name),actionlog(aactionlog),situation(asituation), infos(TABLE_A.Get(id)) {
 	isdead = false;
 	ai = DETAILS[aid].fst_ai;
-	if (ai == Ai_Controlabel) {
+	if (ai == Ai_Controlable) {
 		controlable = true;
 	}
 }
@@ -206,7 +206,7 @@ MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituatio
 	now_hp = DETAILS[aid].fst_hp;
 	max_hp = infos[level].max_hp;
 	next_exp = infos[level].exp;
-	if (id == 0) {//t‚È‚ç
+	if (ai==Ai_Controlable) {//t‚È‚ç
 		controlable = true;
 	}
 }
@@ -248,23 +248,44 @@ void Party::Update() {
 void Party::Draw() {
 }
 bool Party::AddMember(const int aid, const RogueGame &roguegame) {
-	for (int i = 0; i < maxmember; ++i) {
-		if (members[i] == NULL) {
-			actionlog->push_back(DETAILS[aid].name + "‚ª‰Á‚í‚Á‚½");
-			if (DETAILS[aid].isenemy) {
-				members[i] = new OpChara(aid, actionlog, situation);
+	//‚ß‚¿‚á‚­‚¿‚á—áŠO“I‚Èˆ—@‚S”Ô–Ú‚É–³—‚â‚è“~i‚·‚®€‚Êj‚ğ“ü‚ê‚Ä‚é
+	if (aid == 23) {
+		members[3] = new MyChara(aid, actionlog, situation);
+	}
+	else {
+		for (int i = 0; i < maxmember; ++i) {
+			if (members[i] == NULL) {
+				string st;
+				switch (aid) {
+				case 0:
+					st = "t‚ª¶‚Ü‚ê‚½";
+					break;
+				case 23:
+					st = "";
+					break;
+				default:
+					st = DETAILS[aid].name + "‚ªŒ»‚ê‚½";
+
+				}
+				actionlog->push_back(st);
+
+
+				if (DETAILS[aid].isenemy) {
+					members[i] = new OpChara(aid, actionlog, situation);
+				}
+				else {
+					members[i] = new MyChara(aid, actionlog, situation);
+				}
+				members[i]->DecideNextAction(roguegame);
+				return true;
 			}
-			else {
-				members[i] = new MyChara(aid, actionlog, situation);
-			}
-			members[i]->DecideNextAction(roguegame);
-			return true;
 		}
 	}
+	
 	return false;
 }
 void Party::DeleteMember(const int anum) {
-	
+	actionlog->push_back(members[anum]->name+"‚Í€‚ñ‚¾");
 	members[anum] = NULL;
 
 }

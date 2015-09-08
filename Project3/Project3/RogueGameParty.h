@@ -30,7 +30,7 @@ namespace  roguegame {
 		S_Ending,
 	};
 	enum Ai {
-		Ai_Controlabel,
+		Ai_Controlable,
 		Ai_AttackEnemy,
 		Ai_AttackMy,
 		Ai_AttackSpring,
@@ -60,7 +60,7 @@ namespace  roguegame {
 	};
 
 	static const vector<data> DETAILS = {
-		{ false,"èt"   ,Ai_Controlabel ,  30,{ 1},{ 0, 0, 0, 10} },
+		{ false,"èt"   ,Ai_Controlable ,  30,{ 1},{ 0, 0, 0, 10} },
 		{ false,"âƒ"   ,Ai_AttackSpring,1000,{50},{ 0, 0, 0, 10} },
 		{ false,"èH"   ,Ai_AttackSummer, 500,{30},{ 0, 0, 0, 10} },
 		{ false,"ì~"   ,Ai_AttackEnemy , 700,{40},{ 0, 0, 0, 10} },
@@ -70,7 +70,7 @@ namespace  roguegame {
 		{ true,"í÷"    ,Ai_AttackMy    ,  90,{ 0},{70, 13, 0, 90 } },
 		{ true,"ç˜"	   ,Ai_AttackMy    ,  50,{ 0},{100, 9, 9, 50 } },
 
-		{ true,"ó®"    ,Ai_AttackMy    ,  60,{ 0},{20, 9, 9, 60} },//âƒÇÃâ‘
+		{ true,"ó®"    ,Ai_AttackMy    ,  50,{ 0},{40, 10, 3, 50} },//âƒÇÃâ‘
 		{ true,"à®"    ,Ai_AttackMy    ,  70,{ 0},{10,20, 5, 70} },
 		{ true,"Â["    ,Ai_AttackMy    ,  80,{ 0},{30,15,30, 80} },
 		{ true,"ò@"    ,Ai_AttackMy	   , 100,{ 0},{ 5,14,17,100} },
@@ -89,6 +89,8 @@ namespace  roguegame {
 		{ true,"Çl"    ,Ai_AttackMy	   , 100,{ 0 },{ 5,14,17,100 } },
 
 		{ true,"åé"    ,Ai_AttackMy	   , 100,{ 0 },{ 5,14,17,100 } },//åé
+
+		{ false,"ì~"   ,Ai_AttackEnemy , 0,{ 40 },{ 0, 0, 0, 10 } },
 
 	};
 	struct ActionInfo {

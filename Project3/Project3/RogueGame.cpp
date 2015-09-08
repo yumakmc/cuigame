@@ -32,7 +32,7 @@ namespace roguegame {
 
 #pragma region ENEMYMAP
 	array<int, 91> SpringEnemyMap = {
-		0,4,0,0,0,5,0,0,0,4,
+		4,4,0,0,0,5,0,0,0,4,
 		0,0,0,0,4,0,0,0,0,4,
 		0,0,4,0,0,5,0,0,7,0,
 		0,4,0,5,0,0,0,0,4,0,
@@ -139,11 +139,10 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 	:gameBaseScene(changer), abackground(0), actionlog(b),situation(c) ,myparty(PARTY_LEFT, MY_PARTY_UP,b, c),opparty(PARTY_LEFT, OP_PARTY_UP,b, c),nowplayernum(4){
 	Party a(PARTY_LEFT, MY_PARTY_UP, actionlog, situation);
 	myparty.AddMember(0,*this);
-	opparty.AddMember(4,*this);
+	myparty.AddMember(23, *this);
+	GetMember(7)->isdead = true;
 	
-
 	Initialize();
-
 	
 	aMusic.Play(5);
 }
@@ -157,14 +156,14 @@ void RogueGame::Update() {
 	switch (*situation) {
 	case S_Opening://スタート画面
 		if (Keyboard_Get('Z') == 1) {
-			actionlog->push_back("春が生まれ、冬は死んだ");
-			actionlog->push_back("だから春は歩み始める");
-			*situation = S_ChoosingAction;
+			
+			*situation = S_TurnStart;
 		}
 		break;
 	case S_Help://ヘルプ
 		break;
 	case S_TurnStart:
+		CheckDeadPlayer();
 		////////////////////////////////////////////////
 		if (EnemyMaps[season][day] >= 4) {
 			
@@ -191,11 +190,11 @@ void RogueGame::Update() {
 			break;
 		}
 		for (int i = 0; i < myparty.maxmember + opparty.maxmember; ++i) {
-			if (Keyboard_Get(i+48) == 1) {//
+			if (Keyboard_Get(i+48) == 1) {
 				Chara* target(GetMember(i));
 				
 				if (target != NULL) {
-					*situation = S_ChoosingAction;//
+					*situation = S_ChoosingAction;
 					Act(GetMember(nowplayernum), target, nowaction);
 				}
 				break;
@@ -320,7 +319,7 @@ void RogueGame::Draw() {
 		aDrawableConsole.draw(ax, ay, "行動の選択");
 		break;
 	case S_ChoosingTarget:
-		aDrawableConsole.draw(ax, ay, "対象の選択");
+		aDrawableConsole.draw(ax, ay, "対象の選択　Ｘで戻る");
 		break;
 	case S_AllyTurn:
 		aDrawableConsole.draw(ax, ay, "味方のターン");
@@ -586,6 +585,7 @@ int RogueGame::CheckDeadPlayer() {
 					break;
 				}
 			}
+			myparty.DeleteMember(i);
 		}
 	}
 	return 0;
