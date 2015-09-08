@@ -412,7 +412,9 @@ int RogueGame::Special(Chara *from, Chara *to) {
 	switch (from->id) {
 	case 0: {//t
 		const int regenehp = Regenerate(from, to);
-		LoveHp += regenehp;
+		if (DETAILS[to->id].isenemy) {
+			LoveHp += regenehp;
+		}
 		return regenehp;
 	}
 	default:

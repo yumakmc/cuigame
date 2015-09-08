@@ -12,35 +12,32 @@ extern int LoveHp ;//RogueGame‚æ‚èQÆ
 extern int KillNum ;//RogueGame‚æ‚èQÆ
 extern int SpendDay ;//RogueGame‚æ‚èQÆ
 
-using namespace roguegame;
+
 
 namespace roguegame {
 	
 
+	RogueEnding::RogueEnding(gameSceneChanger* changer)
+		:gameBaseScene(changer){
+
+
+		aMusic.Play(5);
+	}
+
+	void RogueEnding::Initialize() {
+	}
+	void RogueEnding::Update() {
+	}
+	void RogueEnding::Draw() {
+
+	#pragma region BACK
+		aDrawableConsole.draw(4, 4, "‹Gß");
+		aDrawableConsole.draw(4, 5, "‰ß‚²‚µ‚½“ú”F"+Common::To_ZString(SpendDay));
+		aDrawableConsole.draw(4, 6, "“|‚µ‚½“G‚Ì”F" + Common::To_ZString(KillNum));
+		aDrawableConsole.draw(4, 7, "“G‚ğˆ¤‚µ‚½—ÊF" + Common::To_ZString(LoveHp));
+		aDrawableConsole.draw(4, 8, "‹Gß");
+
+	#pragma endregion
+
+	}
 }
-
-
-RogueEnding::RogueEnding(gameSceneChanger* changer)
-	:gameBaseScene(changer){
-
-
-	aMusic.Play(5);
-}
-
-void RogueEnding::Initialize() {
-}
-void RogueEnding::Update() {
-}
-void RogueEnding::Draw() {
-
-#pragma region BACK
-	aDrawableConsole.draw(4, 4, "‹Gß");
-	aDrawableConsole.draw(4, 5, "‰ß‚²‚µ‚½“ú”F"+Common::To_ZString(SpendDay));
-	aDrawableConsole.draw(4, 6, "“|‚µ‚½“G‚Ì”F" + Common::To_ZString(KillNum));
-	aDrawableConsole.draw(4, 7, "“G‚ğˆ¤‚µ‚½—ÊF" + Common::To_ZString(LoveHp));
-	aDrawableConsole.draw(4, 8, "‹Gß");
-
-#pragma endregion
-
-}
-
