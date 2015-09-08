@@ -42,6 +42,17 @@ void DrawableConsole::draw(const std::string text, const bool changebgcolor) con
 {
 	draw(text.c_str(), changebgcolor);
 }
+// テキスト描画（色付）
+void DrawableConsole::drawc(const TCHAR* text, const int textcolor, const int bgcolor) const
+{
+	m_ConsoleBuff.setColor(textcolor, bgcolor);
+	draw(text);
+	m_ConsoleBuff.loadDefaultColor();
+}
+void DrawableConsole::drawc(const std::string text, const int textcolor, const int bgcolor) const
+{
+	drawc(text.c_str(),textcolor,bgcolor);
+}
 // テキスト描画（座標付）
 void DrawableConsole::draw(DRAW_POS pos, const TCHAR* text, const bool changebgcolor) const
 {
@@ -52,6 +63,18 @@ void DrawableConsole::draw(DRAW_POS pos, const std::string text, const bool chan
 {
 	draw(pos,text.c_str(), changebgcolor);
 }
+// テキスト描画（色付）
+void DrawableConsole::drawc(DRAW_POS pos, const TCHAR* text, const int textcolor, const int bgcolor) const
+{
+	m_ConsoleBuff.setColor(textcolor, bgcolor);
+	draw(pos,text);
+	m_ConsoleBuff.loadDefaultColor();
+}
+void DrawableConsole::drawc(DRAW_POS pos, const std::string text, const int textcolor, const int bgcolor) const
+{
+	drawc(pos,text.c_str(), textcolor, bgcolor);
+}
+
 // テキスト描画（座標付）
 void DrawableConsole::draw(POS x, POS y, const TCHAR* text, const bool changebgcolor) const
 {
@@ -62,6 +85,18 @@ void DrawableConsole::draw(POS x, POS y, const std::string text, const bool chan
 {
 	draw(x, y, text.c_str(),changebgcolor);
 }
+// テキスト描画（色付）
+void DrawableConsole::drawc(POS x, POS y, const TCHAR* text, const int textcolor, const int bgcolor) const
+{
+	m_ConsoleBuff.setColor(textcolor, bgcolor);
+	draw(x, y, text);
+	m_ConsoleBuff.loadDefaultColor();
+}
+void DrawableConsole::drawc(POS x, POS y, const std::string text, const int textcolor, const int bgcolor) const
+{
+	drawc(x,y,text.c_str(), textcolor, bgcolor);
+}
+
 
 // テキスト描画（書式付）
 void DrawableConsole::drawf(const TCHAR* formatText, ...) const

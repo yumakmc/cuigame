@@ -266,23 +266,35 @@ void RogueGame::Draw() {
 	My_EnemyMap[day] = 9;
 	for (int i = 0; i < 7; ++i) {
 		for (int j = 0; j < 13; ++j) {
+			int ax, ay;
 			string st = CHIP_DETAIL[My_EnemyMap[13 * i + j]].name;
 			if (i % 2) {
 				if (j != 12) {
-					aDrawableConsole.draw(11-j + MAP_LEFT, MAP_UP + 2 * (6 - i) + 1, st);
+					ax = 11 - j + MAP_LEFT;
+					ay = MAP_UP + 2 * (6 - i) + 1;	
 				}
 				else {
-					aDrawableConsole.draw(MAP_LEFT, MAP_UP + 2 * (6 - i), st);
+					ax = MAP_LEFT;
+					ay = MAP_UP + 2 * (6 - i);					
 				}
 			}
 			else {
 				if (j != 12) {
-					aDrawableConsole.draw(j + MAP_LEFT, MAP_UP + 2 * (6 - i) + 1, st);
+					ax = j + MAP_LEFT;
+					ay = MAP_UP + 2 * (6 - i) + 1;				
 				}
 				else {
-					aDrawableConsole.draw(11 + MAP_LEFT, MAP_UP + 2 * (6 - i), st);
+					ax = 11 + MAP_LEFT;
+					ay = MAP_UP + 2 * (6 - i);					
 				}
 			}
+			if (st == "t") {
+				aDrawableConsole.drawc(ax, ay, st, DrawableConsole::COLOR::C_LPINK, DrawableConsole::COLOR::C_BLACK);
+			}
+			else {
+				aDrawableConsole.draw(ax, ay, st);
+			}
+			
 		}
 	}
 #pragma endregion

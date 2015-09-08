@@ -52,6 +52,13 @@ public:
 	void draw(DRAW_POS pos, const std::string text, const bool changebgcolor = true) const;	 			// テキスト描画（座標付）
 	void draw(POS x, POS y, const std::string text, const bool changebgcolor = true) const;	 			// テキスト描画（座標付）
 
+	void drawc(const TCHAR* text, const int textcolor, const int bgcolor) const;								// テキスト描画（色付）
+	void drawc(DRAW_POS pos, const TCHAR* text, const int textcolor, const int bgcolor) const;	 			// テキスト描画（色座標付）
+	void drawc(POS x, POS y, const TCHAR* text, const int textcolor, const int bgcolor) const;	 			// テキスト描画（色座標付）
+
+	void drawc(const std::string text, const int textcolor, const int bgcolor) const;								// テキスト描画（色付）
+	void drawc(DRAW_POS pos, const std::string text, const int textcolor, const int bgcolor) const;	 			// テキスト描画（色座標付）
+	void drawc(POS x, POS y, const std::string text, const int textcolor, const int bgcolor) const;	 			// テキスト描画（色座標付）
 
 	void setColor(COLOR textcolor, COLOR bgcolor) const;	 // 描画色設定
 	void setDefaultColor(COLOR textcolor, COLOR bgcolor);	 // 規定色設定
