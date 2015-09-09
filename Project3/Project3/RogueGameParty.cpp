@@ -205,9 +205,6 @@ OpChara::OpChara(const int aid, vector<string> *aactionlog, Situation *asituatio
 	def = DETAILS[aid].opinfo.def;
 	max_hp = DETAILS[aid].opinfo.max_hp;
 	now_hp = max_hp;
-	if (id == 0) {//ètÇ»ÇÁ
-		controlable = true;
-	}
 }
 MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid,aactionlog, asituation){
 	level = DETAILS[aid].myinfo.fst_level;

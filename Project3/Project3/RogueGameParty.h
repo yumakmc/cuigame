@@ -70,12 +70,12 @@ namespace  roguegame {
 		{ true,"î~"    ,Ai_AttackMy	   ,  12,{ 0},{ 7, 6, 0,  12 } },//ètÇÃâ‘
 		{ true,"‰ø"    ,Ai_AttackMy    ,  25,{ 0},{15, 7, 3, 25 } },
 		{ true,"í÷"    ,Ai_AttackMy    ,  30,{ 0},{30, 13, 0, 30 } },
-		{ true,"ç˜"	   ,Ai_AttackMy    ,  30,{ 0},{40, 8, 9, 30 } },
+		{ true,"ç˜"	   ,Ai_AttackMy    ,  40,{ 0},{40, 8, 9, 40 } },
 
-		{ true,"ó®"    ,Ai_AttackMy    ,  50,{ 0},{40, 10, 3, 50} },//âƒÇÃâ‘
-		{ true,"à®"    ,Ai_AttackMy    ,  70,{ 0},{10,20, 5, 70} },
-		{ true,"Â["    ,Ai_AttackMy    ,  80,{ 0},{30,15,30, 80} },
-		{ true,"ò@"    ,Ai_AttackMy	   , 100,{ 0},{ 5,14,17,100} },
+		{ true,"ó®"    ,Ai_AttackMy    ,  50,{ 0},{25, 10, 3, 50} },//âƒÇÃâ‘
+		{ true,"à®"    ,Ai_AttackMy    ,  60,{ 0},{35,11, 1, 60} },
+		{ true,"Â["    ,Ai_AttackMy    ,  20,{ 0},{30,25,5, 20} },
+		{ true,"ò@"    ,Ai_AttackMy	   , 100,{ 0},{50,14,17,100} },
 
 		{ true,"óñ"    ,Ai_AttackMy    ,  60,{ 0 },{ 20, 9, 9, 60 } },//èHÇÃâ‘
 		{ true,"ãe"    ,Ai_AttackMy    ,  70,{ 0 },{ 10,20, 5, 70 } },
@@ -142,7 +142,6 @@ namespace  roguegame {
 		//bool Attack(Chara &atarget);
 		int level;
 		int next_exp;
-		int ai;
 		bool LevelUp();
 	private:
 		
