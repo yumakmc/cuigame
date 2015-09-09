@@ -8,12 +8,10 @@
 
 using namespace roguegame;
 
-int EndingNum=-1;//externでRogueEndingに渡す
-int LoveHp = 0;
-int KillNum = 0;
-int SpendDay=0;
+
 
 namespace roguegame {
+	
 	const int LOG_LINE_Y = 20;
 
 	const int PARTY_LEFT = 25;
@@ -24,26 +22,26 @@ namespace roguegame {
 
 	const int MAP_LEFT = 2;
 	const int MAP_UP = 2;
-	const int SeasonNum = 4;
-	const int DayPerSeason=91;
+	const int SEASON_NUM = 4;
+	const int DAY_PER_SEASON=91;
 
 	//防御してた時ダメがこれで割った数値になる。（切り捨て）
 	const int DEFENDINGCUTOFF = 5;
 
 #pragma region ENEMYMAP
-	array<int, 91> SpringEnemyMap = {
+	static array<int, DAY_PER_SEASON> SpringEnemyMap = {
 		4,4,0,0,0,5,0,0,0,4,
 		0,0,0,0,4,0,0,0,0,4,
 		0,0,4,0,0,5,0,0,7,0,
-		0,4,0,5,0,0,0,0,4,0,
-		0,0,5,0,0,0,0,5,0,0,
-		0,0,5,0,4,0,0,6,5,0,
-		0,0,0,5,0,0,0,5,0,0,
+		0,4,0,4,0,0,0,0,4,0,
+		0,0,4,0,0,0,0,5,0,0,
+		0,0,5,0,4,0,4,0,0,6,
+		0,0,0,5,0,0,0,4,0,0,
 		0,4,7,0,0,0,5,0,4,4,
 		4,0,0,0,0,4,5,0,5,0,
 		0,
 	};
-	array<int, 91> SummerEnemyMap = {
+	static array<int, DAY_PER_SEASON> SummerEnemyMap = {
 		0,8,0,8,9,8,0,0,0,0,
 		0,0,0,10,0,9,0,9,0,8,
 		0,0,11,0,0,9,0,0,10,0,
@@ -55,7 +53,7 @@ namespace roguegame {
 		10,0,0,11,0,8,11,0,10,0,
 		0,
 	};
-	array<int, 91> FallEnemyMap = {
+	static array<int, DAY_PER_SEASON> FallEnemyMap = {
 		0,4,0,4,5,4,0,0,0,0,
 		0,0,0,6,0,5,0,5,0,4,
 		0,0,7,0,0,5,0,0,6,0,
@@ -67,7 +65,7 @@ namespace roguegame {
 		6,0,0,7,0,4,7,0,6,0,
 		0,
 	};
-	array<int, 91> WinterEnemyMap = {
+	static array<int, DAY_PER_SEASON> WinterEnemyMap = {
 		0,8,0,8,9,8,0,0,0,0,
 		0,0,0,10,0,9,0,9,0,8,
 		0,0,11,0,0,9,0,0,10,0,
@@ -79,7 +77,7 @@ namespace roguegame {
 		10,0,0,11,0,8,11,0,10,0,
 		0,
 	};
-	array<array<int, 91>, SeasonNum> EnemyMaps = {//0:空白　 　　4~敵
+	static array<array<int, DAY_PER_SEASON>, SEASON_NUM> EnemyMaps = {//0:空白　 　　4~敵
 		SpringEnemyMap,
 		SummerEnemyMap,
 		FallEnemyMap,
@@ -120,18 +118,26 @@ namespace roguegame {
 		{Mon,name_and_descript{ "月",E_Moon,"月が笑っている" }	 },
 	};
 	static map<int, name_and_descript> CHIP_DETAIL = {//day0: 月曜日 day1: 火曜日となる
-		{ 0,name_and_descript{ "０",E_AtkUp,"何もない　でも何でもできる" }, },
-		{ 1,name_and_descript{ "あ",E_AtkUp,"月が笑っている" }, },
+		{ 0,name_and_descript{ "０",E_AtkUp,"死なないで下さい" }, },
+		{ 1,name_and_descript{ "春",E_AtkUp,"月が笑っている" }, },
 		{ 2,name_and_descript{ "い",E_AtkUp,"防御力　２倍" }, },
 		{ 3,name_and_descript{ "う",E_AtkUp,"経験値　２倍" }, },
-		{ 4,name_and_descript{ "梅",E_AtkUp,"無敵" }, },
-		{ 5,name_and_descript{ "菫",E_AtkUp,"愛　３倍" }, },
-		{ 6,name_and_descript{ "椿",E_AtkUp,"月が笑っている" } },
-		{ 7,name_and_descript{ "桜",E_AtkUp,"無敵" }, },
-		{ 8,name_and_descript{ "月",E_AtkUp,"「俺もお前らもみんなおしまいだ」" } },
-		{ 9,name_and_descript{ "春",E_AtkUp,"死なないで下さい" }, },
+		{ 4,name_and_descript{ DETAILS[4].name,E_AtkUp,"無敵" }, },
+		{ 5,name_and_descript{ DETAILS[5].name,E_AtkUp,"愛　３倍" }, },
+		{ 6,name_and_descript{ DETAILS[6].name,E_AtkUp,"月が笑っている" } },
+		{ 7,name_and_descript{ DETAILS[7].name,E_AtkUp,"無敵" }, },
+		{ 8,name_and_descript{ DETAILS[8].name,E_AtkUp,"「俺もお前らもみんなおしまいだ」" } },
+		{ 9,name_and_descript{ DETAILS[9].name,E_AtkUp,"死なないで下さい" }, },
+		{ 10,name_and_descript{ DETAILS[10].name,E_AtkUp,"死なないで下さい" }, },
+		{ 11,name_and_descript{ DETAILS[11].name,E_AtkUp,"死なないで下さい" }, },
+		{ 12,name_and_descript{ DETAILS[12].name,E_AtkUp,"死なないで下さい" }, },
+		{ 13,name_and_descript{ DETAILS[13].name,E_AtkUp,"死なないで下さい" }, },
 	};
 }
+Ending EndingNum = E_Dummy;//externでRogueEndingに渡す
+int LoveHp = 0;
+int KillNum = 0;
+int SpendDay = 0;
 vector<string> *b=new vector<string>();//ここ汚い直したい
 Situation *c = new Situation(S_Opening);
 
@@ -139,8 +145,45 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 	:gameBaseScene(changer), abackground(0), actionlog(b),situation(c) ,myparty(PARTY_LEFT, MY_PARTY_UP,b, c),opparty(PARTY_LEFT, OP_PARTY_UP,b, c),nowplayernum(4){
 	Party a(PARTY_LEFT, MY_PARTY_UP, actionlog, situation);
 	myparty.AddMember(0,*this);
-	myparty.AddMember(23, *this);
-	GetMember(7)->isdead = true;
+
+	//デバッグ用
+	if (Keyboard_Get('K')) {
+		for (int i = 0; i < 70; ++i) {
+			MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
+			static_cast<MyChara*>(GetMember(false, 0))->LevelUp();
+		}
+	}else if (Keyboard_Get('C')) {
+		season = 1;
+		day = 0;
+		for (int i = 0; i < 7; ++i) {
+			static_cast<MyChara*>(GetMember(false,0))->LevelUp();
+		}
+		myparty.AddMember(1, *this);
+	}
+	else if (Keyboard_Get('V')) {
+		season = 2;
+		day = 0;
+		myparty.AddMember(1, *this);
+		
+		
+		myparty.AddMember(2, *this);
+	}
+	else if (Keyboard_Get('B')) {
+		season = 1;
+		day = 0;
+		myparty.AddMember(1, *this);
+		myparty.AddMember(2, *this);
+		myparty.AddMember(3, *this);
+	}
+	else {
+
+		// 無理やりな冬挿入
+		myparty.AddMember(23, *this);
+		GetMember(7)->isdead = true;
+		season = 0;
+		day = 0;
+		
+	}
 	
 	Initialize();
 	
@@ -165,9 +208,9 @@ void RogueGame::Update() {
 	case S_TurnStart:
 		CheckDeadPlayer();
 		////////////////////////////////////////////////
-		if (EnemyMaps[season][day] >= 4) {
+		if (EnemyMaps[season][day%DAY_PER_SEASON] >= 4) {
 			
-			opparty.AddMember(EnemyMaps[season][day],*this);
+			opparty.AddMember(EnemyMaps[season][day%DAY_PER_SEASON],*this);
 		}
 		*situation = S_ChoosingAction;
 		break;
@@ -226,17 +269,22 @@ void RogueGame::Update() {
 	case S_TurnEnd:
 		day++;
 		SpendDay = day;
-		if (day % DayPerSeason==0) {
+		if (day % DAY_PER_SEASON ==0) {
 			season++;
 			switch (season) {
 			case 0:
 				assert(false);
 			case 1:
 				myparty.AddMember(1, *this);
+				break;
 			case 2:
 				myparty.AddMember(2, *this);
+				break;
 			case 3:
 				myparty.AddMember(3, *this);
+				break;
+			default:
+				assert(false);
 			}
 		}
 		*situation = S_TurnStart;
@@ -262,12 +310,12 @@ void RogueGame::Draw() {
 	
 #pragma endregion	
 #pragma region MAP
-	array<int, 91> My_EnemyMap(EnemyMaps[season]);
-	My_EnemyMap[day] = 9;
+	array<int, DAY_PER_SEASON> My_EnemyMap(EnemyMaps[season]);
+	My_EnemyMap[day%DAY_PER_SEASON] = 1;
 	for (int i = 0; i < 7; ++i) {
 		for (int j = 0; j < 13; ++j) {
+			static_assert(7 * 13 == DAY_PER_SEASON,"マップちゃんと表示されない");
 			int ax, ay;
-			string st = CHIP_DETAIL[My_EnemyMap[13 * i + j]].name;
 			if (i % 2) {
 				if (j != 12) {
 					ax = 11 - j + MAP_LEFT;
@@ -288,6 +336,7 @@ void RogueGame::Draw() {
 					ay = MAP_UP + 2 * (6 - i);					
 				}
 			}
+			string st = CHIP_DETAIL[My_EnemyMap[13 * i + j]].name;
 			if (st == "春") {
 				aDrawableConsole.drawc(ax, ay, st, DrawableConsole::COLOR::C_LPINK, DrawableConsole::COLOR::C_BLACK);
 			}
@@ -412,11 +461,44 @@ int RogueGame::Special(Chara *from, Chara *to) {
 	switch (from->id) {
 	case 0: {//春
 		const int regenehp = Regenerate(from, to);
+		actionlog->push_back(from->name + "の愛　" + to->name + "は" + Common::To_ZString(regenehp)+ "回復した");
 		if (DETAILS[to->id].isenemy) {
 			LoveHp += regenehp;
 		}
 		return regenehp;
 	}
+	case 33: {//小隕石のつもり
+		const int SMALLCOUNT = 8;
+		if(from->count < SMALLCOUNT){
+			actionlog->push_back(from->name + "は接近している　残り" + Common::To_ZString(SMALLCOUNT - from->count) + "ターン");
+		}
+		else {
+			actionlog->push_back("ズドオオン！");
+			for (int i = 0; i < myparty.maxmember; ++i) {
+				Chara* achara(GetMember(false, i));
+				const int dmg = CalculateDmg(from, achara);
+				actionlog->push_back(achara->name + "に" + Common::To_ZString(dmg) + "のダメージ");
+				achara->GetDamage(dmg);
+			}
+		}
+	}
+			 break;
+	case 36: {//超隕石のつもり
+		const int MEGACOUNT = 91;
+		if (from->count < MEGACOUNT){
+			actionlog->push_back(from->name + "は接近している…　残り" + Common::To_ZString(MEGACOUNT - from->count) + "ターン");
+		}
+		else {
+			actionlog->push_back("ズドオオオオオオオオオン！！！！");
+			for (int i = 0; i < myparty.maxmember; ++i) {
+				Chara* achara(GetMember(false, i));
+				const int dmg = CalculateDmg(from, achara);
+				actionlog->push_back(achara->name + "に" + Common::To_ZString(dmg) + "のダメージ！！！！！！");
+				achara->GetDamage(dmg);
+			}
+		}
+	}
+			 break;
 	default:
 		;
 	}
@@ -438,7 +520,7 @@ int RogueGame::Act(Chara *from,Chara *to,const ActionType type) {
 			actionlog->push_back(from->name + "の防御");
 			break;
 		case A_Special:
-			actionlog->push_back(from->name + "の特殊　" + to->name + "に" + Common::To_ZString(Special(from, to)));
+			Special(from, to);
 			break;
 		case A_Nothing:
 			actionlog->push_back(from->name + "は何もしない");
@@ -447,7 +529,7 @@ int RogueGame::Act(Chara *from,Chara *to,const ActionType type) {
 			assert(false);
 		}
 
-
+	from->count++;
 	//死亡チェック
 	CheckDeadPlayer();
 
@@ -541,7 +623,7 @@ int RogueGame::CheckDeadPlayer() {
 			case 0:
 				switch (amychara->id) {
 				case 0:
-					EndingNum = 0;
+					EndingNum = E_Bad;
 					mgameSceneChanger->ChangeScene(eGameScene_Ending);
 					break;
 				case 1:
@@ -555,11 +637,11 @@ int RogueGame::CheckDeadPlayer() {
 			case 1:
 				switch (amychara->id) {
 				case 0:
-					EndingNum = 1;
+					EndingNum = E_True;
 					mgameSceneChanger->ChangeScene(eGameScene_Ending);
 					break;
 				case 1:
-					EndingNum = 2;
+					EndingNum = E_SummerDead;
 					mgameSceneChanger->ChangeScene(eGameScene_Ending);
 					break;
 				case 2:
@@ -571,11 +653,11 @@ int RogueGame::CheckDeadPlayer() {
 			case 2:
 				switch (amychara->id) {
 				case 0:
-					EndingNum = 3;
+					EndingNum = E_Why;
 					mgameSceneChanger->ChangeScene(eGameScene_Ending);
 					break;
 				case 1:
-					EndingNum = 4;
+					EndingNum = E_FallKillSummer;
 					mgameSceneChanger->ChangeScene(eGameScene_Ending);
 					break;
 				case 2:
@@ -587,7 +669,7 @@ int RogueGame::CheckDeadPlayer() {
 			case 3:
 				switch (amychara->id) {
 				case 0:
-					EndingNum = 5;
+					EndingNum = E_Why;
 					mgameSceneChanger->ChangeScene(eGameScene_Ending);
 					break;
 				case 1:
@@ -614,8 +696,11 @@ Chara* RogueGame::GetMember(int num)const {
 		return myparty.GetMember(num - opparty.maxmember);
 	}
 	else {
-		assert(false);
+		//assert(false);
 		return NULL;
 	}
+}
+Chara* RogueGame::GetMember(const bool isop,const int num)const {
+	return GetMember(isop ? num : opparty.maxmember + num);
 }
 
