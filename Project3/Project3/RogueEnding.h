@@ -20,7 +20,6 @@ namespace  roguegame {
 	static vector<array < table, 100 >> TABLES;*/
 
 
-
 	class RogueEnding :public gameBaseScene {
 	public:
 		RogueEnding(gameSceneChanger* changer);
