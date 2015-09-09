@@ -135,6 +135,16 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 		};
 		return{ nextActionInfo };//UŒ‚‚µ‚È‚¢
 	}
+	case Ai_Meteor:
+	{
+	}
+	case Ai_Moon:
+	{
+		nextActionInfo = {
+			-1,A_Nothing
+		};
+		return{ nextActionInfo };//UŒ‚‚µ‚È‚¢
+	}
 	}
 	nextActionInfo = {
 		-1,A_Nothing
@@ -259,6 +269,15 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 				switch (aid) {
 				case 0:
 					st = "t‚ª¶‚Ü‚ê‚½";
+					break;
+				case 1:
+					st = "‰Ä‚ª¶‚Ü‚ê‚½@";
+					break;
+				case 2:
+					st = "H‚ª¶‚Ü‚ê‚½";
+					break;
+				case 3:
+					st = "“~‚ª¶‚Ü‚ê‚½";
 					break;
 				case 23:
 					st = "";

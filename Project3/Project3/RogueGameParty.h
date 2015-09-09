@@ -36,6 +36,8 @@ namespace  roguegame {
 		Ai_AttackSpring,
 		Ai_AttackSummer,
 		Ai_AttackFall,
+		Ai_Meteor,//Ë¶êŒóp
+		Ai_Moon,//åéóp
 	};
 	struct Myinfo {
 		int fst_level;
@@ -65,10 +67,10 @@ namespace  roguegame {
 		{ false,"èH"   ,Ai_AttackSummer, 500,{20},{ 0, 0, 0, 10} },
 		{ false,"ì~"   ,Ai_AttackEnemy , 700,{20},{ 0, 0, 0, 10} },
 
-		{ true,"î~"    ,Ai_AttackMy	   ,  15,{ 0},{ 7, 6, 0,  15 } },//ètÇÃâ‘
-		{ true,"‰ø"    ,Ai_AttackMy    ,  25,{ 0},{10, 7, 3, 25 } },
-		{ true,"í÷"    ,Ai_AttackMy    ,  90,{ 0},{70, 13, 0, 90 } },
-		{ true,"ç˜"	   ,Ai_AttackMy    ,  50,{ 0},{100, 9, 9, 50 } },
+		{ true,"î~"    ,Ai_AttackMy	   ,  12,{ 0},{ 7, 6, 0,  12 } },//ètÇÃâ‘
+		{ true,"‰ø"    ,Ai_AttackMy    ,  25,{ 0},{15, 7, 3, 25 } },
+		{ true,"í÷"    ,Ai_AttackMy    ,  30,{ 0},{30, 13, 0, 30 } },
+		{ true,"ç˜"	   ,Ai_AttackMy    ,  30,{ 0},{40, 8, 9, 30 } },
 
 		{ true,"ó®"    ,Ai_AttackMy    ,  50,{ 0},{40, 10, 3, 50} },//âƒÇÃâ‘
 		{ true,"à®"    ,Ai_AttackMy    ,  70,{ 0},{10,20, 5, 70} },
@@ -88,7 +90,7 @@ namespace  roguegame {
 		{ true,"ëÂ"    ,Ai_AttackMy    ,  80,{ 0 },{ 30,15,30, 80 } },
 		{ true,"Çl"    ,Ai_AttackMy	   , 100,{ 0 },{ 5,14,17,100 } },
 
-		{ true,"åé"    ,Ai_AttackMy	   , 100,{ 0 },{ 5,14,17,100 } },//åé
+		{ true,"åé"    ,Ai_AttackMy	   , 10,{ 0 },{ 1,1,9999,10 } },//åé
 
 		{ false,"ì~"   ,Ai_AttackEnemy , 0,{ 40 },{ 0, 0, 0, 10 } },
 
@@ -117,6 +119,8 @@ namespace  roguegame {
 		bool controlable = false;
 		Ai ai;
 		ActionInfo DecideNextAction(const RogueGame& roguegame);
+
+		int count = 0;
 	protected:
 		vector<string> *actionlog;
 		Situation *situation;
@@ -139,8 +143,9 @@ namespace  roguegame {
 		int level;
 		int next_exp;
 		int ai;
-	private:
 		bool LevelUp();
+	private:
+		
 	};
 	class Party:public Task {
 	public:

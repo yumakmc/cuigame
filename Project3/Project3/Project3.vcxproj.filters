@@ -31,12 +31,15 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{e2ac1f2b-81dd-429e-b93c-2156c1dc762a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Draw">
+      <UniqueIdentifier>{3231e856-f999-43d0-83dc-4fc20b3f67bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other">
+      <UniqueIdentifier>{77953959-1198-4130-9328-f497d6697d47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="gameBaseScene.cpp">
@@ -58,15 +61,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Text.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsoleBuffer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawableConsole.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Musicroom.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Rogue.cpp">
@@ -117,11 +111,20 @@
     <ClCompile Include="RogueGameTable.cpp">
       <Filter>Rogue</Filter>
     </ClCompile>
+    <ClCompile Include="DrawableConsole.cpp">
+      <Filter>Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleBuffer.cpp">
+      <Filter>Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="Musicroom.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="BaseScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -149,16 +152,7 @@
     <ClInclude Include="Text.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ConsoleBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="typedef.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawableConsole.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Musicroom.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Rogue.h">
@@ -214,6 +208,18 @@
     </ClInclude>
     <ClInclude Include="RogueEnding.h">
       <Filter>Rogue</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleBuffer.h">
+      <Filter>Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawableConsole.h">
+      <Filter>Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="Musicroom.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
