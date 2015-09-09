@@ -3,12 +3,9 @@
 #include<assert.h>
 
 
-Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DETAILS[aid].name),actionlog(aactionlog),situation(asituation), infos(TABLE_A.Get(id)) {
+Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DETAILS[aid].name),actionlog(aactionlog),situation(asituation) {
 	isdead = false;
 	ai = DETAILS[aid].fst_ai;
-	if (ai == Ai_Controlable) {
-		controlable = true;
-	}
 }
 bool Chara::GetDamage(const int admg) {
 	assert(admg >= 0);
@@ -241,16 +238,14 @@ OpChara::OpChara(const int aid, vector<string> *aactionlog, Situation *asituatio
 	max_hp = DETAILS[aid].opinfo.max_hp;
 	now_hp = max_hp;
 }
-MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid,aactionlog, asituation){
+MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid,aactionlog, asituation), infos(TABLE_A.Get(id)) {
 	level = DETAILS[aid].myinfo.fst_level;
 	atk = infos[level].atk;
 	def = infos[level].def;
 	now_hp = DETAILS[aid].fst_hp;
 	max_hp = infos[level].max_hp;
 	next_exp = infos[level].exp;
-	if (ai==Ai_Controlable) {//t‚È‚ç
-		controlable = true;
-	}
+
 }
 int MyChara::GainExp(const int aexp) {
 	next_exp -= aexp;
@@ -381,7 +376,7 @@ void MyParty::Draw() {
 
 			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 1, "HP");
 			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(achara->max_hp)).c_str()));
-			if (!achara->controlable) {
+			if (!achara->ai==Ai_Controlable) {
 				aDrawableConsole.draw(LEFT + 12, CHARAUP + 1, "‘ÎÛ");
 				aDrawableConsole.draw(LEFT + 12, CHARAUP + 2, Common::To_ZString(achara->nextActionInfo.targetnum));
 			}
@@ -440,7 +435,7 @@ void OpParty::Draw(){
 
 			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 1, "HP");
 			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(achara->max_hp)).c_str()));
-			if (!achara->controlable) {
+			if (!achara->ai == Ai_Controlable) {
 				aDrawableConsole.draw(LEFT + 12, CHARAUP + 1, "‘ÎÛ");
 				aDrawableConsole.draw(LEFT + 12, CHARAUP + 2, Common::To_ZString(achara->nextActionInfo.targetnum));
 			}

@@ -116,7 +116,6 @@ namespace  roguegame {
 		ActionInfo nextActionInfo = {
 			-1,A_Attack
 		};
-		bool controlable = false;
 		Ai ai;
 		ActionInfo DecideNextAction(const RogueGame& roguegame);
 
@@ -126,7 +125,7 @@ namespace  roguegame {
 		vector<string> *actionlog;
 		Situation *situation;
 		//レベルアップに必要な経験値とかレベルによる攻撃力とか
-		array<TableInfo,MaxLevel> infos;
+		
 	private:
 	};
 	class OpChara :public Chara {
@@ -145,7 +144,7 @@ namespace  roguegame {
 		int next_exp;
 		bool LevelUp();
 	private:
-		
+		array<TableInfo, MaxLevel> infos;
 	};
 	class Party:public Task {
 	public:

@@ -621,9 +621,8 @@ bool RogueGame::ChangeActMember() {
 		*situation = S_EnemyTurn;
 	}
 	else {
-		if ((GetMember(nowplayernum))->controlable) {
+		if ((GetMember(nowplayernum))->ai == Ai_Controlable) {
 			*situation = S_ChoosingTarget;
-
 		}
 		else {
 			*situation = S_AllyTurn;

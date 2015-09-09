@@ -76,7 +76,10 @@ namespace roguegame {
 		}
 #pragma endregion
 	}
-	std::array<TableInfo, MaxLevel> TABLEA::Get(const int num) {
+	std::array<TableInfo, MaxLevel> TABLEA::Get(int num) {
+		if (num >= 4) {
+			num = 0;
+		}
 		return tableinfos[num];
 	}
 }
