@@ -33,7 +33,7 @@ namespace  roguegame {
 		Ai_Controlable,
 		Ai_AttackEnemy,
 		Ai_AttackMy,
-		Ai_AttackSpring,
+		Ai_Summer,
 		Ai_AttackSummer,
 		Ai_AttackFall,
 		Ai_Meteor,//Ë¶êŒóp
@@ -63,7 +63,7 @@ namespace  roguegame {
 
 	static const vector<data> DETAILS = {
 		{ false,"èt"   ,Ai_Controlable ,  30,{ 1},{ 0, 0, 0, 10} },
-		{ false,"âƒ"   ,Ai_AttackSpring,1000,{20},{ 0, 0, 0, 10} },
+		{ false,"âƒ"   ,Ai_Summer,1000,{20},{ 0, 0, 0, 10} },
 		{ false,"èH"   ,Ai_AttackSummer, 500,{20},{ 0, 0, 0, 10} },
 		{ false,"ì~"   ,Ai_AttackEnemy , 700,{20},{ 0, 0, 0, 10} },
 
@@ -72,10 +72,10 @@ namespace  roguegame {
 		{ true,"í÷"    ,Ai_AttackMy    ,  30,{ 0},{30, 13, 0, 30 } },
 		{ true,"ç˜"	   ,Ai_AttackMy    ,  40,{ 0},{40, 8, 9, 40 } },
 
-		{ true,"ó®"    ,Ai_AttackMy    ,  50,{ 0},{25, 10, 3, 50} },//âƒÇÃâ‘
-		{ true,"à®"    ,Ai_AttackMy    ,  60,{ 0},{35,11, 1, 60} },
-		{ true,"Â["    ,Ai_AttackMy    ,  20,{ 0},{30,25,5, 20} },
-		{ true,"ò@"    ,Ai_AttackMy	   , 100,{ 0},{50,14,17,100} },
+		{ true,"ó®"    ,Ai_AttackMy    ,  50,{ 0},{50, 12, 3, 50} },//âƒÇÃâ‘
+		{ true,"à®"    ,Ai_AttackMy    ,  60,{ 0},{60,15, 1, 60} },
+		{ true,"Â["    ,Ai_AttackMy    ,  40,{ 0},{100,25,5, 40} },
+		{ true,"ò@"    ,Ai_AttackMy	   ,  100,{ 0},{200,14,17,100} },
 
 		{ true,"óñ"    ,Ai_AttackMy    ,  60,{ 0 },{ 20, 9, 9, 60 } },//èHÇÃâ‘
 		{ true,"ãe"    ,Ai_AttackMy    ,  70,{ 0 },{ 10,20, 5, 70 } },
@@ -120,6 +120,7 @@ namespace  roguegame {
 		Ai ai;
 		ActionInfo DecideNextAction(const RogueGame& roguegame);
 
+		//ï÷óòÉJÉEÉìÉ^
 		int count = 0;
 	protected:
 		vector<string> *actionlog;

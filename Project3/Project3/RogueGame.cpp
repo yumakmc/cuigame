@@ -33,7 +33,7 @@ namespace roguegame {
 		4,4,0,0,0,5,0,0,0,4,
 		0,0,0,0,4,0,0,0,0,4,
 		0,0,4,0,0,5,0,0,7,0,
-		0,4,0,4,0,0,0,0,4,0,
+		0,4,0,4,0,0,5,0,4,0,
 		0,0,4,0,0,0,0,5,0,0,
 		0,0,5,0,4,0,4,0,0,6,
 		0,0,0,5,0,0,0,4,0,0,
@@ -54,15 +54,15 @@ namespace roguegame {
 		0,
 	};
 	static array<int, DAY_PER_SEASON> FallEnemyMap = {
-		0,4,0,4,5,4,0,0,0,0,
-		0,0,0,6,0,5,0,5,0,4,
-		0,0,7,0,0,5,0,0,6,0,
-		0,4,0,0,0,6,0,0,4,0,
-		0,0,4,0,0,0,0,5,0,0,
-		0,0,5,0,4,0,6,6,0,0,
-		0,0,0,6,0,0,0,5,0,0,
-		0,0,7,0,0,0,5,0,0,0,
-		6,0,0,7,0,4,7,0,6,0,
+		0,12,0,12,13,12,0,0,0,0,
+		0,0,0,14,0,13,0,12,0,12,
+		0,0,12,0,0,12,0,0,13,0,
+		0,12,0,0,0,14,0,0,13,0,
+		0,0,12,0,0,0,0,14,0,0,
+		0,0,12,0,14,0,13,14,0,0,
+		0,0,0,15,0,0,0,12,0,0,
+		0,0,12,0,0,0,13,0,0,0,
+		12,0,0,13,0,13,13,0,12,0,
 		0,
 	};
 	static array<int, DAY_PER_SEASON> WinterEnemyMap = {
@@ -150,13 +150,16 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 	if (Keyboard_Get('K')) {
 		for (int i = 0; i < 70; ++i) {
 			MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
-			static_cast<MyChara*>(GetMember(false, 0))->LevelUp();
+			a->LevelUp();
+			a->GainLife(10000);
 		}
 	}else if (Keyboard_Get('C')) {
 		season = 1;
 		day = 0;
 		for (int i = 0; i < 7; ++i) {
-			static_cast<MyChara*>(GetMember(false,0))->LevelUp();
+			MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
+			a->LevelUp();
+			a->GainLife(10000);
 		}
 		myparty.AddMember(1, *this);
 	}
@@ -164,8 +167,6 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		season = 2;
 		day = 0;
 		myparty.AddMember(1, *this);
-		
-		
 		myparty.AddMember(2, *this);
 	}
 	else if (Keyboard_Get('B')) {
@@ -176,17 +177,16 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		myparty.AddMember(3, *this);
 	}
 	else {
-
 		// 無理やりな冬挿入
 		myparty.AddMember(23, *this);
 		GetMember(7)->isdead = true;
 		season = 0;
 		day = 0;
-		
 	}
 	
 	Initialize();
 	
+	rand.init();
 	aMusic.Play(5);
 }
 
@@ -447,6 +447,24 @@ int RogueGame::Attack(Chara *from, Chara *to) {
 			myparty.GainExp(getexp);
 		}
 	}
+
+	if (DETAILS[from->id].isenemy&&to->ai == Ai_Summer) {
+		static bool speaked = false;
+		if (!speaked) {
+			switch (rand.gen() % 2) {
+			case 0:
+				actionlog->push_back("「邪魔するなよ」");
+				break;
+			case 1:
+				actionlog->push_back("「うっとうしいな」");
+			}
+		speaked = true;
+		}
+		actionlog->push_back(to->name+"の攻撃対象が変更された");
+		to->count = 1;
+		to->DecideNextAction(*this);
+	}
+
 	return dmg;
 }
 //ダメージを返す
@@ -469,6 +487,7 @@ int RogueGame::Special(Chara *from, Chara *to) {
 	}
 	case 33: {//小隕石のつもり
 		const int SMALLCOUNT = 8;
+		from->count++;
 		if(from->count < SMALLCOUNT){
 			actionlog->push_back(from->name + "は接近している　残り" + Common::To_ZString(SMALLCOUNT - from->count) + "ターン");
 		}
@@ -485,6 +504,7 @@ int RogueGame::Special(Chara *from, Chara *to) {
 			 break;
 	case 36: {//超隕石のつもり
 		const int MEGACOUNT = 91;
+		from->count++;
 		if (from->count < MEGACOUNT){
 			actionlog->push_back(from->name + "は接近している…　残り" + Common::To_ZString(MEGACOUNT - from->count) + "ターン");
 		}
@@ -529,7 +549,7 @@ int RogueGame::Act(Chara *from,Chara *to,const ActionType type) {
 			assert(false);
 		}
 
-	from->count++;
+	
 	//死亡チェック
 	CheckDeadPlayer();
 
@@ -567,7 +587,12 @@ inline int RogueGame::CalculateDmg(const Chara *from,const Chara *to) {
 	else {
 		int realatk = (YOUBI_DETAIL[Date(day % 7)].effect == (E_AtkUp)) ? from->atk * 2 : from->atk;
 		int realdef = (YOUBI_DETAIL[Date(day % 7)].effect == (E_DefUp)) ? to->def * 2 : to->def;
-		const int diff = max(0, realatk - realdef);
+		
+		int diff = max(0, realatk - realdef);
+		if ((from->id == 1 && to->id == 0)||(from->id == 2 && to->id == 1)||(from->id == 3 && to->id == 2)) {
+			diff *= 2;
+			actionlog->push_back("特攻！　ダメージ二倍");
+		}
 		return to->defending ? diff / DEFENDINGCUTOFF : diff;
 	}
 }

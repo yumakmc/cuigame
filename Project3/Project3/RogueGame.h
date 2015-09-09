@@ -67,5 +67,6 @@ namespace  roguegame {
 		int nowplayernum=4;
 
 		ActionType nowaction;
+		Common::Rand rand;
 	};
 }

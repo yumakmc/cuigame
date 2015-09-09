@@ -51,7 +51,6 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 				};
 				return{ nextActionInfo };
 			}
-
 		}
 		nextActionInfo = {
 			-1,A_Nothing
@@ -85,21 +84,51 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 		return{ nextActionInfo };//UŒ‚‚µ‚È‚¢
 	}
 	break;
-	case Ai_AttackSpring: //id0‚ªt‚Æ‚¢‚¤‘O’ñ
+	case Ai_Summer: //id0‚ªt‚Æ‚¢‚¤‘O’ñ
 	{
-		for (int i = 0; i < roguegame.myparty.maxmember; ++i) {
-
-			if (roguegame.GetMember(roguegame.opparty.maxmember + i) != NULL&&roguegame.GetMember(roguegame.opparty.maxmember + i)->id == 0) {
-				nextActionInfo = {
-					roguegame.opparty.maxmember + i,nextaction
-				};
-				return{ nextActionInfo };
+		if (count) {
+			count = 0;
+			if (nexttargetnum >= roguegame.opparty.maxmember) {//ai•Ï‚í‚Á‚½‚Æ‚«‚æ‚¤@ã‚©‚çUŒ‚
+				nexttargetnum = -1;
 			}
+			for (int i = 0; i < roguegame.opparty.maxmember; ++i) {
+				nexttargetnum++;
+				if (nexttargetnum == roguegame.opparty.maxmember) {
+					nexttargetnum = 0;
+				}
+				if (roguegame.GetMember(nexttargetnum) == NULL) {
+					continue;
+				}
+				else {
+					nextActionInfo = {
+						nexttargetnum,nextaction
+					};
+					return{ nextActionInfo };
+				}
+
+			}
+			nextActionInfo = {
+				-1,A_Nothing
+			};
+			return{ nextActionInfo };//UŒ‚‚µ‚È‚¢
 		}
-		nextActionInfo = {
-			-1,A_Nothing
-		};
-		return{ nextActionInfo };//UŒ‚‚µ‚È‚¢
+		else {
+			for (int i = 0; i < roguegame.myparty.maxmember; ++i) {
+
+				if (roguegame.GetMember(roguegame.opparty.maxmember + i) != NULL&&roguegame.GetMember(roguegame.opparty.maxmember + i)->id == 0) {
+					nextActionInfo = {
+						roguegame.opparty.maxmember + i,nextaction
+					};
+					return{ nextActionInfo };
+				}
+			}
+			nextActionInfo = {
+				-1,A_Nothing
+			};
+			return{ nextActionInfo };//UŒ‚‚µ‚È‚¢
+		}
+		
+		
 	}
 
 	break;
@@ -135,9 +164,15 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 		};
 		return{ nextActionInfo };//UŒ‚‚µ‚È‚¢
 	}
+	break;
 	case Ai_Meteor:
 	{
+		nextActionInfo = {
+			-1,A_Nothing
+		};
+		return{ nextActionInfo };//UŒ‚‚µ‚È‚¢
 	}
+	break;
 	case Ai_Moon:
 	{
 		nextActionInfo = {
@@ -262,16 +297,21 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 	else {
 		for (int i = 0; i < maxmember; ++i) {
 			if (members[i] == NULL) {
-				string st;
+				string st="";
 				switch (aid) {
 				case 0:
 					st = "t‚ª¶‚Ü‚ê‚½";
 					break;
 				case 1:
-					st = "‰Ä‚ª¶‚Ü‚ê‚½@";
+					actionlog->push_back("‰Ä‚ª¶‚Ü‚ê‚½");
+					actionlog->push_back("u¡“ú‚Ü‚Å‚¨”æ‚ê@‚¶‚á[‚Ë[v");
+					actionlog->push_back("’ˆÓF‰Ä‚©‚ç‚Ìƒ_ƒ[ƒW‚Í“ñ”{‚É‚È‚è‚Ü‚·");
 					break;
 				case 2:
-					st = "H‚ª¶‚Ü‚ê‚½";
+					actionlog->push_back("H‚ª¶‚Ü‚ê‚½");
+					actionlog->push_back("u‚È‚ñ‚Å‰Ä‚Ü‚¾¶‚«‚Ä‚é‚ÌHv");
+					actionlog->push_back("u‚¿‚Ácccv");
+					actionlog->push_back("‰Ä‚ÌUŒ‚‘ÎÛ‚ª•ÏX‚³‚ê‚½");
 					break;
 				case 3:
 					st = "“~‚ª¶‚Ü‚ê‚½";
@@ -322,25 +362,28 @@ void MyParty::Update() {
 void MyParty::Draw() {
 	for (int i = 0; i < members.size(); ++i) {
 		if (members[i] != NULL) {
+			const int CHARAUP = UP + 3 * i;
 			MyChara *achara = static_cast<MyChara*> ((members[i]));
-			aDrawableConsole.draw(LEFT, UP + 3 * i, std::to_string(4+i) + ":");
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i, achara->name.c_str());
-			aDrawableConsole.draw(LEFT + 3, UP + 3 * i, "Lv");
-			aDrawableConsole.draw(LEFT + 4, UP + 3 * i, Common::To_ZString(achara->level).c_str());
-			aDrawableConsole.draw(LEFT + 7, UP + 3 * i, "NextExp:");
-			aDrawableConsole.draw(LEFT + 11, UP + 3 * i, Common::To_ZString(achara->next_exp).c_str());
+			aDrawableConsole.draw(LEFT, CHARAUP, std::to_string(4+i) + ":");
+			aDrawableConsole.draw(LEFT + 1, CHARAUP, achara->name.c_str());
+			aDrawableConsole.draw(LEFT + 3, CHARAUP, "Lv");
+			aDrawableConsole.draw(LEFT + 4, CHARAUP, Common::To_ZString(achara->level).c_str());
+			aDrawableConsole.draw(LEFT + 7, CHARAUP, "NextExp:");
+			aDrawableConsole.draw(LEFT + 11, CHARAUP, Common::To_ZString(achara->next_exp).c_str());
 
-			aDrawableConsole.draw(LEFT + 2, UP + 3 * i + 1, "U");
-			aDrawableConsole.draw(LEFT + 2, UP + 3 * i + 2, Common::To_ZString(achara->atk).c_str());
+			const int ATTACKLEFT = LEFT;
 
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 1, "ç");
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
+			aDrawableConsole.draw(ATTACKLEFT, CHARAUP + 1, "U");
+			aDrawableConsole.draw(ATTACKLEFT, CHARAUP + 2, Common::To_ZString(achara->atk).c_str());
 
-			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 1, "HP");
-			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(achara->max_hp)).c_str()));
+			aDrawableConsole.draw(ATTACKLEFT + 3, CHARAUP + 1, "ç");
+			aDrawableConsole.draw(ATTACKLEFT + 3, CHARAUP + 2, Common::To_ZString(achara->def).c_str());
+
+			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 1, "HP");
+			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(achara->max_hp)).c_str()));
 			if (!achara->controlable) {
-				aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 1, "‘ÎÛ");
-				aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 2, std::to_string(achara->nextActionInfo.targetnum)+":");
+				aDrawableConsole.draw(LEFT + 12, CHARAUP + 1, "‘ÎÛ");
+				aDrawableConsole.draw(LEFT + 12, CHARAUP + 2, Common::To_ZString(achara->nextActionInfo.targetnum));
 			}
 		}
 	}
@@ -380,23 +423,27 @@ void OpParty::Update() {
 void OpParty::Draw(){
 	for (int i = 0; i < members.size(); ++i) {
 		if (members[i] != NULL) {
+			const int CHARAUP = UP + 3 * i;
 			OpChara *achara = static_cast<OpChara*> ((members[i]));
-			aDrawableConsole.draw(LEFT, UP + 3 * i, std::to_string(i) + ":");
-			aDrawableConsole.draw(LEFT + 1, UP + 3 * i, achara->name.c_str());
-			aDrawableConsole.draw(LEFT + 9, UP + 3 * i, "Exp:");
-			aDrawableConsole.draw(LEFT + 11, UP + 3 * i, Common::To_ZString(achara->exp));
+			aDrawableConsole.draw(LEFT, CHARAUP, std::to_string(i) + ":");
+			aDrawableConsole.draw(LEFT + 1, CHARAUP, achara->name.c_str());
+			aDrawableConsole.draw(LEFT + 9, CHARAUP, "Exp:");
+			aDrawableConsole.draw(LEFT + 11, CHARAUP, Common::To_ZString(achara->exp));
 
-			aDrawableConsole.draw(LEFT + 2, UP + 3 * i + 1, "U");
-			aDrawableConsole.draw(LEFT + 2, UP + 3 * i + 2, Common::To_ZString(achara->atk).c_str());
+			const int ATTACKLEFT = LEFT;
 
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 1, "ç");
-			aDrawableConsole.draw(LEFT + 5, UP + 3 * i + 2, Common::To_ZString(achara->def).c_str());
+			aDrawableConsole.draw(ATTACKLEFT, CHARAUP + 1, "U");
+			aDrawableConsole.draw(ATTACKLEFT, CHARAUP + 2, Common::To_ZString(achara->atk).c_str());
 
-			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 1, "HP");
-			aDrawableConsole.draw(LEFT + 8, UP + 3 * i + 2, (Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(achara->max_hp)));
+			aDrawableConsole.draw(ATTACKLEFT + 3, CHARAUP + 1, "ç");
+			aDrawableConsole.draw(ATTACKLEFT + 3, CHARAUP + 2, Common::To_ZString(achara->def).c_str());
 
-			aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 1, "‘ÎÛ");
-			aDrawableConsole.draw(LEFT + 12, UP + 3 * i + 2, std::to_string(achara->nextActionInfo.targetnum) + ":");
+			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 1, "HP");
+			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(achara->max_hp)).c_str()));
+			if (!achara->controlable) {
+				aDrawableConsole.draw(LEFT + 12, CHARAUP + 1, "‘ÎÛ");
+				aDrawableConsole.draw(LEFT + 12, CHARAUP + 2, Common::To_ZString(achara->nextActionInfo.targetnum));
+			}
 		}
 	}
 }

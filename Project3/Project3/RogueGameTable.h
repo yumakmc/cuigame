@@ -15,7 +15,7 @@ namespace  roguegame {
 		TABLEA();
 		std::array<TableInfo, MaxLevel> Get(const int num);
 	private:
-		std::array<TableInfo, MaxLevel> tableinfos;
+		std::array<std::array<TableInfo, MaxLevel>,4> tableinfos;
 
 	}TABLE_A;
 	
