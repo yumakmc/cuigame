@@ -42,15 +42,15 @@ namespace roguegame {
 		0,
 	};
 	static array<int, DAY_PER_SEASON> SummerEnemyMap = {
-		0,8,0,8,9,8,0,0,0,0,
-		0,0,0,10,0,9,0,9,0,8,
-		0,0,11,0,0,9,0,0,10,0,
+		0,8,0,0,9,8,0,0,0,0,
+		0,0,0,8,0,0,8,0,0,8,
+		0,0,0,0,0,0,9,0,10,0,
 		0,8,0,0,0,10,0,0,8,0,
 		0,0,8,0,0,0,0,9,0,0,
-		0,0,9,0,8,0,10,10,0,0,
+		0,0,9,8,0,0,10,10,0,0,
 		0,0,0,10,0,0,0,9,0,0,
 		0,0,11,0,0,0,9,0,0,0,
-		10,0,0,11,0,8,11,0,10,0,
+		10,0,0,11,0,0,0,0,0,0,
 		0,
 	};
 	static array<int, DAY_PER_SEASON> FallEnemyMap = {
@@ -155,23 +155,53 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		}
 	}else if (Keyboard_Get('C')) {
 		season = 1;
-		day = 0;
-		for (int i = 0; i < 7; ++i) {
-			MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
-			a->LevelUp();
-			a->GainLife(10000);
-		}
+		day = 91;
+
+		MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
+		
+		a->GainExp(350);//これが稼がないプレイの下限か？
+		a->GainLife(10000);
+		myparty.AddMember(1, *this);
+	}
+	else if (Keyboard_Get('L')) {
+		season = 1;
+		day = 91;
+
+		MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
+
+		a->GainExp(600);//稼ぐプレイ
+		a->GainLife(10000);
 		myparty.AddMember(1, *this);
 	}
 	else if (Keyboard_Get('V')) {
 		season = 2;
-		day = 0;
+		day = 182;
+
+		MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
+		a->GainExp(600);//稼ぐプレイ
+		a->GainLife(10000);
+
 		myparty.AddMember(1, *this);
 		myparty.AddMember(2, *this);
+		actionlog->push_back("夏の攻撃対象が変更された");
+		GetMember(false, 1)->count = 2;
+	}
+	else if (Keyboard_Get('F')) {
+		season = 2;
+		day = 182;
+
+		MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
+		a->GainExp(600);//稼ぐプレイ
+		a->GainLife(10000);
+
+		myparty.AddMember(1, *this);
+		myparty.AddMember(2, *this);
+		actionlog->push_back("夏の攻撃対象が変更された");
+		GetMember(false, 1)->count = 2;
 	}
 	else if (Keyboard_Get('B')) {
 		season = 1;
-		day = 0;
+		day = 273;
 		myparty.AddMember(1, *this);
 		myparty.AddMember(2, *this);
 		myparty.AddMember(3, *this);
@@ -279,6 +309,8 @@ void RogueGame::Update() {
 				break;
 			case 2:
 				myparty.AddMember(2, *this);
+				actionlog->push_back("夏の攻撃対象が変更された");
+				GetMember(false, 1)->count = 2;
 				break;
 			case 3:
 				myparty.AddMember(3, *this);
@@ -447,8 +479,8 @@ int RogueGame::Attack(Chara *from, Chara *to) {
 			myparty.GainExp(getexp);
 		}
 	}
-
-	if (DETAILS[from->id].isenemy&&to->ai == Ai_Summer) {
+	//夏が秋攻撃体制に入ってなかったら
+	if (DETAILS[from->id].isenemy&&to->ai == Ai_Summer&&&to->count==2) {
 		static bool speaked = false;
 		if (!speaked) {
 			switch (rand.gen() % 2) {
@@ -589,7 +621,7 @@ inline int RogueGame::CalculateDmg(const Chara *from,const Chara *to) {
 		int realdef = (YOUBI_DETAIL[Date(day % 7)].effect == (E_DefUp)) ? to->def * 2 : to->def;
 		
 		int diff = max(0, realatk - realdef);
-		if ((from->id == 1 && to->id == 0)||(from->id == 2 && to->id == 1)||(from->id == 3 && to->id == 2)) {
+		if ((from->id == 1 && to->id == 0)||(from->id == 2 && to->id == 1)||(from->id == 3 && to->id == 2) || (from->id == 0 && to->id == 3)) {
 			diff *= 2;
 			actionlog->push_back("特攻！　ダメージ二倍");
 		}

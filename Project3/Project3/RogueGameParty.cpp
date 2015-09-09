@@ -83,7 +83,7 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 	break;
 	case Ai_Summer: //id0が春という前提
 	{
-		if (count) {
+		if (count==1) {
 			count = 0;
 			if (nexttargetnum >= roguegame.opparty.maxmember) {//ai変わったときよう　上から攻撃
 				nexttargetnum = -1;
@@ -109,7 +109,7 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 			};
 			return{ nextActionInfo };//攻撃しない
 		}
-		else {
+		else if(count==0){
 			for (int i = 0; i < roguegame.myparty.maxmember; ++i) {
 
 				if (roguegame.GetMember(roguegame.opparty.maxmember + i) != NULL&&roguegame.GetMember(roguegame.opparty.maxmember + i)->id == 0) {
@@ -123,6 +123,24 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 				-1,A_Nothing
 			};
 			return{ nextActionInfo };//攻撃しない
+		}
+		else if (count == 2) {
+			for (int i = 0; i < roguegame.myparty.maxmember; ++i) {
+
+				if (roguegame.GetMember(roguegame.opparty.maxmember + i) != NULL&&roguegame.GetMember(roguegame.opparty.maxmember + i)->id == 2) {
+					nextActionInfo = {
+						roguegame.opparty.maxmember + i,nextaction
+					};
+					return{ nextActionInfo };
+				}
+			}
+			nextActionInfo = {
+				-1,A_Nothing
+			};
+			return{ nextActionInfo };//攻撃しない
+		}
+		else {
+			assert(false);
 		}
 		
 		
@@ -306,7 +324,7 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 					actionlog->push_back("秋が生まれた");
 					actionlog->push_back("「なんで夏まだ生きてるの？」");
 					actionlog->push_back("「ちっ………」");
-					actionlog->push_back("夏の攻撃対象が変更された");
+					
 					break;
 				case 3:
 					st = "冬が生まれた";
