@@ -123,6 +123,12 @@
     <ClCompile Include="Game.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="RogueSaveManager.cpp">
+      <Filter>Rogue</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseSaveManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseScene.h">
@@ -220,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="RogueSaveManager.h">
+      <Filter>Rogue</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSaveManager.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

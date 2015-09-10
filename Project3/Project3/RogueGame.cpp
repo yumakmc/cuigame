@@ -3,11 +3,12 @@
 #include "DrawableConsole.h"
 #include "BackGround.h"
 #include "Music.h"
+#include "RogueSaveManager.h"
 #include <string>
 #include <algorithm>
+#include <fstream>
 
 using namespace roguegame;
-
 
 
 namespace roguegame {
@@ -145,7 +146,8 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 	:gameBaseScene(changer), abackground(0), actionlog(b),situation(c) ,myparty(PARTY_LEFT, MY_PARTY_UP,b, c),opparty(PARTY_LEFT, OP_PARTY_UP,b, c),nowplayernum(4){
 	Party a(PARTY_LEFT, MY_PARTY_UP, actionlog, situation);
 	myparty.AddMember(0,*this);
-
+	
+	
 	//デバッグ用
 	if (Keyboard_Get('K')) {
 		for (int i = 0; i < 70; ++i) {
@@ -172,13 +174,27 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		a->GainExp(600);//稼ぐプレイ
 		a->GainLife(10000);
 		myparty.AddMember(1, *this);
+		RogueSaveData savedata = {
+			myparty,
+			opparty,
+			day,
+			season,
+		};
+		aRogueSaveManager.Save(0, &savedata);
+		RogueSaveData loaddata = {
+			myparty,
+			opparty,
+			1000,1000
+		};
+		aRogueSaveManager.Load(0,&loaddata);
+		assert(loaddata.day != 1000);
 	}
 	else if (Keyboard_Get('V')) {
 		season = 2;
 		day = 182;
 
 		MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
-		a->GainExp(600);//稼ぐプレイ
+		a->GainExp(2000);//稼がないプレイ
 		a->GainLife(10000);
 
 		myparty.AddMember(1, *this);
@@ -191,7 +207,7 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		day = 182;
 
 		MyChara* a = static_cast<MyChara*>(GetMember(false, 0));
-		a->GainExp(600);//稼ぐプレイ
+		a->GainExp(3000);//稼ぐプレイ
 		a->GainLife(10000);
 
 		myparty.AddMember(1, *this);
@@ -215,6 +231,7 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 	}
 	
 	Initialize();
+	
 	
 	rand.init();
 	aMusic.Play(5);
@@ -480,7 +497,7 @@ int RogueGame::Attack(Chara *from, Chara *to) {
 		}
 	}
 	//夏が秋攻撃体制に入ってなかったら
-	if (DETAILS[from->id].isenemy&&to->ai == Ai_Summer&&&to->count==2) {
+	if (DETAILS[from->id].isenemy&&to->ai == Ai_Summer&&to->count==2) {
 		static bool speaked = false;
 		if (!speaked) {
 			switch (rand.gen() % 2) {
@@ -584,7 +601,6 @@ int RogueGame::Act(Chara *from,Chara *to,const ActionType type) {
 	
 	//死亡チェック
 	CheckDeadPlayer();
-
 	
 	ChangeActMember(); //全員終わらなかったら
 	
@@ -625,7 +641,7 @@ inline int RogueGame::CalculateDmg(const Chara *from,const Chara *to) {
 			diff *= 2;
 			actionlog->push_back("特攻！　ダメージ二倍");
 		}
-		return to->defending ? diff / DEFENDINGCUTOFF : diff;
+		return max(1,to->defending ? diff / DEFENDINGCUTOFF : diff);
 	}
 }
 bool RogueGame::ChangeActMember() {

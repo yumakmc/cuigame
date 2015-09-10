@@ -5,12 +5,24 @@
 #include "RogueGameTable.h"
 #include "RogueGameParty.h"
 #include "Common.h"
+#include "BaseSaveManager.h"
 #include <map>
 #include <vector>
 #include <array>
 #include <utility>
 using namespace std;
 namespace  roguegame {
+	struct RogueSaveData:public BaseSaveData {
+		RogueSaveData(const MyParty& m, const OpParty& o, int d, int s): myparty(m) , opparty(o) {
+			
+			day = d;
+			season = s;
+		}
+		MyParty myparty;
+		OpParty opparty;
+		int day;
+		int season;
+	};
 	enum Ending {
 		E_Dummy,//‰Šú’l
 		E_Bad,//t‚Ét€‚Ê

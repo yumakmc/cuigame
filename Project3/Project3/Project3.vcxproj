@@ -138,8 +138,10 @@
     <ClCompile Include="RogueGame.cpp" />
     <ClCompile Include="RogueGameParty.cpp" />
     <ClCompile Include="RogueGameTable.cpp" />
+    <ClCompile Include="RogueSaveManager.cpp" />
     <ClCompile Include="Rpg.cpp" />
     <ClCompile Include="RpgGame.cpp" />
+    <ClCompile Include="BaseSaveManager.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="test.cpp" />
@@ -170,8 +172,10 @@
     <ClInclude Include="RogueGame.h" />
     <ClInclude Include="RogueGameParty.h" />
     <ClInclude Include="RogueGameTable.h" />
+    <ClInclude Include="RogueSaveManager.h" />
     <ClInclude Include="Rpg.h" />
     <ClInclude Include="RpgGame.h" />
+    <ClInclude Include="BaseSaveManager.h" />
     <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Task.h" />
