@@ -149,6 +149,7 @@ namespace  roguegame {
 	class Party:public Task {
 	public:
 		Party(const int aleft,const int aup,vector<string> *aactionlog, Situation *asituation);
+		Party(const Party &aparty);
 		virtual void Update();
 		virtual void Draw();
 		bool AddMember(const int aid, const RogueGame &roguegame);
