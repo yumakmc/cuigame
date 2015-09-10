@@ -297,6 +297,10 @@ Party::Party(const int aleft, const int aup, vector<string> *aactionlog, Situati
 	LEFT = aleft;
 	UP = aup;
 }
+Party::Party(const Party &aparty) : members(aparty.members), actionlog(aparty.actionlog), situation(aparty.situation) {
+	LEFT = aparty.LEFT;
+	UP = aparty.UP;
+}
 void Party::Update() {
 
 }
@@ -368,6 +372,9 @@ Chara* Party::GetMember(const int anum)const  {
 MyParty::MyParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation) :Party(aleft,aup,aactionlog, asituation) {
 	
 }
+MyParty::MyParty(MyParty &amyparty) : Party(amyparty) {
+
+}
 void MyParty::Update() {
 	//èIóπîªíË
 
@@ -429,6 +436,9 @@ int MyParty::GainExp(const int exp) {
 
 OpParty::OpParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation) : Party(aleft,aup,aactionlog, asituation) {
 	
+}
+OpParty::OpParty(OpParty &aopparty) : Party(aopparty) {
+
 }
 void OpParty::Update() {
 

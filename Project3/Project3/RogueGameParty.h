@@ -171,6 +171,7 @@ namespace  roguegame {
 	class MyParty:public Party {
 	public:
 		MyParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
+		MyParty(MyParty &amyparty);
 		void Update()override;
 		void Draw()override;
 		bool AddMember(const int aid, const RogueGame &roguegame);
@@ -182,6 +183,7 @@ namespace  roguegame {
 	class OpParty :public Party {
 	public:
 		OpParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
+		OpParty(OpParty &aopparty);
 		void Update()override;
 		void Draw()override;
 		bool AddMember(const int aid, const RogueGame &roguegame);
