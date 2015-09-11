@@ -10,14 +10,15 @@
 #include <vector>
 #include <array>
 #include <utility>
+#include<memory>
 using namespace std;
 namespace  roguegame {
-	struct RogueSaveData:public BaseSaveData {
+	struct RogueSaveData :public BaseSaveData {
 		RogueSaveData(const MyParty& m, const OpParty& o, int d, int s);
 		RogueSaveData();
 		~RogueSaveData();
-		array<pair<int,MyChara>,4> mymembers;
-		array<pair<int, OpChara>,4> opmembers;
+		array<pair<int, MyChara>, 4> mymembers;
+		array<pair<int, OpChara>, 4> opmembers;
 		int day;
 		int season;
 	};
@@ -32,10 +33,10 @@ namespace  roguegame {
 		E_KillMeteorWithOutAll,//隕石倒す誰か死んでる
 	};
 	/*struct table {
-		int next_exp;
-		int max_hp;
-		int atk;
-		int def;
+	int next_exp;
+	int max_hp;
+	int atk;
+	int def;
 	};
 	static vector<array < table, 100 >> TABLES;*/
 
@@ -45,19 +46,19 @@ namespace  roguegame {
 		void Initialize() override;
 		void Update() override;        //更新処理をオーバーライド。
 		void Draw() override;            //描画処理をオーバーライド。
-		int Attack(Chara *from, Chara *to);
+		int Attack(shared_ptr<Chara> from, shared_ptr<Chara> to);
 		int Attack(int fromnum, int tonum);
-		int Regenerate(Chara *from, Chara *to);
+		int Regenerate(shared_ptr<Chara> from, shared_ptr<Chara> to);
 		int Regenerate(const int fromnum, const int tonum);
-		int Special(Chara *from, Chara *to);
+		int Special(shared_ptr<Chara> from, shared_ptr<Chara> to);
 		int Special(int fromnum, int tonum);
-		int Act(Chara *from, Chara *to,const ActionType type);
+		int Act(shared_ptr<Chara> from, shared_ptr<Chara> to, const ActionType type);
 		int SelectAction(const ActionType type);
-		inline int CalculateDmg(const Chara *from, const Chara *to);
+		inline int CalculateDmg(const shared_ptr<Chara> from, const shared_ptr<Chara> to);
 		bool ChangeActMember();//全員終了したらfalse返す
 		int CheckDeadPlayer();//行動終了時に呼び出す　死亡チェックとかエンディング条件チェックとか
-		Chara* GetMember(int num)const ;//上からnum番目のメンバーへのポインタを返す
-		Chara* GetMember(const bool isop, const int num)const;
+		shared_ptr<Chara> GetMember(int num)const;//上からnum番目のメンバーへのポインタを返す
+		shared_ptr<Chara> GetMember(const bool isop, const int num)const;
 
 		MyParty myparty;
 		OpParty opparty;
@@ -68,14 +69,14 @@ namespace  roguegame {
 
 		BackGround abackground;
 
-		Situation *situation;
+		shared_ptr<Situation> situation;
 
-		vector<string> *actionlog;
+		shared_ptr<vector<string>>actionlog;
 
 		int season = 0;
 		int day = 0;
 
-		int nowplayernum=4;
+		int nowplayernum = 4;
 
 		ActionType nowaction;
 		Common::Rand rand;

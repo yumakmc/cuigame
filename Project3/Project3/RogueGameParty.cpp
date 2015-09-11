@@ -3,9 +3,10 @@
 #include<assert.h>
 
 
-Chara::Chara(const int aid, vector<string> *aactionlog, Situation *asituation) :id(aid), name(DETAILS[aid].name),actionlog(aactionlog),situation(asituation) {
+Chara::Chara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) :id(aid), name(DETAILS[aid].name), actionlog(aactionlog), situation(asituation) {
 	isdead = false;
 	ai = DETAILS[aid].fst_ai;
+	defending = false;
 }
 bool Chara::GetDamage(const int admg) {
 	assert(admg >= 0);
@@ -20,8 +21,8 @@ bool Chara::GetDamage(const int admg) {
 }
 int Chara::GainLife(const int pluslife) {
 	assert(pluslife >= 0);//0Ç≈Ç‡ÇnÇjÇ…ÇµÇƒÇÈÅ@Ç∆ÇËÇ‹
-	const int realpluslife = max(0,min(pluslife, max_hp - now_hp));
-	now_hp +=realpluslife;
+	const int realpluslife = max(0, min(pluslife, max_hp - now_hp));
+	now_hp += realpluslife;
 	return realpluslife;
 }
 ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
@@ -83,7 +84,7 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 	break;
 	case Ai_Summer: //id0Ç™ètÇ∆Ç¢Ç§ëOíÒ
 	{
-		if (count==1) {
+		if (count == 1) {
 			count = 0;
 			if (nexttargetnum >= roguegame.opparty.maxmember) {//aiïœÇÌÇ¡ÇΩÇ∆Ç´ÇÊÇ§Å@è„Ç©ÇÁçUåÇ
 				nexttargetnum = -1;
@@ -109,7 +110,7 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 			};
 			return{ nextActionInfo };//çUåÇÇµÇ»Ç¢
 		}
-		else if(count==0){
+		else if (count == 0) {
 			for (int i = 0; i < roguegame.myparty.maxmember; ++i) {
 
 				if (roguegame.GetMember(roguegame.opparty.maxmember + i) != NULL&&roguegame.GetMember(roguegame.opparty.maxmember + i)->id == 0) {
@@ -142,8 +143,8 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 		else {
 			assert(false);
 		}
-		
-		
+
+
 	}
 
 	break;
@@ -262,7 +263,7 @@ bool Chara::Load(const Chara &c) {
 //	const int diff = max(0, atk - atarget.def);
 //	return atarget.defending ? diff / 4 : diff;
 //}
-OpChara::OpChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid, aactionlog, asituation){
+OpChara::OpChara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) :Chara(aid, aactionlog, asituation) {
 	exp = DETAILS[aid].opinfo.exp;
 	atk = DETAILS[aid].opinfo.atk;
 	def = DETAILS[aid].opinfo.def;
@@ -274,7 +275,7 @@ bool OpChara::Load(const OpChara &c) {
 	exp = c.ai;
 	return 1;
 }
-MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid,aactionlog, asituation), infos(TABLE_A.Get(id)) {
+MyChara::MyChara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) :Chara(aid, aactionlog, asituation), infos(TABLE_A.Get(id)) {
 	level = DETAILS[aid].myinfo.fst_level;
 	atk = infos[level].atk;
 	def = infos[level].def;
@@ -286,7 +287,7 @@ MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituatio
 int MyChara::GainExp(const int aexp) {
 	next_exp -= aexp;
 	int num = 0;
-	while(next_exp <= 0) {
+	while (next_exp <= 0) {
 		LevelUp();
 		num++;
 	}
@@ -301,7 +302,7 @@ bool MyChara::LevelUp() {
 	def = infos[level].def;
 	max_hp = infos[level].max_hp;
 	next_exp += infos[level].exp;
-	
+
 	return true;
 }
 bool MyChara::Load(const MyChara &c) {
@@ -318,7 +319,7 @@ bool MyChara::Load(const MyChara &c) {
 //	}
 //	return false;
 //}
-Party::Party(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation) :members(), actionlog(aactionlog),situation(asituation){
+Party::Party(const int aleft, const int aup, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) :members(), actionlog(aactionlog), situation(asituation) {
 	LEFT = aleft;
 	UP = aup;
 }
@@ -334,12 +335,12 @@ void Party::Draw() {
 bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 	//ÇﬂÇøÇ·Ç≠ÇøÇ·ó·äOìIÇ»èàóùÅ@ÇSî‘ñ⁄Ç…ñ≥óùÇ‚ÇËì~ÅiÇ∑ÇÆéÄÇ ÅjÇì¸ÇÍÇƒÇÈ
 	if (aid == 23) {
-		members[3] = new MyChara(aid, actionlog, situation);
+		members[3] = make_shared<MyChara>(aid, actionlog, situation);
 	}
 	else {
 		for (int i = 0; i < maxmember; ++i) {
 			if (members[i] == NULL) {
-				string st="";
+				string st = "";
 				switch (aid) {
 				case 0:
 					st = "ètÇ™ê∂Ç‹ÇÍÇΩ";
@@ -353,7 +354,7 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 					actionlog->push_back("èHÇ™ê∂Ç‹ÇÍÇΩ");
 					actionlog->push_back("ÅuÇ»ÇÒÇ≈âƒÇ™Ç‹Çæê∂Ç´ÇƒÇÈÇÃÅHÅv");
 					actionlog->push_back("ÅuÇøÇ¡ÅcÅcÅcÅv");
-					
+
 					break;
 				case 3:
 					st = "ì~Ç™ê∂Ç‹ÇÍÇΩ";
@@ -369,37 +370,37 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 
 
 				if (DETAILS[aid].isenemy) {
-					members[i] = new OpChara(aid, actionlog, situation);
+					members[i] = make_shared<OpChara>(aid, actionlog, situation);
 				}
 				else {
-					members[i] = new MyChara(aid, actionlog, situation);
+					members[i] = make_shared<MyChara>(aid, actionlog, situation);
 				}
 				members[i]->DecideNextAction(roguegame);
 				return true;
 			}
 		}
 	}
-	
+
 	return false;
 }
 void Party::DeleteMember(const int anum) {
 	if (members[anum] != NULL) {
 
-	
+
 		actionlog->push_back(members[anum]->name + "ÇÕéÄÇÒÇæ");
 		members[anum] = NULL;
 	}
 
 }
-Chara* Party::GetMember(const int anum)const  {
+shared_ptr<Chara> Party::GetMember(const int anum)const {
 	return members[anum];
 }
 //int Party::Act(const ActionType type) {
 //	return members[nowselect]->SelectAction(type);
 //}
 
-MyParty::MyParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation) :Party(aleft,aup,aactionlog, asituation) {
-	
+MyParty::MyParty(const int aleft, const int aup, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) :Party(aleft, aup, aactionlog, asituation) {
+
 }
 MyParty::MyParty(const MyParty &amyparty) : Party(amyparty) {
 
@@ -412,8 +413,8 @@ void MyParty::Draw() {
 	for (int i = 0; i < members.size(); ++i) {
 		if (members[i] != NULL) {
 			const int CHARAUP = UP + 3 * i;
-			MyChara *achara = static_cast<MyChara*> ((members[i]));
-			aDrawableConsole.draw(LEFT, CHARAUP, std::to_string(4+i) + ":");
+			shared_ptr<MyChara> achara = static_pointer_cast<MyChara> ((members[i]));
+			aDrawableConsole.draw(LEFT, CHARAUP, std::to_string(4 + i) + ":");
 			aDrawableConsole.draw(LEFT + 1, CHARAUP, achara->name.c_str());
 			aDrawableConsole.draw(LEFT + 3, CHARAUP, "Lv");
 			aDrawableConsole.draw(LEFT + 4, CHARAUP, Common::To_ZString(achara->level).c_str());
@@ -430,7 +431,7 @@ void MyParty::Draw() {
 
 			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 1, "HP");
 			aDrawableConsole.draw(ATTACKLEFT + 6, CHARAUP + 2, ((Common::To_ZString(achara->now_hp) + " /" + Common::To_ZString(achara->max_hp)).c_str()));
-			if (!achara->ai==Ai_Controlable) {
+			if (!achara->ai == Ai_Controlable) {
 				aDrawableConsole.draw(LEFT + 12, CHARAUP + 1, "ëŒè€");
 				aDrawableConsole.draw(LEFT + 12, CHARAUP + 2, Common::To_ZString(achara->nextActionInfo.targetnum));
 			}
@@ -444,7 +445,7 @@ bool MyParty::Load(const RogueSaveData& data) {
 			DeleteMember(i);
 		}
 		else {
-			static_cast<MyChara*>(members[i])->Load(news[i].second);
+			static_pointer_cast<MyChara>(members[i])->Load(news[i].second);
 		}
 	}
 	return 1;
@@ -466,17 +467,17 @@ vector<int > MyParty::GetAliveMemberId() {
 }
 int MyParty::GainExp(const int exp) {
 	for (int i = 0; i < maxmember; ++i) {
-		MyChara* achara = static_cast<MyChara*>(members[i]);
+		shared_ptr<MyChara> achara = static_pointer_cast<MyChara>(members[i]);
 		if (achara != NULL) {
 			achara->GainExp(exp);
 		}
-		
+
 	}
 	return 1;
 }
 
-OpParty::OpParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation) : Party(aleft,aup,aactionlog, asituation) {
-	
+OpParty::OpParty(const int aleft, const int aup, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) : Party(aleft, aup, aactionlog, asituation) {
+
 }
 OpParty::OpParty(const OpParty &aopparty) : Party(aopparty) {
 
@@ -484,11 +485,11 @@ OpParty::OpParty(const OpParty &aopparty) : Party(aopparty) {
 void OpParty::Update() {
 
 }
-void OpParty::Draw(){
+void OpParty::Draw() {
 	for (int i = 0; i < members.size(); ++i) {
 		if (members[i] != NULL) {
 			const int CHARAUP = UP + 3 * i;
-			OpChara *achara = static_cast<OpChara*> ((members[i]));
+			shared_ptr<OpChara> achara = static_pointer_cast<OpChara> ((members[i]));
 			aDrawableConsole.draw(LEFT, CHARAUP, std::to_string(i) + ":");
 			aDrawableConsole.draw(LEFT + 1, CHARAUP, achara->name.c_str());
 			aDrawableConsole.draw(LEFT + 9, CHARAUP, "Exp:");
@@ -511,10 +512,10 @@ void OpParty::Draw(){
 		}
 	}
 }
-bool OpParty::AddMember(const int aid,const RogueGame &roguegame) {
+bool OpParty::AddMember(const int aid, const RogueGame &roguegame) {
 
 	assert(DETAILS[aid].isenemy);
-	return Party::AddMember(aid,roguegame);
+	return Party::AddMember(aid, roguegame);
 }
 bool OpParty::Load(const RogueSaveData& data) {
 	auto news(data.opmembers);
@@ -523,8 +524,9 @@ bool OpParty::Load(const RogueSaveData& data) {
 			DeleteMember(i);
 		}
 		else {
-			static_cast<OpChara*>(members[i])->Load(news[i].second);
+			static_pointer_cast<OpChara>(members[i])->Load(news[i].second);
 		}
 	}
 	return 1;
 }
+

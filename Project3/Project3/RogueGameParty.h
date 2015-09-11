@@ -1,7 +1,9 @@
+
 #pragma once
 #include <string>
 #include <vector>
 #include <array>
+#include <memory>
 #include "Task.h"
 #include "DrawableConsole.h"
 #include "Common.h"
@@ -11,7 +13,7 @@ using namespace roguegame;
 namespace  roguegame {
 	class RogueGame;
 	struct RogueSaveData;
-	
+
 	enum ActionType {
 		A_Attack,
 		A_Defence,
@@ -65,25 +67,25 @@ namespace  roguegame {
 	};
 
 	static const vector<data> DETAILS = {
-		{ false,"èt"   ,Ai_Controlable ,  30,{ 1},{ 0, 0, 0, 10} },
-		{ false,"âƒ"   ,Ai_Summer,1000,{20},{ 0, 0, 0, 10} },
-		{ false,"èH"   ,Ai_AttackSummer, 500,{20},{ 0, 0, 0, 10} },
-		{ false,"ì~"   ,Ai_AttackEnemy , 700,{20},{ 0, 0, 0, 10} },
+		{ false,"èt"   ,Ai_Controlable ,  30,{ 1 },{ 0, 0, 0, 10 } },
+		{ false,"âƒ"   ,Ai_Summer,1000,{ 20 },{ 0, 0, 0, 10 } },
+		{ false,"èH"   ,Ai_AttackSummer, 500,{ 20 },{ 0, 0, 0, 10 } },
+		{ false,"ì~"   ,Ai_AttackEnemy , 700,{ 20 },{ 0, 0, 0, 10 } },
 
-		{ true,"î~"    ,Ai_AttackMy	   ,  12,{ 0},{ 7, 6, 0,  12 } },//ètÇÃâ‘
-		{ true,"‰ø"    ,Ai_AttackMy    ,  25,{ 0},{15, 7, 3, 25 } },
-		{ true,"í÷"    ,Ai_AttackMy    ,  30,{ 0},{30, 13, 0, 30 } },
-		{ true,"ç˜"	   ,Ai_AttackMy    ,  40,{ 0},{50, 8, 9, 40 } },
+		{ true,"î~"    ,Ai_AttackMy	   ,  12,{ 0 },{ 7, 6, 0,  12 } },//ètÇÃâ‘
+		{ true,"‰ø"    ,Ai_AttackMy    ,  25,{ 0 },{ 15, 7, 3, 25 } },
+		{ true,"í÷"    ,Ai_AttackMy    ,  30,{ 0 },{ 30, 13, 0, 30 } },
+		{ true,"ç˜"	   ,Ai_AttackMy    ,  40,{ 0 },{ 50, 8, 9, 40 } },
 
-		{ true,"ó®"    ,Ai_AttackMy    ,  50,{ 0},{50, 12, 3, 50} },//âƒÇÃâ‘
-		{ true,"à®"    ,Ai_AttackMy    ,  60,{ 0},{60,15, 1, 60} },
-		{ true,"Â["    ,Ai_AttackMy    ,  40,{ 0},{100,20,5, 40} },
-		{ true,"ò@"    ,Ai_AttackMy	   , 100,{ 0},{200,14,17,100} },
+		{ true,"ó®"    ,Ai_AttackMy    ,  50,{ 0 },{ 50, 12, 3, 50 } },//âƒÇÃâ‘
+		{ true,"à®"    ,Ai_AttackMy    ,  60,{ 0 },{ 60,15, 1, 60 } },
+		{ true,"Â["    ,Ai_AttackMy    ,  40,{ 0 },{ 100,20,5, 40 } },
+		{ true,"ò@"    ,Ai_AttackMy	   , 100,{ 0 },{ 200,14,17,100 } },
 
 		{ true,"óñ"    ,Ai_AttackMy    ,  30,{ 0 },{ 100, 15,15, 30 } },//èHÇÃâ‘
 		{ true,"ãe"    ,Ai_AttackMy    ,  10,{ 0 },{ 150,17, 20, 10 } },
 		{ true,"îã"    ,Ai_AttackMy    ,  50,{ 0 },{ 200,15,17, 50 } },
-		{ true,"ãk"    ,Ai_AttackMy	   ,  100,{ 0 },{300,19,0,100 } },
+		{ true,"ãk"    ,Ai_AttackMy	   ,  100,{ 0 },{ 300,19,0,100 } },
 
 		{ true,"ïA"    ,Ai_AttackMy    ,  60,{ 0 },{ 300, 20, 5, 60 } },//ì~ÇÃâ‘
 		{ true,"ïì"    ,Ai_AttackMy    ,  70,{ 0 },{ 10,20, 5, 70 } },
@@ -104,13 +106,15 @@ namespace  roguegame {
 	};
 	class Chara {
 	public:
-		Chara(const int aid, vector<string> *aactionlog, Situation *asituation);
+		Chara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation);
+
 		Chara() {
 
 		}
 		~Chara() {
 
 		}
+
 		bool GetDamage(const int admg);//éÄÇÒÇæÇ©Çï‘Ç∑
 		int GainLife(const int pluslife);
 
@@ -130,18 +134,21 @@ namespace  roguegame {
 
 		//ï÷óòÉJÉEÉìÉ^
 		int count = 0;
-		bool Load(const Chara &c);
-		vector<string> *actionlog;
-		Situation *situation;
+		shared_ptr<vector<string>> actionlog;
+		shared_ptr<Situation> situation;
 	protected:
-		
+
+		bool Load(const Chara &c);
+	protected:
+
 		//ÉåÉxÉãÉAÉbÉvÇ…ïKóvÇ»åoå±ílÇ∆Ç©ÉåÉxÉãÇ…ÇÊÇÈçUåÇóÕÇ∆Ç©
-		
+
 	private:
 	};
 	class OpChara :public Chara {
 	public:
-		OpChara(const int aid, vector<string> *aactionlog, Situation *asituation);
+		OpChara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation);
+
 		OpChara() {
 
 		}
@@ -149,16 +156,19 @@ namespace  roguegame {
 		int exp;
 
 	};
-	
+
 	class MyChara :public Chara {
 	public:
-		MyChara(const int aid, vector<string> *aactionlog, Situation *asituation);
+
+		MyChara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation);
+
 		MyChara() {
 
 		}
+
 		int GainExp(const int aexp);//è„Ç™Ç¡ÇΩÉåÉxÉãÇï‘Ç∑
-		
-		//bool Attack(Chara &atarget);
+
+									//bool Attack(Chara &atarget);
 		int level;
 		int next_exp;
 		bool LevelUp();
@@ -170,32 +180,32 @@ namespace  roguegame {
 	private:
 		array<TableInfo, MaxLevel> infos;
 	};
-	class Party:public Task {
+	class Party :public Task {
 	public:
-		Party(const int aleft,const int aup,vector<string> *aactionlog, Situation *asituation);
+		Party(const int aleft, const int aup, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation);
 		Party(const Party &aparty);
 		virtual void Update();
 		virtual void Draw();
 		bool AddMember(const int aid, const RogueGame &roguegame);
-		Chara* GetMember(const int anum)const;
+		shared_ptr<Chara> GetMember(const int anum)const;
 		void DeleteMember(const int anum);
 		//int Act(const ActionType type);
-		int nowselect=0;
+		int nowselect = 0;
 		static const int maxmember = 4;
-		array<Chara*, maxmember> members;
+		array<shared_ptr<Chara>, maxmember> members;
 	protected:
 		int LEFT;
 		int UP;
-		
-		vector<string> *actionlog;
-		Situation *situation;
+
+		shared_ptr<vector<string>> actionlog;
+		shared_ptr<Situation> situation;
 	private:
-		
+
 		int nowchara;
 	};
-	class MyParty:public Party {
+	class MyParty :public Party {
 	public:
-		MyParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
+		MyParty(const int aleft, const int aup, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation);
 		MyParty(const MyParty &amyparty);
 		void Update()override;
 		void Draw()override;
@@ -204,11 +214,11 @@ namespace  roguegame {
 		int GainExp(const int exp);
 		bool Load(const RogueSaveData& data);
 	private:
-		
+
 	};
 	class OpParty :public Party {
 	public:
-		OpParty(const int aleft, const int aup, vector<string> *aactionlog, Situation *asituation);
+		OpParty(const int aleft, const int aup, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation);
 		OpParty(const OpParty &aopparty);
 		void Update()override;
 		void Draw()override;
@@ -218,3 +228,5 @@ namespace  roguegame {
 
 	};
 }
+
+
