@@ -12,7 +12,36 @@ using namespace roguegame;
 
 
 namespace roguegame {
-	
+	RogueSaveData::RogueSaveData(const MyParty& m, const OpParty& o, int d, int s)
+	{
+		MyChara* dd = (static_cast<MyChara*>(m.GetMember(0)));
+		for (int i = 0; i < 4; ++i) {
+			MyChara* pmc = (static_cast<MyChara*>(m.GetMember(i)));
+			if (pmc == NULL) {
+				mymembers[i] = (make_pair(-1, *(new MyChara(0, (dd->actionlog), (dd->situation)))));
+			}
+			else {
+				mymembers[i] = (make_pair(i, *pmc));
+			}
+
+			OpChara* omc = (static_cast<OpChara*>(o.GetMember(i)));
+			if (omc == NULL) {
+				opmembers[i] = (make_pair(-1, *(new OpChara(0, (dd->actionlog), (dd->situation)))));
+			}
+			else {
+				opmembers[i] = (make_pair(i, *omc));
+			}
+
+		}
+
+		day = d;
+		season = s;
+	}
+	RogueSaveData::RogueSaveData()
+	{}
+	RogueSaveData::~RogueSaveData() {
+
+	}
 	const int LOG_LINE_Y = 20;
 
 	const int PARTY_LEFT = 25;
@@ -165,7 +194,7 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		a->GainLife(10000);
 		myparty.AddMember(1, *this);
 	}
-	else if (Keyboard_Get('L')) {
+	else if (Keyboard_Get('P')) {
 		season = 1;
 		day = 91;
 
@@ -174,20 +203,6 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		a->GainExp(600);//稼ぐプレイ
 		a->GainLife(10000);
 		myparty.AddMember(1, *this);
-		RogueSaveData savedata = {
-			myparty,
-			opparty,
-			day,
-			season,
-		};
-		aRogueSaveManager.Save(0, &savedata);
-		RogueSaveData loaddata = {
-			myparty,
-			opparty,
-			1000,1000
-		};
-		aRogueSaveManager.Load(0,&loaddata);
-		assert(loaddata.day != 1000);
 	}
 	else if (Keyboard_Get('V')) {
 		season = 2;
@@ -272,6 +287,12 @@ void RogueGame::Update() {
 		else if (Keyboard_Get('S') == 1) {
 			SelectAction(A_Special);
 		}
+		else if (Keyboard_Get('Q') == 1) {
+			*situation = S_Save;
+		}
+		else if (Keyboard_Get('L') == 1) {
+			*situation = S_Load;
+		}
 		
 		break;
 	case S_ChoosingTarget://対象を選択中
@@ -337,6 +358,28 @@ void RogueGame::Update() {
 			}
 		}
 		*situation = S_TurnStart;
+		break;
+	case S_Save:
+		if (Keyboard_Get('Z') == 1) {
+			Save();
+			*situation = S_ChoosingAction;
+			
+		}
+		else if (Keyboard_Get('X')) {
+			*situation = S_ChoosingAction;
+			
+		}
+		break;
+	case S_Load:
+		if (Keyboard_Get('Z') == 1) {
+			Load();
+			*situation = S_ChoosingAction;
+
+		}
+		else if (Keyboard_Get('X')) {
+			*situation = S_ChoosingAction;
+
+		}
 		break;
 	default:
 		break;
@@ -439,6 +482,12 @@ void RogueGame::Draw() {
 		break;
 	case S_TurnEnd:
 		aDrawableConsole.draw(ax, ay, "日が暮れた。日が明けた。");
+		break;
+	case S_Save:
+		aDrawableConsole.draw(ax, ay, "セーブする？");
+		break;
+	case S_Load:
+		aDrawableConsole.draw(ax, ay, "ロードする？");
 		break;
 	default:
 		assert(false);
@@ -775,4 +824,24 @@ Chara* RogueGame::GetMember(int num)const {
 Chara* RogueGame::GetMember(const bool isop,const int num)const {
 	return GetMember(isop ? num : opparty.maxmember + num);
 }
-
+int RogueGame::Save() {
+	RogueSaveData data = {
+		myparty,
+		opparty,
+		day,
+		season,
+	};
+	return aRogueSaveManager.Save(0, &data);
+}
+int RogueGame::Load() {
+	RogueSaveData data;
+	aRogueSaveManager.Load(0, &data);
+	myparty.Load(data);
+	opparty.Load(data);
+	//myparty=data.myparty;
+	//opparty = data.opparty;
+	day = data.day;
+	season = data.season;
+	delete(&data);
+	return 1;
+}

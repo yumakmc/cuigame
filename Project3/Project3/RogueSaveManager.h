@@ -14,7 +14,7 @@ static class RogueSaveManager:public BaseSaveManager {
 public:
 	RogueSaveManager();
 	int Save(const int num, BaseSaveData* savedata);
-	BaseSaveData* Load(const int num, BaseSaveData* loaddata);
+	int Load(const int num, BaseSaveData* loaddata);
 	
 private:
 	string GetFileName(const int num);

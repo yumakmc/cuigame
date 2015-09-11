@@ -10,6 +10,7 @@ using namespace std;
 using namespace roguegame;
 namespace  roguegame {
 	class RogueGame;
+	struct RogueSaveData;
 	
 	enum ActionType {
 		A_Attack,
@@ -28,6 +29,8 @@ namespace  roguegame {
 		S_TurnEnd,
 		S_Reading,
 		S_Ending,
+		S_Save,
+		S_Load,
 	};
 	enum Ai {
 		Ai_Controlable,
@@ -102,11 +105,17 @@ namespace  roguegame {
 	class Chara {
 	public:
 		Chara(const int aid, vector<string> *aactionlog, Situation *asituation);
+		Chara() {
+
+		}
+		~Chara() {
+
+		}
 		bool GetDamage(const int admg);//死んだかを返す
 		int GainLife(const int pluslife);
 
-		const int id;
-		const string name;
+		int id;
+		string name;
 		int atk;
 		int def;
 		int now_hp;
@@ -121,9 +130,11 @@ namespace  roguegame {
 
 		//便利カウンタ
 		int count = 0;
-	protected:
+		bool Load(const Chara &c);
 		vector<string> *actionlog;
 		Situation *situation;
+	protected:
+		
 		//レベルアップに必要な経験値とかレベルによる攻撃力とか
 		
 	private:
@@ -131,18 +142,31 @@ namespace  roguegame {
 	class OpChara :public Chara {
 	public:
 		OpChara(const int aid, vector<string> *aactionlog, Situation *asituation);
+		OpChara() {
+
+		}
+		bool Load(const OpChara &c);
 		int exp;
 
 	};
+	
 	class MyChara :public Chara {
 	public:
 		MyChara(const int aid, vector<string> *aactionlog, Situation *asituation);
+		MyChara() {
+
+		}
 		int GainExp(const int aexp);//上がったレベルを返す
 		
 		//bool Attack(Chara &atarget);
 		int level;
 		int next_exp;
 		bool LevelUp();
+		bool Load(const MyChara &c);
+		/*bool operator =(const MyChara &m) {
+
+
+		}*/
 	private:
 		array<TableInfo, MaxLevel> infos;
 	};
@@ -178,6 +202,7 @@ namespace  roguegame {
 		bool AddMember(const int aid, const RogueGame &roguegame);
 		vector<int>GetAliveMemberId();
 		int GainExp(const int exp);
+		bool Load(const RogueSaveData& data);
 	private:
 		
 	};
@@ -188,7 +213,7 @@ namespace  roguegame {
 		void Update()override;
 		void Draw()override;
 		bool AddMember(const int aid, const RogueGame &roguegame);
-
+		bool Load(const RogueSaveData& data);
 	private:
 
 	};

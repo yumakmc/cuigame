@@ -13,13 +13,11 @@
 using namespace std;
 namespace  roguegame {
 	struct RogueSaveData:public BaseSaveData {
-		RogueSaveData(const MyParty& m, const OpParty& o, int d, int s): myparty(m) , opparty(o) {
-			
-			day = d;
-			season = s;
-		}
-		MyParty myparty;
-		OpParty opparty;
+		RogueSaveData(const MyParty& m, const OpParty& o, int d, int s);
+		RogueSaveData();
+		~RogueSaveData();
+		array<pair<int,MyChara>,4> mymembers;
+		array<pair<int, OpChara>,4> opmembers;
 		int day;
 		int season;
 	};
@@ -30,8 +28,8 @@ namespace  roguegame {
 		E_SummerDead,//‰Ä‚Ét€‚Ê
 		E_Why,//H‚Ét€‚Ê
 		E_FallKillSummer,//H‚É‰Ä€‚Ê
-		E_KillMeteorWithAll,//“~‚Ét€‚Ê
-		E_KillMeteorWithOutAll,//“~‚Ét€‚Ê
+		E_KillMeteorWithAll,//è¦Î“|‚·’N‚à€‚ñ‚Å‚È‚¢
+		E_KillMeteorWithOutAll,//è¦Î“|‚·’N‚©€‚ñ‚Å‚é
 	};
 	/*struct table {
 		int next_exp;
@@ -65,7 +63,8 @@ namespace  roguegame {
 		OpParty opparty;
 	private:
 
-		
+		int Save();
+		int Load();
 
 		BackGround abackground;
 

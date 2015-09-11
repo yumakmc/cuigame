@@ -6,13 +6,9 @@ int RogueSaveManager::Save(const int num, BaseSaveData* savedata) {
 	const string wfilename(GetFileName(num));
 	std::ofstream ofs(wfilename, ios::out | ios::binary | ios::trunc);
 
-	RogueSaveData* rdata(static_cast<RogueSaveData*>(savedata));
-	Sizes[num] = sizeof(*rdata);
-	ofs.write((char *)(rdata), sizeof(*rdata));
-	const string rfilename(GetFileName(num));
-	std::ifstream ifs(rfilename);
-	RogueSaveData* n;
-	ifs.read((char *)&n, sizeof(rdata));
+	RogueSaveData* wdata(static_cast<RogueSaveData*>(savedata));
+	Sizes[num] = sizeof(*wdata);
+	ofs.write((char *)(wdata), sizeof(*wdata));
 	//// ファイルに1行ずつ書き込み
 	//for (int i = 0; i < game.opparty.maxmember; ++i)
 	//{
@@ -46,14 +42,14 @@ int RogueSaveManager::Save(const int num, BaseSaveData* savedata) {
 
 	return 1;
 }
-BaseSaveData* RogueSaveManager::Load(const int num, BaseSaveData* loaddata) {
-	RogueSaveData* rdata(static_cast<RogueSaveData*>(loaddata));
+int RogueSaveManager::Load(const int num, BaseSaveData* loaddata) {
 	const string rfilename(GetFileName(num));
-	std::ifstream ifs(rfilename);
+	std::ifstream ifs(rfilename,ios::in | ios::binary);
 
-	ifs.read((char *)rdata, Sizes[num]);
+	RogueSaveData* rdata(static_cast<RogueSaveData*>(loaddata));
+	ifs.read((char *)(rdata), Sizes[num]);
 
-	return static_cast<BaseSaveData*>(rdata);
+	return 1;
 }
 string RogueSaveManager::GetFileName(const int num) {
 	return ("Rogue" + to_string(num) + ".txt");

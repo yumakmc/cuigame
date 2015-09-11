@@ -14,7 +14,7 @@ struct BaseSaveData {
 public:
 	BaseSaveManager();
 	virtual int Save(const int num,BaseSaveData *savedata)=0;
-	virtual BaseSaveData* Load(const int num, BaseSaveData* loaddata)=0;
+	virtual int Load(const int num, BaseSaveData* loaddata)=0;
  protected:
 	 array<unsigned int, 100> Sizes;
 private:

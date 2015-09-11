@@ -201,6 +201,19 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 	};
 	return{ nextActionInfo };//攻撃しない
 }
+bool Chara::Load(const Chara &c) {
+	id = c.id;
+	name = c.name;
+	atk = c.atk;
+	def = c.def;
+	now_hp = c.now_hp;
+	max_hp = c.max_hp;
+	isdead = c.isdead;
+	defending = c.defending;
+	nextActionInfo = c.nextActionInfo;
+	ai = c.ai;
+	return 1;
+}
 //int Chara::Act(const ActionType type) {
 //	switch (type) {
 //	case A_Attack:
@@ -256,6 +269,11 @@ OpChara::OpChara(const int aid, vector<string> *aactionlog, Situation *asituatio
 	max_hp = DETAILS[aid].opinfo.max_hp;
 	now_hp = max_hp;
 }
+bool OpChara::Load(const OpChara &c) {
+	Chara::Load(c);
+	exp = c.ai;
+	return 1;
+}
 MyChara::MyChara(const int aid, vector<string> *aactionlog, Situation *asituation) :Chara(aid,aactionlog, asituation), infos(TABLE_A.Get(id)) {
 	level = DETAILS[aid].myinfo.fst_level;
 	atk = infos[level].atk;
@@ -285,6 +303,13 @@ bool MyChara::LevelUp() {
 	next_exp += infos[level].exp;
 	
 	return true;
+}
+bool MyChara::Load(const MyChara &c) {
+	Chara::Load(c);
+	infos = c.infos;
+	level = c.level;
+	next_exp = next_exp;
+	return 1;
 }
 //bool MyChara::Attack(Chara &atarget){
 //	if (atarget.GetDamage(CalculateDmg(atarget))) {
@@ -326,7 +351,7 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 					break;
 				case 2:
 					actionlog->push_back("秋が生まれた");
-					actionlog->push_back("「なんで夏まだ生きてるの？」");
+					actionlog->push_back("「なんで夏がまだ生きてるの？」");
 					actionlog->push_back("「ちっ………」");
 					
 					break;
@@ -358,8 +383,12 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 	return false;
 }
 void Party::DeleteMember(const int anum) {
-	actionlog->push_back(members[anum]->name+"は死んだ");
-	members[anum] = NULL;
+	if (members[anum] != NULL) {
+
+	
+		actionlog->push_back(members[anum]->name + "は死んだ");
+		members[anum] = NULL;
+	}
 
 }
 Chara* Party::GetMember(const int anum)const  {
@@ -407,6 +436,18 @@ void MyParty::Draw() {
 			}
 		}
 	}
+}
+bool MyParty::Load(const RogueSaveData& data) {
+	auto news(data.mymembers);
+	for (int i = 0; i < maxmember; ++i) {
+		if (news[i].first == -1) {
+			DeleteMember(i);
+		}
+		else {
+			static_cast<MyChara*>(members[i])->Load(news[i].second);
+		}
+	}
+	return 1;
 }
 bool MyParty::AddMember(const int aid, const RogueGame &roguegame) {
 
@@ -474,4 +515,16 @@ bool OpParty::AddMember(const int aid,const RogueGame &roguegame) {
 
 	assert(DETAILS[aid].isenemy);
 	return Party::AddMember(aid,roguegame);
+}
+bool OpParty::Load(const RogueSaveData& data) {
+	auto news(data.opmembers);
+	for (int i = 0; i < maxmember; ++i) {
+		if (news[i].first == -1) {
+			DeleteMember(i);
+		}
+		else {
+			static_cast<OpChara*>(members[i])->Load(news[i].second);
+		}
+	}
+	return 1;
 }
