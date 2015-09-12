@@ -45,16 +45,16 @@ namespace roguegame {
 		id = 2;
 		tableinfos[id][0] = {
 			5,
-			100,
+			50,
 			4,
-			2
+			3
 		};
 		for (int i = 1; i < MaxLevel; ++i) {
 			tableinfos[id][i] = {
 				tableinfos[id][i - 1].exp + i*i,
-				100 + i * 20,
-				4 + 3 * i / 2,
-				2 + i / 2
+				50 + i * 10,
+				4 + i,
+				3 + 3*i / 4
 			};
 		}
 #pragma endregion

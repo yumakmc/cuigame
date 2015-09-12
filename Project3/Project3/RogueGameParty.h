@@ -69,7 +69,7 @@ namespace  roguegame {
 	static const vector<data> DETAILS = {
 		{ false,"èt"   ,Ai_Controlable ,  30,{ 1 },{ 0, 0, 0, 10 } },
 		{ false,"âƒ"   ,Ai_Summer,500,{ 20 },{ 0, 0, 0, 10 } },
-		{ false,"èH"   ,Ai_AttackSummer, 500,{ 18 },{ 0, 0, 0, 10 } },
+		{ false,"èH"   ,Ai_AttackSummer, 250,{ 20 },{ 0, 0, 0, 10 } },
 		{ false,"ì~"   ,Ai_AttackEnemy , 700,{ 40 },{ 0, 0, 0, 10 } },
 
 		{ true,"î~"    ,Ai_AttackMy	   ,  12,{ 0 },{ 7, 6, 0,  12 } },//ètÇÃâ‘
