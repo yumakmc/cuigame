@@ -38,8 +38,6 @@ int RogueSaveManager::Save(const int num, BaseSaveData* savedata) {
 	//ofs << "egg" << std::endl;
 	//ofs << "spam" << std::endl;
 
-
-
 	return 1;
 }
 int RogueSaveManager::Load(const int num, BaseSaveData* loaddata) {

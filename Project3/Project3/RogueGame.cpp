@@ -19,18 +19,18 @@ namespace roguegame {
 		for (int i = 0; i < 4; ++i) {
 			shared_ptr<MyChara> pmc = (static_pointer_cast<MyChara>(m.GetMember(i)));
 			if (pmc == NULL) {
-				mymembers[i] = (make_pair(-1, *(make_shared<MyChara>(0, (dd->actionlog), (dd->situation)))));
+				
 			}
 			else {
-				mymembers[i] = (make_pair(i, *pmc));
+				mymembers[i] = (make_pair(1+i, *pmc));
 			}
 
 			shared_ptr<OpChara> omc = (static_pointer_cast<OpChara>(o.GetMember(i)));
 			if (omc == NULL) {
-				opmembers[i] = (make_pair(-1, *(make_shared<OpChara>(0, (dd->actionlog), (dd->situation)))));
+				
 			}
 			else {
-				opmembers[i] = (make_pair(i, *omc));
+				opmembers[i] = (make_pair(1 + i, *omc));
 			}
 
 		}
@@ -86,15 +86,15 @@ namespace roguegame {
 		0,
 	};
 	static array<int, DAY_PER_SEASON> FallEnemyMap = {
-		0,12,0,12,13,12,0,0,0,0,
-		0,0,0,14,0,13,0,12,0,12,
-		0,0,12,0,0,12,0,0,13,0,
-		0,12,0,0,0,14,0,0,13,0,
-		0,0,12,0,0,0,0,14,0,0,
-		0,0,12,0,14,0,13,14,0,0,
-		0,0,0,15,0,0,0,12,0,0,
-		0,0,12,0,0,0,13,0,0,0,
-		12,0,0,13,0,13,13,0,12,0,
+		0,12,0,0,0,0,18,0,0,0,
+		0,0,0,13,0,0,0,12,0,12,
+		0,0,0,0,0,12,0,0,13,0,
+		0,0,0,0,0,14,0,0,0,0,
+		0,0,0,0,0,0,0,14,0,0,
+		0,0,12,0,0,0,13,14,0,0,
+		0,0,0,15,0,18,0,0,0,0,
+		0,0,12,0,0,0,0,0,0,19,
+		12,0,0,13,0,0,0,0,0,0,
 		0,
 	};
 	static array<int, DAY_PER_SEASON> WinterEnemyMap = {
@@ -207,34 +207,21 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		a->GainLife(10000);
 		myparty.AddMember(1, *this);
 
-		RogueSaveData savedata = {
-			myparty,
-			opparty,
-			day,
-			season,
-		};
-		aRogueSaveManager.Save(0, &savedata);
-		RogueSaveData loaddata = {
-			myparty,
-			opparty,
-			1000,1000
-		};
-		aRogueSaveManager.Load(0, &loaddata);
-		assert(loaddata.day != 1000);
-
 	}
 	else if (Keyboard_Get('V')) {
 		season = 2;
 		day = 182;
 
 		shared_ptr<MyChara> a = static_pointer_cast<MyChara>(GetMember(false, 0));
-		a->GainExp(2000);//‰Ò‚ª‚È‚¢ƒvƒŒƒC
+		a->GainExp(2500);//‰Ò‚ª‚È‚¢ƒvƒŒƒC
 		a->GainLife(10000);
 
 		myparty.AddMember(1, *this);
 		myparty.AddMember(2, *this);
 		actionlog->push_back("‰Ä‚ÌUŒ‚‘ÎÛ‚ª•ÏX‚³‚ê‚½");
 		GetMember(false, 1)->count = 2;
+		GetMember(false, 1)->now_hp=200;
+		GetMember(false, 1)->DecideNextAction(*this);
 	}
 	else if (Keyboard_Get('F')) {
 		season = 2;
@@ -248,6 +235,7 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		myparty.AddMember(2, *this);
 		actionlog->push_back("‰Ä‚ÌUŒ‚‘ÎÛ‚ª•ÏX‚³‚ê‚½");
 		GetMember(false, 1)->count = 2;
+		GetMember(false, 1)->DecideNextAction(*this);
 	}
 	else if (Keyboard_Get('B')) {
 		season = 1;
@@ -368,6 +356,7 @@ void RogueGame::Update() {
 				myparty.AddMember(2, *this);
 				actionlog->push_back("‰Ä‚ÌUŒ‚‘ÎÛ‚ª•ÏX‚³‚ê‚½");
 				GetMember(false, 1)->count = 2;
+				GetMember(false, 1)->DecideNextAction(*this);
 				break;
 			case 3:
 				myparty.AddMember(3, *this);
@@ -565,7 +554,7 @@ int RogueGame::Attack(shared_ptr<Chara> from, shared_ptr<Chara> to) {
 		}
 	}
 	//‰Ä‚ªHUŒ‚‘Ì§‚É“ü‚Á‚Ä‚È‚©‚Á‚½‚ç
-	if (DETAILS[from->id].isenemy&&to->ai == Ai_Summer&&to->count == 2) {
+	if (DETAILS[from->id].isenemy&&to->ai == Ai_Summer&&to->count != 2) {
 		static bool speaked = false;
 		if (!speaked) {
 			switch (rand.gen() % 2) {
@@ -637,6 +626,7 @@ int RogueGame::Special(shared_ptr<Chara> from, shared_ptr<Chara> to) {
 	}
 			 break;
 	default:
+		assert(false);
 		;
 	}
 	return 0;
@@ -696,6 +686,8 @@ int RogueGame::SelectAction(const ActionType type) {
 	}
 	return true;
 }
+
+//Šî–{“I‚ÉUŒ‚—Í[–hŒä—Í@‚½‚¾‚µÅ’á‚P
 inline int RogueGame::CalculateDmg(const shared_ptr<Chara> from, const shared_ptr<Chara> to) {
 	if (YOUBI_DETAIL[Date(day % 7)].effect == (E_Invin)) {
 		return 0;
@@ -785,6 +777,7 @@ int RogueGame::CheckDeadPlayer() {
 					mgameSceneChanger->ChangeScene(eGameScene_Ending);
 					break;
 				case 2:
+
 					break;
 
 				case 3:
@@ -852,15 +845,15 @@ int RogueGame::Save() {
 	};
 	return aRogueSaveManager.Save(0, &data);
 }
+
 int RogueGame::Load() {
-	RogueSaveData data;
-	aRogueSaveManager.Load(0, &data);
-	myparty.Load(data);
-	opparty.Load(data);
+	RogueSaveData dddata;
+	aRogueSaveManager.Load(0, &dddata);
+	myparty.Load(dddata);
+	opparty.Load(dddata);
 	//myparty=data.myparty;
 	//opparty = data.opparty;
-	day = data.day;
-	season = data.season;
-	delete(&data);
+	day = dddata.day;
+	season = dddata.season;
 	return 1;
 }
