@@ -184,7 +184,7 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 	case Ai_Meteor:
 	{
 		nextActionInfo = {
-			-1,A_Nothing
+			-1,A_Special
 		};
 		return{ nextActionInfo };//çUåÇÇµÇ»Ç¢
 	}
@@ -340,7 +340,7 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 	else {
 		for (int i = 0; i < maxmember; ++i) {
 			if (members[i] == NULL) {
-				AddMember(aid, i, roguegame);
+				return AddMember(aid, i, roguegame);
 			}
 		}
 	}
@@ -456,7 +456,7 @@ bool MyParty::AddMember(const int aid, const RogueGame &roguegame) {
 	assert(!DETAILS[aid].isenemy);
 	return Party::AddMember(aid, roguegame);
 }
-bool MyParty::AddMember(const int aid,const int place const RogueGame &roguegame) {
+bool MyParty::AddMember(const int aid,const int place, const RogueGame &roguegame) {
 
 	assert(!DETAILS[aid].isenemy);
 	return Party::AddMember(aid, place, roguegame);

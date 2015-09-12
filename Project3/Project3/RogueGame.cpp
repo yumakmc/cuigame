@@ -164,6 +164,16 @@ namespace roguegame {
 		{ 11,name_and_descript{ DETAILS[11].name,E_AtkUp,"死なないで下さい" }, },
 		{ 12,name_and_descript{ DETAILS[12].name,E_AtkUp,"死なないで下さい" }, },
 		{ 13,name_and_descript{ DETAILS[13].name,E_AtkUp,"死なないで下さい" }, },
+		{ 14,name_and_descript{ DETAILS[14].name,E_AtkUp,"無敵" }, },
+		{ 15,name_and_descript{ DETAILS[15].name,E_AtkUp,"愛　３倍" }, },
+		{ 16,name_and_descript{ DETAILS[16].name,E_AtkUp,"月が笑っている" } },
+		{ 17,name_and_descript{ DETAILS[17].name,E_AtkUp,"無敵" }, },
+		{ 18,name_and_descript{ DETAILS[18].name,E_AtkUp,"「俺もお前らもみんなおしまいだ」" } },
+		{ 19,name_and_descript{ DETAILS[19].name,E_AtkUp,"死なないで下さい" }, },
+		{ 20,name_and_descript{ DETAILS[20].name,E_AtkUp,"死なないで下さい" }, },
+		{ 21,name_and_descript{ DETAILS[21].name,E_AtkUp,"死なないで下さい" }, },
+		{ 22,name_and_descript{ DETAILS[22].name,E_AtkUp,"死なないで下さい" }, },
+		{ 23,name_and_descript{ DETAILS[23].name,E_AtkUp,"死なないで下さい" }, },
 	};
 }
 Ending EndingNum = E_Dummy;//externでRogueEndingに渡す
@@ -171,7 +181,7 @@ int LoveHp = 0;
 int KillNum = 0;
 int SpendDay = 0;
 shared_ptr <vector<string>> b(make_shared<vector<string>>());//ここ汚い直したい
-shared_ptr <Situation>c(make_shared<Situation>(S_TurnStart));
+shared_ptr <Situation>c(make_shared<Situation>(S_Opening));
 
 RogueGame::RogueGame(gameSceneChanger* changer)
 	:gameBaseScene(changer), abackground(0), actionlog(b), situation(c), myparty(PARTY_LEFT, MY_PARTY_UP, b, c), opparty(PARTY_LEFT, OP_PARTY_UP, b, c), nowplayernum(4) {
@@ -235,14 +245,20 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		myparty.AddMember(2, *this);
 		actionlog->push_back("夏の攻撃対象が変更された");
 		GetMember(false, 1)->count = 2;
+		GetMember(false, 1)->now_hp = 200;
 		GetMember(false, 1)->DecideNextAction(*this);
 	}
 	else if (Keyboard_Get('B')) {
-		season = 1;
+		season = 3;
 		day = 273;
+		shared_ptr<MyChara> a = static_pointer_cast<MyChara>(GetMember(false, 0));
+		a->GainExp(3000);//稼ぐプレイ
+		a->GainLife(10000);
+
 		myparty.AddMember(1, *this);
 		myparty.AddMember(2, *this);
 		myparty.AddMember(3, *this);
+		opparty.AddMember(22, 0, *this);
 	}
 	else {
 		// 無理やりな冬挿入
@@ -256,7 +272,7 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 
 
 	rand.init();
-	aMusic.Play(5);
+	aMusic.Play(-1);
 }
 
 void RogueGame::Initialize() {
@@ -591,7 +607,7 @@ int RogueGame::Special(shared_ptr<Chara> from, shared_ptr<Chara> to) {
 		}
 		return regenehp;
 	}
-	case 33: {//小隕石のつもり
+	case 18: {//小隕石のつもり
 		const int SMALLCOUNT = 8;
 		from->count++;
 		if (from->count < SMALLCOUNT) {
@@ -601,14 +617,57 @@ int RogueGame::Special(shared_ptr<Chara> from, shared_ptr<Chara> to) {
 			actionlog->push_back("ズドオオン！");
 			for (int i = 0; i < myparty.maxmember; ++i) {
 				shared_ptr<Chara> achara(GetMember(false, i));
-				const int dmg = CalculateDmg(from, achara);
-				actionlog->push_back(achara->name + "に" + Common::To_ZString(dmg) + "のダメージ");
-				achara->GetDamage(dmg);
+				if (achara != NULL) {
+					const int dmg = CalculateDmg(from, achara);
+					actionlog->push_back(achara->name + "に" + Common::To_ZString(dmg) + "のダメージ");
+					achara->GetDamage(dmg);
+				}
 			}
+			from->GetDamage(100000);
 		}
 	}
 			 break;
-	case 36: {//超隕石のつもり
+	case 19: {//小隕石のつもり
+		const int MIDDLECOUNT = 10;
+		from->count++;
+		if (from->count < MIDDLECOUNT) {
+			actionlog->push_back(from->name + "は接近している　残り" + Common::To_ZString(MIDDLECOUNT - from->count) + "ターン");
+		}
+		else {
+			actionlog->push_back("ズドオオン！");
+			for (int i = 0; i < myparty.maxmember; ++i) {
+				shared_ptr<Chara> achara(GetMember(false, i));
+				if (achara != NULL) {
+					const int dmg = CalculateDmg(from, achara);
+					actionlog->push_back(achara->name + "に" + Common::To_ZString(dmg) + "のダメージ");
+					achara->GetDamage(dmg);
+				}
+			}
+			from->GetDamage(100000);
+		}
+	}
+			 break;
+	case 20: {//小隕石のつもり
+		const int BIGCOUNT = 15;
+		from->count++;
+		if (from->count < BIGCOUNT) {
+			actionlog->push_back(from->name + "は接近している　残り" + Common::To_ZString(BIGCOUNT - from->count) + "ターン");
+		}
+		else {
+			actionlog->push_back("ズドオオン！");
+			for (int i = 0; i < myparty.maxmember; ++i) {
+				shared_ptr<Chara> achara(GetMember(false, i));
+				if (achara != NULL) {
+					const int dmg = CalculateDmg(from, achara);
+					actionlog->push_back(achara->name + "に" + Common::To_ZString(dmg) + "のダメージ");
+					achara->GetDamage(dmg);
+				}
+			}
+			from->GetDamage(100000);
+		}
+	}
+			 break;
+	case 21: {//超隕石のつもり
 		const int MEGACOUNT = 91;
 		from->count++;
 		if (from->count < MEGACOUNT) {
@@ -618,10 +677,13 @@ int RogueGame::Special(shared_ptr<Chara> from, shared_ptr<Chara> to) {
 			actionlog->push_back("ズドオオオオオオオオオン！！！！");
 			for (int i = 0; i < myparty.maxmember; ++i) {
 				shared_ptr<Chara> achara(GetMember(false, i));
-				const int dmg = CalculateDmg(from, achara);
-				actionlog->push_back(achara->name + "に" + Common::To_ZString(dmg) + "のダメージ！！！！！！");
-				achara->GetDamage(dmg);
+				if (achara != NULL) {
+					const int dmg = CalculateDmg(from, achara);
+					actionlog->push_back(achara->name + "に" + Common::To_ZString(dmg) + "のダメージ！！！！！！");
+					achara->GetDamage(dmg);
+				}
 			}
+			from->GetDamage(100000);
 		}
 	}
 			 break;
@@ -700,6 +762,10 @@ inline int RogueGame::CalculateDmg(const shared_ptr<Chara> from, const shared_pt
 		if ((from->id == 1 && to->id == 0) || (from->id == 2 && to->id == 1) || (from->id == 3 && to->id == 2) || (from->id == 0 && to->id == 3)) {
 			diff *= 2;
 			actionlog->push_back("特攻！　ダメージ二倍");
+		}
+		else if ((from->id == 0 && to->id == 1) || (from->id == 1 && to->id == 2) || (from->id == 2 && to->id == 3) || (from->id == 3 && to->id == 0)) {
+			diff /= 2;
+			actionlog->push_back("ダメージ半減");
 		}
 		return max(1, to->defending ? diff / DEFENDINGCUTOFF : diff);
 	}
@@ -822,7 +888,9 @@ int RogueGame::CheckDeadPlayer() {
 
 //Nullが帰ってくることもあるので注意
 shared_ptr<Chara> RogueGame::GetMember(int num)const {
-	if (num < opparty.maxmember) {
+	if (num < 0) {
+		return NULL;
+	}else if (num < opparty.maxmember) {
 		return opparty.GetMember(num);
 	}
 	else if (num < opparty.maxmember + myparty.maxmember) {
