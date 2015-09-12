@@ -340,48 +340,49 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 	else {
 		for (int i = 0; i < maxmember; ++i) {
 			if (members[i] == NULL) {
-				string st = "";
-				switch (aid) {
-				case 0:
-					st = "春が生まれた";
-					break;
-				case 1:
-					actionlog->push_back("夏が生まれた");
-					actionlog->push_back("「今日までお疲れ　じゃーねー」");
-					actionlog->push_back("注意：夏からのダメージは二倍になります");
-					break;
-				case 2:
-					actionlog->push_back("秋が生まれた");
-					actionlog->push_back("「なんで夏がまだ生きてるの？」");
-					actionlog->push_back("「ちっ………」");
-
-					break;
-				case 3:
-					st = "冬が生まれた";
-					break;
-				case 23:
-					st = "";
-					break;
-				default:
-					st = DETAILS[aid].name + "が現れた";
-
-				}
-				actionlog->push_back(st);
-
-
-				if (DETAILS[aid].isenemy) {
-					members[i] = make_shared<OpChara>(aid, actionlog, situation);
-				}
-				else {
-					members[i] = make_shared<MyChara>(aid, actionlog, situation);
-				}
-				members[i]->DecideNextAction(roguegame);
-				return true;
+				AddMember(aid, i, roguegame);
 			}
 		}
 	}
 
 	return false;
+}
+bool Party::AddMember(const int aid, const int place, const RogueGame &roguegame) {
+		string st = "";
+		switch (aid) {
+		case 0:
+			st = "春が生まれた";
+			break;
+		case 1:
+			actionlog->push_back("夏が生まれた");
+			actionlog->push_back("「今日までお疲れ　じゃーねー」");
+			actionlog->push_back("注意：夏からのダメージは二倍になります");
+			break;
+		case 2:
+			actionlog->push_back("秋が生まれた");
+			actionlog->push_back("「なんで夏がまだ生きてるの？」");
+			actionlog->push_back("「ちっ………」");
+			break;
+		case 3:
+			st = "冬が生まれた";
+			break;
+		case 23:
+			st = "";
+			break;
+		default:
+			st = DETAILS[aid].name + "が現れた";
+
+		}
+		actionlog->push_back(st);
+
+		if (DETAILS[aid].isenemy) {
+			members[place] = make_shared<OpChara>(aid, actionlog, situation);
+		}
+		else {
+			members[place] = make_shared<MyChara>(aid, actionlog, situation);
+		}
+		members[place]->DecideNextAction(roguegame);
+		return true;
 }
 void Party::DeleteMember(const int anum) {
 	if (members[anum] != NULL) {
@@ -441,7 +442,7 @@ void MyParty::Draw() {
 bool MyParty::Load(const RogueSaveData& data) {
 	auto news(data.mymembers);
 	for (int i = 0; i < maxmember; ++i) {
-		if (news[i].first == -1) {
+		if (news[i].first == 0) {
 			DeleteMember(i);
 		}
 		else {
@@ -454,6 +455,11 @@ bool MyParty::AddMember(const int aid, const RogueGame &roguegame) {
 
 	assert(!DETAILS[aid].isenemy);
 	return Party::AddMember(aid, roguegame);
+}
+bool MyParty::AddMember(const int aid,const int place const RogueGame &roguegame) {
+
+	assert(!DETAILS[aid].isenemy);
+	return Party::AddMember(aid, place, roguegame);
 }
 vector<int > MyParty::GetAliveMemberId() {
 	vector<int> AliveId;
@@ -513,14 +519,17 @@ void OpParty::Draw() {
 	}
 }
 bool OpParty::AddMember(const int aid, const RogueGame &roguegame) {
-
 	assert(DETAILS[aid].isenemy);
 	return Party::AddMember(aid, roguegame);
+}
+bool OpParty::AddMember(const int aid, const int place, const RogueGame &roguegame) {
+	assert(DETAILS[aid].isenemy);
+	return Party::AddMember(aid, place, roguegame);
 }
 bool OpParty::Load(const RogueSaveData& data) {
 	auto news(data.opmembers);
 	for (int i = 0; i < maxmember; ++i) {
-		if (news[i].first == -1) {
+		if (news[i].first == 0) {
 			DeleteMember(i);
 		}
 		else {

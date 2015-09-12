@@ -68,9 +68,9 @@ namespace  roguegame {
 
 	static const vector<data> DETAILS = {
 		{ false,"èt"   ,Ai_Controlable ,  30,{ 1 },{ 0, 0, 0, 10 } },
-		{ false,"âƒ"   ,Ai_Summer,1000,{ 20 },{ 0, 0, 0, 10 } },
-		{ false,"èH"   ,Ai_AttackSummer, 500,{ 20 },{ 0, 0, 0, 10 } },
-		{ false,"ì~"   ,Ai_AttackEnemy , 700,{ 20 },{ 0, 0, 0, 10 } },
+		{ false,"âƒ"   ,Ai_Summer,500,{ 20 },{ 0, 0, 0, 10 } },
+		{ false,"èH"   ,Ai_AttackSummer, 500,{ 18 },{ 0, 0, 0, 10 } },
+		{ false,"ì~"   ,Ai_AttackEnemy , 700,{ 40 },{ 0, 0, 0, 10 } },
 
 		{ true,"î~"    ,Ai_AttackMy	   ,  12,{ 0 },{ 7, 6, 0,  12 } },//ètÇÃâ‘
 		{ true,"‰ø"    ,Ai_AttackMy    ,  25,{ 0 },{ 15, 7, 3, 25 } },
@@ -82,18 +82,18 @@ namespace  roguegame {
 		{ true,"Â["    ,Ai_AttackMy    ,  40,{ 0 },{ 100,20,5, 40 } },
 		{ true,"ò@"    ,Ai_AttackMy	   , 100,{ 0 },{ 200,14,17,100 } },
 
-		{ true,"óñ"    ,Ai_AttackMy    ,  30,{ 0 },{ 100, 15,15, 30 } },//èHÇÃâ‘
-		{ true,"ãe"    ,Ai_AttackMy    ,  10,{ 0 },{ 150,17, 20, 10 } },
-		{ true,"îã"    ,Ai_AttackMy    ,  50,{ 0 },{ 200,15,17, 50 } },
-		{ true,"ãk"    ,Ai_AttackMy	   ,  100,{ 0 },{ 300,19,0,100 } },
+		{ true,"óñ"    ,Ai_AttackMy    ,  30,{ 0 },{ 300, 15,6, 30 } },//èHÇÃâ‘
+		{ true,"ãe"    ,Ai_AttackMy    ,  10,{ 0 },{ 500,17, 20, 10 } },
+		{ true,"îã"    ,Ai_AttackMy    ,  50,{ 0 },{ 700,10,10, 50 } },
+		{ true,"ãk"    ,Ai_AttackMy	   ,  100,{ 0 },{1000,19,0,100 } },
 
 		{ true,"ïA"    ,Ai_AttackMy    ,  60,{ 0 },{ 300, 20, 5, 60 } },//ì~ÇÃâ‘
 		{ true,"ïì"    ,Ai_AttackMy    ,  70,{ 0 },{ 10,20, 5, 70 } },
 
-		{ true,"è¨"    ,Ai_AttackMy    ,  60,{ 0 },{ 500, 50, 5, 60 } },//Ë¶êŒ
-		{ true,"íÜ"    ,Ai_AttackMy    , 100,{ 0 },{ 1000,100,10, 100 } },
-		{ true,"ëÂ"    ,Ai_AttackMy    , 300,{ 0 },{ 2000,300,15, 300 } },
-		{ true,"Çl"    ,Ai_AttackMy	   ,1000,{ 0 },{ 9999,9999,5,1000 } },
+		{ true,"è¨"    ,Ai_Meteor    ,  10,{ 0 },{ 500, 10, 10, 10 } },//Ë¶êŒ
+		{ true,"íÜ"    ,Ai_Meteor    , 100,{ 0 },{ 1000,100,10, 100 } },
+		{ true,"ëÂ"    ,Ai_Meteor    , 300,{ 0 },{ 2000,1000,15, 300 } },
+		{ true,"Çl"    ,Ai_Meteor	   ,1000,{ 0 },{ 9999,9999,0,1000 } },
 
 		{ true,"åé"    ,Ai_AttackMy	   , 10,{ 0 },{ 1,1,9999,10 } },//åé
 
@@ -187,6 +187,7 @@ namespace  roguegame {
 		virtual void Update();
 		virtual void Draw();
 		bool AddMember(const int aid, const RogueGame &roguegame);
+		bool AddMember(const int aid, const int place, const RogueGame &roguegame);
 		shared_ptr<Chara> GetMember(const int anum)const;
 		void DeleteMember(const int anum);
 		//int Act(const ActionType type);
@@ -210,6 +211,7 @@ namespace  roguegame {
 		void Update()override;
 		void Draw()override;
 		bool AddMember(const int aid, const RogueGame &roguegame);
+		bool AddMember(const int aid, const int place, const RogueGame &roguegame);
 		vector<int>GetAliveMemberId();
 		int GainExp(const int exp);
 		bool Load(const RogueSaveData& data);
@@ -223,6 +225,7 @@ namespace  roguegame {
 		void Update()override;
 		void Draw()override;
 		bool AddMember(const int aid, const RogueGame &roguegame);
+		bool AddMember(const int aid, const int place, const RogueGame &roguegame);
 		bool Load(const RogueSaveData& data);
 	private:
 
