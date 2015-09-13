@@ -1,7 +1,7 @@
 #include "RogueGameParty.h"
 #include "RogueGame.h"
 #include<assert.h>
-
+extern bool MoonKillFlag;
 
 Chara::Chara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) :id(aid), name(DETAILS[aid].name), fullname(DETAILS[aid].fullname), actionlog(aactionlog), situation(asituation) {
 	isdead = false;
@@ -413,6 +413,7 @@ void Party::DeleteMember(const int anum,const int reason) {
 			case 22:
 				actionlog->push_back("「分かった分かった」");
 				actionlog->push_back("月は帰らせた！");
+				MoonKillFlag = true;
 				break;
 			default:
 				assert(false);
@@ -422,8 +423,9 @@ void Party::DeleteMember(const int anum,const int reason) {
 		case 3: {
 			switch (members[anum]->id) {
 			case 22:
-				actionlog->push_back("「これから何が起こるかも知らずに呑気な」");
+				actionlog->push_back("「ははは」");
 				actionlog->push_back("月は帰っていった…");
+				MoonKillFlag = false;
 				break;
 			default:
 				assert(false);

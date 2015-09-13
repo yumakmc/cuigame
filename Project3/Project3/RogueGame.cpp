@@ -754,7 +754,7 @@ int RogueGame::Special(shared_ptr<Chara> from, shared_ptr<Chara> to) {
 	}
 			 break;
 	case 22: {//
-		const int MOONCOUNT = 35;
+		const int MOONCOUNT = 37;
 		from->count++;
 		if (from->count < MOONCOUNT) {
 			actionlog->push_back(from->name + "‚Íš}Î‚Á‚Ä‚¢‚é");
@@ -836,6 +836,15 @@ inline int RogueGame::CalculateDmg(const shared_ptr<Chara> from, const shared_pt
 	else {
 		int realatk = (YOUBI_DETAIL[Date(day % 7)].effect == (E_AtkUp)) ? from->atk * 2 : from->atk;
 		int realdef = (YOUBI_DETAIL[Date(day % 7)].effect == (E_DefUp)) ? to->def * 2 : to->def;
+
+		if (YOUBI_DETAIL[Date(day % 7)].effect == (E_Moon)) {
+			if (!DETAILS[from->id].isenemy&&MoonKillFlag) {
+				realatk *= 2;
+			}
+			if (!DETAILS[to->id].isenemy&&MoonKillFlag) {
+				realdef *= 2;
+			}
+		}
 
 		int diff = max(0, realatk - realdef);
 		if ((from->id == 1 && to->id == 0) || (from->id == 2 && to->id == 1) || (from->id == 3 && to->id == 2) || (from->id == 0 && to->id == 3)) {
