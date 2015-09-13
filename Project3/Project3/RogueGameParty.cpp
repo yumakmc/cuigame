@@ -3,7 +3,7 @@
 #include<assert.h>
 
 
-Chara::Chara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) :id(aid), name(DETAILS[aid].name), actionlog(aactionlog), situation(asituation) {
+Chara::Chara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) :id(aid), name(DETAILS[aid].name), fullname(DETAILS[aid].fullname), actionlog(aactionlog), situation(asituation) {
 	isdead = false;
 	ai = DETAILS[aid].fst_ai;
 	defending = false;
@@ -192,7 +192,7 @@ ActionInfo Chara::DecideNextAction(const RogueGame& roguegame) {
 	case Ai_Moon:
 	{
 		nextActionInfo = {
-			-1,A_Nothing
+			-1,A_Special
 		};
 		return{ nextActionInfo };//攻撃しない
 	}
@@ -270,11 +270,15 @@ OpChara::OpChara(const int aid, shared_ptr<vector<string>> aactionlog, shared_pt
 	max_hp = DETAILS[aid].opinfo.max_hp;
 	now_hp = max_hp;
 }
+OpChara::~OpChara() {
+
+}
 bool OpChara::Load(const OpChara &c) {
 	Chara::Load(c);
 	exp = c.ai;
 	return 1;
 }
+
 MyChara::MyChara(const int aid, shared_ptr<vector<string>> aactionlog, shared_ptr<Situation>asituation) :Chara(aid, aactionlog, asituation), infos(TABLE_A.Get(id)) {
 	level = DETAILS[aid].myinfo.fst_level;
 	atk = infos[level].atk;
@@ -282,6 +286,9 @@ MyChara::MyChara(const int aid, shared_ptr<vector<string>> aactionlog, shared_pt
 	now_hp = DETAILS[aid].fst_hp;
 	max_hp = infos[level].max_hp;
 	next_exp = infos[level].exp;
+
+}
+MyChara::~MyChara(){
 
 }
 int MyChara::GainExp(const int aexp) {
@@ -344,10 +351,13 @@ bool Party::AddMember(const int aid, const RogueGame &roguegame) {
 			}
 		}
 	}
-
 	return false;
 }
 bool Party::AddMember(const int aid, const int place, const RogueGame &roguegame) {
+	if (aid == -1) {
+		members[place] = NULL;
+	}
+	else {
 		string st = "";
 		switch (aid) {
 		case 0:
@@ -382,17 +392,53 @@ bool Party::AddMember(const int aid, const int place, const RogueGame &roguegame
 			members[place] = make_shared<MyChara>(aid, actionlog, situation);
 		}
 		members[place]->DecideNextAction(roguegame);
-		return true;
-}
-void Party::DeleteMember(const int anum) {
-	if (members[anum] != NULL) {
-
-
-		actionlog->push_back(members[anum]->name + "は死んだ");
-		members[anum] = NULL;
 	}
-
+	return true;
 }
+void Party::DeleteMember(const int anum,const int reason) {
+	if (members[anum] != NULL) {
+		switch (reason) {
+			//戦闘によって
+		case 1: {
+			switch (members[anum]->id) {
+			default:
+				;
+				actionlog->push_back(members[anum]->name + "は死んだ");
+			}
+		}
+				break;
+			//その他
+		case 2: {
+			switch (members[anum]->id) {
+			case 22:
+				actionlog->push_back("「分かった分かった」");
+				actionlog->push_back("月は帰らせた！");
+				break;
+			default:
+				assert(false);
+			}
+		}
+				break;
+		case 3: {
+			switch (members[anum]->id) {
+			case 22:
+				actionlog->push_back("「これから何が起こるかも知らずに呑気な」");
+				actionlog->push_back("月は帰っていった…");
+				break;
+			default:
+				assert(false);
+			}
+		}
+				break;
+		default:
+			assert(false);
+		}
+	members[anum] = NULL;
+	}
+	
+}
+
+
 shared_ptr<Chara> Party::GetMember(const int anum)const {
 	return members[anum];
 }
@@ -416,7 +462,7 @@ void MyParty::Draw() {
 			const int CHARAUP = UP + 3 * i;
 			shared_ptr<MyChara> achara = static_pointer_cast<MyChara> ((members[i]));
 			aDrawableConsole.draw(LEFT, CHARAUP, std::to_string(4 + i) + ":");
-			aDrawableConsole.draw(LEFT + 1, CHARAUP, achara->name.c_str());
+			aDrawableConsole.draw(LEFT + 1, CHARAUP, achara->fullname.c_str());
 			aDrawableConsole.draw(LEFT + 3, CHARAUP, "Lv");
 			aDrawableConsole.draw(LEFT + 4, CHARAUP, Common::To_ZString(achara->level).c_str());
 			aDrawableConsole.draw(LEFT + 7, CHARAUP, "NextExp:");
@@ -497,7 +543,7 @@ void OpParty::Draw() {
 			const int CHARAUP = UP + 3 * i;
 			shared_ptr<OpChara> achara = static_pointer_cast<OpChara> ((members[i]));
 			aDrawableConsole.draw(LEFT, CHARAUP, std::to_string(i) + ":");
-			aDrawableConsole.draw(LEFT + 1, CHARAUP, achara->name.c_str());
+			aDrawableConsole.draw(LEFT + 1, CHARAUP, achara->fullname.c_str());
 			aDrawableConsole.draw(LEFT + 9, CHARAUP, "Exp:");
 			aDrawableConsole.draw(LEFT + 11, CHARAUP, Common::To_ZString(achara->exp));
 

@@ -29,6 +29,7 @@ namespace  roguegame {
 		E_SummerDead,//‰Ä‚Ét€‚Ê
 		E_Why,//H‚Ét€‚Ê
 		E_FallKillSummer,//H‚É‰Ä€‚Ê
+		E_DeadInWinter,//“~‚Ét€‚Ê
 		E_KillMeteorWithAll,//è¦Î“|‚·’N‚à€‚ñ‚Å‚È‚¢
 		E_KillMeteorWithOutAll,//è¦Î“|‚·’N‚©€‚ñ‚Å‚é
 	};
@@ -80,5 +81,7 @@ namespace  roguegame {
 
 		ActionType nowaction;
 		Common::Rand rand;
+
+		
 	};
 }

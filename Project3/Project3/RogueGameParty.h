@@ -56,6 +56,7 @@ namespace  roguegame {
 	struct data {
 		bool isenemy;
 		string name;
+		string fullname;
 		Ai fst_ai;
 		int fst_hp;
 
@@ -67,37 +68,37 @@ namespace  roguegame {
 	};
 
 	static const vector<data> DETAILS = {
-		{ false,"t"   ,Ai_Controlable ,  30,{ 1 },{ 0, 0, 0, 10 } },
-		{ false,"‰Δ"   ,Ai_Summer,500,{ 20 },{ 0, 0, 0, 10 } },
-		{ false,"H"   ,Ai_AttackSummer, 250,{ 20 },{ 0, 0, 0, 10 } },
-		{ false,"“~"   ,Ai_AttackEnemy , 700,{ 40 },{ 0, 0, 0, 10 } },
+		{ false,"t" ,"t"  ,Ai_Controlable ,  30,{ 1 },{ 0, 0, 0, 10 } },
+		{ false,"‰Δ" ,"‰Δ"  ,Ai_Summer,500,{ 20 },{ 0, 0, 0, 10 } },
+		{ false,"H" ,"H"  ,Ai_AttackSummer, 250,{ 20 },{ 0, 0, 0, 10 } },
+		{ false,"“~" ,"“~"  ,Ai_AttackEnemy , 700,{ 40 },{ 0, 0, 0, 10 } },
 
-		{ true,"”~"    ,Ai_AttackMy	   ,  12,{ 0 },{ 7, 6, 0,  12 } },//t‚Μ‰Τ
-		{ true,"δΏ"    ,Ai_AttackMy    ,  25,{ 0 },{ 15, 7, 3, 25 } },
-		{ true,"’Φ"    ,Ai_AttackMy    ,  30,{ 0 },{ 30, 13, 0, 30 } },
-		{ true,"χ"	   ,Ai_AttackMy    ,  40,{ 0 },{ 50, 8, 9, 40 } },
+		{ true,"”~" ,"”~"   ,Ai_AttackMy	   ,  12,{ 0 },{ 7, 6, 0,  12 } },//t‚Μ‰Τ
+		{ true,"δΏ" ,"δΏ"   ,Ai_AttackMy    ,  25,{ 0 },{ 15, 7, 3, 25 } },
+		{ true,"’Φ" ,"’Φ"   ,Ai_AttackMy    ,  30,{ 0 },{ 30, 13, 0, 30 } },
+		{ true,"χ"	,"χ"   ,Ai_AttackMy    ,  40,{ 0 },{ 50, 8, 9, 40 } },
 
-		{ true,"—¨"    ,Ai_AttackMy    ,  50,{ 0 },{ 50, 12, 3, 50 } },//‰Δ‚Μ‰Τ
-		{ true,"¨"    ,Ai_AttackMy    ,  60,{ 0 },{ 60,15, 1, 60 } },
-		{ true,"ε["    ,Ai_AttackMy    ,  40,{ 0 },{ 100,20,5, 40 } },
-		{ true,"@"    ,Ai_AttackMy	   , 100,{ 0 },{ 200,14,17,100 } },
+		{ true,"—¨" ,"—¨"   ,Ai_AttackMy    ,  50,{ 0 },{ 50, 12, 3, 50 } },//‰Δ‚Μ‰Τ
+		{ true,"¨" ,"¨"   ,Ai_AttackMy    ,  60,{ 0 },{ 60,15, 1, 60 } },
+		{ true,"ε[" ,"ε["   ,Ai_AttackMy    ,  40,{ 0 },{ 100,20,5, 40 } },
+		{ true,"@" ,"@"   ,Ai_AttackMy	   , 100,{ 0 },{ 200,14,17,100 } },
 
-		{ true,"—–"    ,Ai_AttackMy    ,  30,{ 0 },{ 300, 15,6, 30 } },//H‚Μ‰Τ
-		{ true,"‹e"    ,Ai_AttackMy    ,  10,{ 0 },{ 500,17, 20, 10 } },
-		{ true,"”‹"    ,Ai_AttackMy    ,  50,{ 0 },{ 700,10,10, 50 } },
-		{ true,"‹k"    ,Ai_AttackMy	   ,  100,{ 0 },{1000,19,0,100 } },
+		{ true,"—–" ,"—–"   ,Ai_AttackMy    ,  30,{ 0 },{ 300, 15,6, 30 } },//H‚Μ‰Τ
+		{ true,"‹e" ,"‹e"   ,Ai_AttackMy    ,  10,{ 0 },{ 500,17, 20, 10 } },
+		{ true,"”‹" ,"”‹"   ,Ai_AttackMy    ,  50,{ 0 },{ 700,10,10, 50 } },
+		{ true,"‹k" ,"‹k"   ,Ai_AttackMy	   ,  100,{ 0 },{ 1000,19,0,100 } },
 
-		{ true,"•A"    ,Ai_AttackMy    ,  60,{ 0 },{ 300, 20, 5, 60 } },//“~‚Μ‰Τ
-		{ true,"•“"    ,Ai_AttackMy    ,  70,{ 0 },{ 10,20, 5, 70 } },
+		{ true,"•A" ,"•A"   ,Ai_AttackMy    ,  60,{ 0 },{ 300, 20, 5, 80 } },//“~‚Μ‰Τ
+		{ true,"•“" ,"•“"   ,Ai_AttackMy    ,  70,{ 0 },{ 10,25, 5, 90 } },
 
-		{ true,"¬"    ,Ai_Meteor    ,  10,{ 0 },{ 500, 10, 10, 10 } },//θ¦Ξ
-		{ true,"’†"    ,Ai_Meteor    , 100,{ 0 },{ 1000,100,10, 100 } },
-		{ true,"‘ε"    ,Ai_Meteor    , 300,{ 0 },{ 2000,1000,15, 300 } },
-		{ true,"‚l"    ,Ai_Meteor	   ,1000,{ 0 },{ 9999,9999,0,1000 } },
+		{ true,"¬" ,"¬"   ,Ai_Meteor    ,  10,{ 0 },{ 500, 30, 10, 10 } },//θ¦Ξ
+		{ true,"’†" ,"’†"   ,Ai_Meteor    , 100,{ 0 },{ 1000,100,10, 100 } },
+		{ true,"‘ε" ,"‘ε"   ,Ai_Meteor    , 500,{ 0 },{ 2000,1000,15, 500 } },
+		{ true,"‚l" ,"‘εθ¦ΞƒKƒjƒƒf"   ,Ai_Meteor	   ,9999,{ 0 },{ 9999,9999,15,9999 } },
 
-		{ true,""    ,Ai_AttackMy	   , 10,{ 0 },{ 1,1,9999,10 } },//
+		{ true,"" ,""   ,Ai_Moon	   , 10,{ 0 },{ 1,1,9999,10 } },//
 
-		{ false,"“~"   ,Ai_AttackEnemy , 0,{ 40 },{ 0, 0, 0, 10 } },
+		{ false,"“~" ,"“~"  ,Ai_AttackEnemy , 0,{ 40 },{ 0, 0, 0, 10 } },
 
 	};
 	struct ActionInfo {
@@ -111,8 +112,7 @@ namespace  roguegame {
 		Chara() {
 
 		}
-		~Chara() {
-
+		virtual ~Chara() {
 		}
 
 		bool GetDamage(const int admg);//€‚ρ‚Ύ‚©‚π•Τ‚·
@@ -120,6 +120,7 @@ namespace  roguegame {
 
 		int id;
 		string name;
+		string fullname;
 		int atk;
 		int def;
 		int now_hp;
@@ -152,6 +153,7 @@ namespace  roguegame {
 		OpChara() {
 
 		}
+		virtual ~OpChara()override;
 		bool Load(const OpChara &c);
 		int exp;
 
@@ -165,10 +167,11 @@ namespace  roguegame {
 		MyChara() {
 
 		}
+		virtual ~MyChara()override;
+		//γ‚ª‚Α‚½ƒƒxƒ‹‚π•Τ‚·
+		int GainExp(const int aexp);
 
-		int GainExp(const int aexp);//γ‚ª‚Α‚½ƒƒxƒ‹‚π•Τ‚·
-
-									//bool Attack(Chara &atarget);
+		//bool Attack(Chara &atarget);
 		int level;
 		int next_exp;
 		bool LevelUp();
@@ -189,7 +192,7 @@ namespace  roguegame {
 		bool AddMember(const int aid, const RogueGame &roguegame);
 		bool AddMember(const int aid, const int place, const RogueGame &roguegame);
 		shared_ptr<Chara> GetMember(const int anum)const;
-		void DeleteMember(const int anum);
+		void DeleteMember(const int anum, const int reason=1);
 		//int Act(const ActionType type);
 		int nowselect = 0;
 		static const int maxmember = 4;

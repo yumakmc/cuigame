@@ -10,6 +10,7 @@
 
 using namespace roguegame;
 
+bool MoonKillFlag = false;
 
 namespace roguegame {
 
@@ -55,13 +56,18 @@ namespace roguegame {
 	const int MAP_LEFT = 2;
 	const int MAP_UP = 2;
 	const int SEASON_NUM = 4;
-	const int DAY_PER_SEASON = 91;
+	
 
 	//–hŒä‚µ‚Ä‚½ƒ_ƒ‚ª‚±‚ê‚ÅŠ„‚Á‚½”’l‚É‚È‚éBiØ‚èÌ‚Äj
 	const int DEFENDINGCUTOFF = 5;
 
 #pragma region ENEMYMAP
-	static array<int, DAY_PER_SEASON> SpringEnemyMap = {
+	const int SPRING_DAY = 91;
+	const int SUMMER_DAY = 91;
+	const int FALL_DAY = 91;
+	const int WINTER_DAY = 92;
+	const int DAY_PER_SEASON = 91;
+	static vector<int> SpringEnemyMap = {
 		4,4,0,0,0,5,0,0,0,4,
 		0,0,0,0,4,0,0,0,0,4,
 		0,0,4,0,0,5,0,0,7,0,
@@ -73,7 +79,7 @@ namespace roguegame {
 		4,0,0,0,0,4,5,0,5,0,
 		0,
 	};
-	static array<int, DAY_PER_SEASON> SummerEnemyMap = {
+	static vector<int> SummerEnemyMap = {
 		0,8,0,0,9,8,0,0,0,0,
 		0,0,0,8,0,0,8,0,0,8,
 		0,0,0,0,0,0,9,0,10,0,
@@ -85,31 +91,43 @@ namespace roguegame {
 		10,0,0,11,0,0,0,0,18,0,
 		0,
 	};
-	static array<int, DAY_PER_SEASON> FallEnemyMap = {
+	static vector<int> FallEnemyMap = {
 		0,12,0,0,0,0,18,0,0,0,
 		0,0,0,13,0,0,0,12,0,12,
 		0,0,18,0,0,12,0,0,13,0,
 		0,0,0,0,0,14,0,0,0,0,
 		0,0,0,0,0,0,0,14,0,0,
-		0,0,12,0,0,0,13,14,0,0,
+		0,0,12,0,22,0,13,14,0,0,
 		0,0,0,15,0,18,18,18,0,0,
 		0,0,12,0,0,0,0,0,18,19,
 		12,0,0,13,0,0,0,0,0,0,
 		0,
 	};
-	static array<int, DAY_PER_SEASON> WinterEnemyMap = {
-		0,8,0,8,9,8,0,0,0,0,
-		0,0,0,10,0,9,0,9,0,8,
-		0,0,11,0,0,9,0,0,10,0,
-		0,8,0,0,0,10,0,0,8,0,
-		0,0,8,0,0,0,0,9,0,0,
-		0,0,9,0,8,0,10,10,0,0,
-		0,0,0,10,0,0,0,9,0,0,
-		0,0,11,0,0,0,9,0,0,0,
-		10,0,0,11,0,8,11,0,10,0,
+	/*static array<int, DAY_PER_SEASON> WinterEnemyMap = {
+		0,20,0,0,0,19,0,0,17,19,
+		0,19,0,19,0,18,0,19,0,18,
+		0,0,17,0,19,18,0,16,19,0,
+		0,18,0,19,0,19,0,0,20,0,
+		0,0,18,0,0,16,0,19,0,0,
+		0,0,19,0,18,0,16,16,17,0,
+		0,19,0,19,0,0,0,19,0,0,
+		0,0,19,19,18,19,19,19,0,18,
+		18,19,0,0,19,0,0,0,0,0,
 		0,
+	};*/
+	static vector<int> WinterEnemyMap = {
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,2,
 	};
-	static array<array<int, DAY_PER_SEASON>, SEASON_NUM> EnemyMaps = {//0:‹ó”’@ @@4~“G
+	static array<vector<int>, SEASON_NUM> EnemyMaps = {//0:‹ó”’@ @@4~“G
 		SpringEnemyMap,
 		SummerEnemyMap,
 		FallEnemyMap,
@@ -138,42 +156,47 @@ namespace roguegame {
 	struct name_and_descript {
 		string name;
 		Effect effect;
-		string descript;
+		vector<string> descript;
 	};
 	static map<Date, name_and_descript> YOUBI_DETAIL = {//day0: Œ—j“ú day1: ‰Î—j“ú‚Æ‚È‚é
-		{ Thu,name_and_descript{ "‰Î",E_AtkUp,"UŒ‚—Í@‚Q”{" }, },
-		{ Wed,name_and_descript{ "…",E_sss,"–¢İ’è" }, },
-		{ Tur,name_and_descript{ "–Ø",E_Invin,"–³“G" }, },
-		{ Fri,name_and_descript{ "‹à",E_ExpUp,"ŒoŒ±’l@‚Q”{" }, },
-		{ Sat,name_and_descript{ "“y",E_DefUp,"–hŒä—Í@‚Q”{" }, },
-		{ Sun,name_and_descript{ "“ú",E_LoveUp,"ˆ¤@‚R”{" }, },
-		{ Mon,name_and_descript{ "Œ",E_Moon,"Œ‚ªÎ‚Á‚Ä‚¢‚é" } },
+		{ Thu,name_and_descript{ "‰Î",E_AtkUp ,{ "UŒ‚—Í@‚Q”{" } }, },
+		{ Wed,name_and_descript{ "…",E_sss   ,{ "" } }, },
+		{ Tur,name_and_descript{ "–Ø",E_Invin ,{ "–³“G" } }, },
+		{ Fri,name_and_descript{ "‹à",E_ExpUp ,{ "ŒoŒ±’l@‚Q”{" } }, },
+		{ Sat,name_and_descript{ "“y",E_DefUp ,{ "–hŒä—Í@‚Q”{" } }, },
+		{ Sun,name_and_descript{ "“ú",E_LoveUp,{ "ˆ¤@‚R”{" } }, },
+		{ Mon,name_and_descript{ "Œ",E_Moon  ,{ "Œ‚ªÎ‚Á‚Ä‚¢‚é","–¡•ûUç‚R”{" } } },
 	};
-	static map<int, name_and_descript> CHIP_DETAIL = {//day0: Œ—j“ú day1: ‰Î—j“ú‚Æ‚È‚é
-		{ 0,name_and_descript{ "‚O",E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 1,name_and_descript{ "t",E_AtkUp,"Œ‚ªÎ‚Á‚Ä‚¢‚é" }, },
-		{ 2,name_and_descript{ "‚¢",E_AtkUp,"–hŒä—Í@‚Q”{" }, },
-		{ 3,name_and_descript{ "‚¤",E_AtkUp,"ŒoŒ±’l@‚Q”{" }, },
-		{ 4,name_and_descript{ DETAILS[4].name,E_AtkUp,"–³“G" }, },
-		{ 5,name_and_descript{ DETAILS[5].name,E_AtkUp,"ˆ¤@‚R”{" }, },
-		{ 6,name_and_descript{ DETAILS[6].name,E_AtkUp,"Œ‚ªÎ‚Á‚Ä‚¢‚é" } },
-		{ 7,name_and_descript{ DETAILS[7].name,E_AtkUp,"–³“G" }, },
-		{ 8,name_and_descript{ DETAILS[8].name,E_AtkUp,"u‰´‚à‚¨‘O‚ç‚à‚İ‚ñ‚È‚¨‚µ‚Ü‚¢‚¾v" } },
-		{ 9,name_and_descript{ DETAILS[9].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 10,name_and_descript{ DETAILS[10].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 11,name_and_descript{ DETAILS[11].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 12,name_and_descript{ DETAILS[12].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 13,name_and_descript{ DETAILS[13].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 14,name_and_descript{ DETAILS[14].name,E_AtkUp,"–³“G" }, },
-		{ 15,name_and_descript{ DETAILS[15].name,E_AtkUp,"ˆ¤@‚R”{" }, },
-		{ 16,name_and_descript{ DETAILS[16].name,E_AtkUp,"Œ‚ªÎ‚Á‚Ä‚¢‚é" } },
-		{ 17,name_and_descript{ DETAILS[17].name,E_AtkUp,"–³“G" }, },
-		{ 18,name_and_descript{ DETAILS[18].name,E_AtkUp,"u‰´‚à‚¨‘O‚ç‚à‚İ‚ñ‚È‚¨‚µ‚Ü‚¢‚¾v" } },
-		{ 19,name_and_descript{ DETAILS[19].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 20,name_and_descript{ DETAILS[20].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 21,name_and_descript{ DETAILS[21].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 22,name_and_descript{ DETAILS[22].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
-		{ 23,name_and_descript{ DETAILS[23].name,E_AtkUp,"€‚È‚È‚¢‚Å‰º‚³‚¢" }, },
+	struct chip_descript {
+		string shortname;
+		string fullname;
+		vector<string> descript;
+	};
+	static map<int, chip_descript> CHIP_DETAIL = {//day0: Œ—j“ú day1: ‰Î—j“ú‚Æ‚È‚é
+		{ 0 ,chip_descript{ "‚O","‚O",{ "€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 1 ,chip_descript{ "t","‚O",{ "Œ‚ªÎ‚Á‚Ä‚¢‚é" } } },
+		{ 2 ,chip_descript{ "I","I",{ "–hŒä—Í@‚Q”{" } } },
+		{ 3 ,chip_descript{ "‚¤","‚O",{ "ŒoŒ±’l@‚Q”{" } } },
+		{ 4 ,chip_descript{ DETAILS[4].name,"‚O",{"–³“G" } } },
+		{ 5 ,chip_descript{ DETAILS[5].name,"‚O",{"ˆ¤@‚R”{" } } },
+		{ 6 ,chip_descript{ DETAILS[6].name,"‚O",{"Œ‚ªÎ‚Á‚Ä‚¢‚é" } } },
+		{ 7 ,chip_descript{ DETAILS[7].name,"‚O",{"–³“G" } } },
+		{ 8 ,chip_descript{ DETAILS[8].name,"‚O",{"u‰´‚à‚¨‘O‚ç‚à‚İ‚ñ‚È‚¨‚µ‚Ü‚¢‚¾v" } } },
+		{ 9 ,chip_descript{ DETAILS[9].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 10,chip_descript{ DETAILS[10].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 11,chip_descript{ DETAILS[11].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 12,chip_descript{ DETAILS[12].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 13,chip_descript{ DETAILS[13].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 14,chip_descript{ DETAILS[14].name,"‚O",{"–³“G" } } },
+		{ 15,chip_descript{ DETAILS[15].name,"‚O",{"ˆ¤@‚R”{" } } },
+		{ 16,chip_descript{ DETAILS[16].name,"‚O",{"Œ‚ªÎ‚Á‚Ä‚¢‚é" }} },
+		{ 17,chip_descript{ DETAILS[17].name,"‚O",{"–³“G"} } },
+		{ 18,chip_descript{ DETAILS[18].name,"‚O",{"u‰´‚à‚¨‘O‚ç‚à‚İ‚ñ‚È‚¨‚µ‚Ü‚¢‚¾v" } } },
+		{ 19,chip_descript{ DETAILS[19].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 20,chip_descript{ DETAILS[20].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 21,chip_descript{ DETAILS[21].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 22,chip_descript{ DETAILS[22].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
+		{ 23,chip_descript{ DETAILS[23].name,"‚O",{"€‚È‚È‚¢‚Å‰º‚³‚¢" } } },
 	};
 }
 Ending EndingNum = E_Dummy;//extern‚ÅRogueEnding‚É“n‚·
@@ -248,17 +271,45 @@ RogueGame::RogueGame(gameSceneChanger* changer)
 		GetMember(false, 1)->now_hp = 200;
 		GetMember(false, 1)->DecideNextAction(*this);
 	}
-	else if (Keyboard_Get('B')) {
+	else if (Keyboard_Get('U')) {
 		season = 3;
 		day = 273;
 		shared_ptr<MyChara> a = static_pointer_cast<MyChara>(GetMember(false, 0));
-		a->GainExp(3000);//‰Ò‚®ƒvƒŒƒC
+		a->GainExp(10000);//‰Ò‚ª‚È‚¢ƒvƒŒƒC
 		a->GainLife(10000);
 
 		myparty.AddMember(1, *this);
+		GetMember(false, 1)->ai = Ai_AttackEnemy;
+		GetMember(false, 1)->now_hp = 100;
+		GetMember(false, 1)->DecideNextAction(*this);
+		static_pointer_cast<MyChara>(GetMember(false, 1))->GainExp(7000);//‰Ò‚®ƒvƒŒƒC
 		myparty.AddMember(2, *this);
+		GetMember(false, 2)->ai = Ai_AttackEnemy;
+		GetMember(false, 2)->now_hp = 100;
+		GetMember(false, 2)->DecideNextAction(*this);
+		static_pointer_cast<MyChara>(GetMember(false, 2))->GainExp(7000);
 		myparty.AddMember(3, *this);
-		opparty.AddMember(22, 0, *this);
+		opparty.AddMember(21, 0, *this);
+	}
+	else if (Keyboard_Get('I')) {
+		season = 3;
+		day = 273;
+		shared_ptr<MyChara> a = static_pointer_cast<MyChara>(GetMember(false, 0));
+		a->GainExp(15000);//‰Ò‚®ƒvƒŒƒC
+		a->GainLife(10000);
+
+		myparty.AddMember(1, *this);
+		GetMember(false, 1)->ai = Ai_AttackEnemy;
+		GetMember(false, 1)->now_hp = 100;
+		GetMember(false, 1)->DecideNextAction(*this);
+		static_pointer_cast<MyChara>(GetMember(false, 1))->GainExp(10000);//‰Ò‚®ƒvƒŒƒC
+		myparty.AddMember(2, *this);
+		GetMember(false, 2)->ai = Ai_AttackEnemy;
+		GetMember(false, 2)->now_hp = 100;
+		GetMember(false, 2)->DecideNextAction(*this);
+		static_pointer_cast<MyChara>(GetMember(false, 2))->GainExp(10000);
+		myparty.AddMember(3, *this);
+		opparty.AddMember(21, 0, *this);
 	}
 	else {
 		// –³—‚â‚è‚È“~‘}“ü
@@ -365,6 +416,7 @@ void RogueGame::Update() {
 			switch (season) {
 			case 0:
 				assert(false);
+				break;
 			case 1:
 				myparty.AddMember(1, *this);
 				break;
@@ -376,9 +428,13 @@ void RogueGame::Update() {
 				break;
 			case 3:
 				myparty.AddMember(3, *this);
+				opparty.AddMember(-1, 0, *this);
+				opparty.AddMember(-1, 1, *this);
+				opparty.AddMember(-1, 2, *this);
+				opparty.AddMember(-1, 3, *this);
 				break;
 			default:
-				assert(false);
+				;
 			}
 		}
 		*situation = S_TurnStart;
@@ -422,16 +478,21 @@ void RogueGame::Draw() {
 		}
 	}
 	aDrawableConsole.draw(7, 0, Common::To_ZString(day) + "“ú/365“ú");
-	aDrawableConsole.draw(13, 0, YOUBI_DETAIL[Date(day % 7)].name + "—j“úF" + YOUBI_DETAIL[Date(day % 7)].descript);
+	aDrawableConsole.draw(13, 0, YOUBI_DETAIL[Date(day % 7)].name + "—j“úF" + YOUBI_DETAIL[Date(day % 7)].descript[0]);
 
 #pragma endregion	
 #pragma region MAP
-	array<int, DAY_PER_SEASON> My_EnemyMap(EnemyMaps[season]);
+	vector<int> My_EnemyMap(EnemyMaps[season]);
 	My_EnemyMap[day%DAY_PER_SEASON] = 1;
-	for (int i = 0; i < 7; ++i) {
-		for (int j = 0; j < 13; ++j) {
-			static_assert(7 * 13 == DAY_PER_SEASON, "ƒ}ƒbƒv‚¿‚á‚ñ‚Æ•\¦‚³‚ê‚È‚¢");
-			int ax, ay;
+
+	assert(7 * 13 <= My_EnemyMap.size());
+	for (int h = 0; h < My_EnemyMap.size(); ++h) {
+		int ax, ay;
+		if (h<7 * 13) {
+
+			const int i = h / 13;
+			const int j = h % 13;
+
 			if (i % 2) {
 				if (j != 12) {
 					ax = 11 - j + MAP_LEFT;
@@ -452,15 +513,20 @@ void RogueGame::Draw() {
 					ay = MAP_UP + 2 * (6 - i);
 				}
 			}
-			string st = CHIP_DETAIL[My_EnemyMap[13 * i + j]].name;
-			if (st == "t") {
-				aDrawableConsole.drawc(ax, ay, st, DrawableConsole::COLOR::C_LPINK, DrawableConsole::COLOR::C_BLACK);
-			}
-			else {
-				aDrawableConsole.draw(ax, ay, st);
-			}
-
+			
 		}
+		else {
+			ax = 12 + MAP_LEFT;
+			ay = MAP_UP;
+		}
+		string st = CHIP_DETAIL[My_EnemyMap[h]].shortname;
+		if (st == "t") {
+			aDrawableConsole.drawc(ax, ay, st, DrawableConsole::COLOR::C_LPINK, DrawableConsole::COLOR::C_BLACK);
+		}
+		else {
+			aDrawableConsole.draw(ax, ay, st);
+		}
+	
 	}
 #pragma endregion
 #pragma region LINE
@@ -687,6 +753,19 @@ int RogueGame::Special(shared_ptr<Chara> from, shared_ptr<Chara> to) {
 		}
 	}
 			 break;
+	case 22: {//
+		const int MOONCOUNT = 35;
+		from->count++;
+		if (from->count < MOONCOUNT) {
+			actionlog->push_back(from->name + "‚Íš}Î‚Á‚Ä‚¢‚é");
+		}
+		else {
+			MoonKillFlag = false;
+			actionlog->push_back(from->name + "‚Íš}Î‚Á‚Ä‚¢‚é");
+			from->isdead = true;
+		}
+	}
+			 break;
 	default:
 		assert(false);
 		;
@@ -802,14 +881,20 @@ bool RogueGame::ChangeActMember() {
 			*situation = S_AllyTurn;
 		}
 	}
-
-
 	return turnendflag;
 }
 int RogueGame::CheckDeadPlayer() {
 	for (int i = 0; i < opparty.maxmember; ++i) {
 		shared_ptr<Chara> aopchara = opparty.GetMember(i);
 		if (aopchara != NULL&&aopchara->isdead) {
+			if (aopchara->id == 22){
+				if (aopchara->now_hp > 0) {
+					opparty.DeleteMember(i,3);
+				}
+				else {
+					opparty.DeleteMember(i,2);
+				}
+			}
 			opparty.DeleteMember(i);
 		}
 	}
@@ -828,10 +913,10 @@ int RogueGame::CheckDeadPlayer() {
 					break;
 				case 2:
 					break;
-
 				case 3:
 					break;
 				}
+				break;
 			case 1:
 				switch (amychara->id) {
 				case 0:
@@ -849,6 +934,7 @@ int RogueGame::CheckDeadPlayer() {
 				case 3:
 					break;
 				}
+				break;
 			case 2:
 				switch (amychara->id) {
 				case 0:
@@ -861,24 +947,25 @@ int RogueGame::CheckDeadPlayer() {
 					break;
 				case 2:
 					break;
-
 				case 3:
 					break;
 				}
+				break;
 			case 3:
 				switch (amychara->id) {
 				case 0:
-					EndingNum = E_Why;
+					EndingNum = E_DeadInWinter;
 					mgameSceneChanger->ChangeScene(eGameScene_Ending);
 					break;
 				case 1:
 					break;
 				case 2:
 					break;
-
 				case 3:
 					break;
 				}
+			default:
+				break;
 			}
 			myparty.DeleteMember(i);
 		}
