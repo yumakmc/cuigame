@@ -574,45 +574,46 @@ void RogueGame::Draw() {
 	opparty.Draw();
 #pragma endregion
 #pragma region COMAND
-
-	const int ax = 14;
-	const int ay = LOG_LINE_Y - 1;
-	switch (*situation)
 	{
+		const int ax = 14;
+		const int ay = LOG_LINE_Y - 1;
+		switch (*situation)
+		{
 
-	case S_Opening:
-		aDrawableConsole.draw(ax, ay, "Ｚを押してスタート");
-		break;
-	case S_Help:
-		aDrawableConsole.draw(ax, ay, "ヘルプ画面");
-		break;
-	case S_TurnStart:
-		aDrawableConsole.draw(ax, ay, "ターンスタート");
-		break;
-	case S_ChoosingAction:
-		aDrawableConsole.draw(ax, ay, "行動の選択");
-		break;
-	case S_ChoosingTarget:
-		aDrawableConsole.draw(ax, ay, "対象の選択　Ｘで戻る");
-		break;
-	case S_AllyTurn:
-		aDrawableConsole.draw(ax, ay, "味方のターン");
-		break;
-	case S_EnemyTurn:
-		aDrawableConsole.draw(ax, ay, "敵のターン");
-		break;
-	case S_TurnEnd:
-		aDrawableConsole.draw(ax, ay, "日が暮れた。日が明けた。");
-		break;
-	case S_Save:
-		aDrawableConsole.draw(ax, ay, "セーブする？");
-		break;
-	case S_Load:
-		aDrawableConsole.draw(ax, ay, "ロードする？");
-		break;
-	default:
-		assert(false);
-		break;
+		case S_Opening:
+			aDrawableConsole.draw(ax, ay, "Ｚを押してスタート");
+			break;
+		case S_Help:
+			aDrawableConsole.draw(ax, ay, "ヘルプ画面");
+			break;
+		case S_TurnStart:
+			aDrawableConsole.draw(ax, ay, "ターンスタート");
+			break;
+		case S_ChoosingAction:
+			aDrawableConsole.draw(ax, ay, "行動の選択");
+			break;
+		case S_ChoosingTarget:
+			aDrawableConsole.draw(ax, ay, "対象の選択　Ｘで戻る");
+			break;
+		case S_AllyTurn:
+			aDrawableConsole.draw(ax, ay, "味方のターン");
+			break;
+		case S_EnemyTurn:
+			aDrawableConsole.draw(ax, ay, "敵のターン");
+			break;
+		case S_TurnEnd:
+			aDrawableConsole.draw(ax, ay, "日が暮れた。日が明けた。");
+			break;
+		case S_Save:
+			aDrawableConsole.draw(ax, ay, "セーブする？");
+			break;
+		case S_Load:
+			aDrawableConsole.draw(ax, ay, "ロードする？");
+			break;
+		default:
+			assert(false);
+			break;
+		}
 	}
 #pragma endregion	
 #pragma region LOG
@@ -627,8 +628,17 @@ void RogueGame::Draw() {
 #pragma endregion
 
 #pragma region MANUAL
+	switch (*situation)
+	{
 
-	aDrawableConsole.draw(1, LOG_LINE_Y - 1, "A:攻撃　D:防御　S:愛");
+	case S_ChoosingTarget:
+		aDrawableConsole.draw(1, LOG_LINE_Y - 1, "０～７の番号を選ぶ");
+		break;
+	default:
+		aDrawableConsole.draw(1, LOG_LINE_Y - 1, "A:攻撃　D:防御　S:愛");
+		break;
+	}
+	
 
 #pragma endregion
 

@@ -14,11 +14,12 @@ extern int KillNum ;//RogueGame‚æ‚èQÆ
 extern int SpendDay ;//RogueGame‚æ‚èQÆ
 
 std::vector<string> SHOWRANK = {
-	"‚r",
-	"‚`",
-	"‚a",
-	"‚b",
+	
 	"‚c",
+	"‚b",
+	"‚a",
+	"‚`",
+	"‚r",
 };
 
 namespace roguegame {
@@ -27,7 +28,7 @@ namespace roguegame {
 		:gameBaseScene(changer){
 		
 
-		aMusic.Play(5);
+		aMusic.Play(-1);
 	}
 
 	void RogueEnding::Initialize() {
@@ -40,10 +41,10 @@ namespace roguegame {
 
 	#pragma region BACK
 		const int SpendDayPoint = SpendDay / 91;
-		const int KillNumPoint = max(4, KillNum / 15);
-		const int LoveHpPoint = max(4, (LoveHp + 99) / 100);
-		aDrawableConsole.draw(4, 4, "‹Gß");
-		aDrawableConsole.draw(4, 5, "‰ß‚²‚µ‚½“ú”F"+Common::To_ZString(SpendDay)+"•]‰¿F"+ SHOWRANK[SpendDayPoint]);
+		const int KillNumPoint = min(4, KillNum / 15);
+		const int LoveHpPoint = min(4, (LoveHp + 99) / 100);
+		aDrawableConsole.draw(4, 4, "‹Gß"); 
+		aDrawableConsole.draw(4, 5, "‰ß‚²‚µ‚½“ú”F" + Common::To_ZString(SpendDay)+"•]‰¿F"+ SHOWRANK[SpendDayPoint]);
 		aDrawableConsole.draw(4, 6, "“|‚µ‚½“G‚Ì”F" + Common::To_ZString(KillNum) + "•]‰¿F" + SHOWRANK[KillNumPoint]);
 		aDrawableConsole.draw(4, 7, "“G‚ğˆ¤‚µ‚½—ÊF" + Common::To_ZString(LoveHp) + "•]‰¿F" + SHOWRANK[LoveHpPoint]);
 		
@@ -63,7 +64,7 @@ namespace roguegame {
 				break;
 			case E_SummerDead://‰Ä‚Ét€‚Ê
 				aDrawableConsole.draw(4, 8, "t‚Í‰Ä‚ğ’´‰z‚µ‚½");
-				aDrawableConsole.draw(4, 9, "‚d‚c‚PF@‚q‚d‚u‚d‚m‚f‚d@‚d‚m‚c");
+				aDrawableConsole.draw(4, 9, "‚d‚c‚PF@‚b‚g‚d‚`‚s@‚d‚m‚c");
 				break;
 			case E_Why://H‚Ét€‚Ê
 				aDrawableConsole.draw(4, 8, "‚±‚ê‚Í©ŒÈÓ”C");
