@@ -7,6 +7,7 @@
 #include <string>
 #include <algorithm>
 #include <fstream>
+#include <assert.h>
 
 using namespace roguegame;
 
@@ -154,19 +155,49 @@ namespace roguegame {
 	};
 
 	struct name_and_descript {
+		Date date;
 		string name;
 		Effect effect;
-		vector<string> descript;
+		name_and_descript(Date adate, string aname, Effect aeffect, vector<string> adescripts) :name(aname), descripts(adescripts) {
+			date = adate;
+			effect = aeffect;
+		}
+		name_and_descript() :name(), descripts() {
+			int a=0;
+			a++;
+			assert(false);
+		}
+	private:
+		vector<string> descripts;
+
+	public:
+		string GetDescript() {
+			if (date == Mon) {
+				assert(descripts.size() >= 2);
+				if (MoonKillFlag) {
+					return descripts[1];
+				}
+				else {
+					return descripts[0];
+				}
+			}
+			else {
+				assert(descripts.size());
+				return descripts[0];
+			}
+		}
 	};
+	name_and_descript a(Thu, "‰Î", E_AtkUp, { "UŒ‚—Í@‚Q”{" });
 	static map<Date, name_and_descript> YOUBI_DETAIL = {//day0: Œ—j“ú day1: ‰Î—j“ú‚Æ‚È‚é
-		{ Thu,name_and_descript{ "‰Î",E_AtkUp ,{ "UŒ‚—Í@‚Q”{" } }, },
-		{ Wed,name_and_descript{ "…",E_sss   ,{ "" } }, },
-		{ Tur,name_and_descript{ "–Ø",E_Invin ,{ "–³“G" } }, },
-		{ Fri,name_and_descript{ "‹à",E_ExpUp ,{ "ŒoŒ±’l@‚Q”{" } }, },
-		{ Sat,name_and_descript{ "“y",E_DefUp ,{ "–hŒä—Í@‚Q”{" } }, },
-		{ Sun,name_and_descript{ "“ú",E_LoveUp,{ "ˆ¤@‚R”{" } }, },
-		{ Mon,name_and_descript{ "Œ",E_Moon  ,{ "Œ‚ªÎ‚Á‚Ä‚¢‚é","–¡•ûUç‚R”{" } } },
+		{ Thu,name_and_descript{ Thu,"‰Î",E_AtkUp ,{ "UŒ‚—Í@‚Q”{" } }, },
+		{ Wed,name_and_descript{ Wed,"…",E_sss   ,{ "" } }, },
+		{ Tur,name_and_descript{ Tur,"–Ø",E_Invin ,{ "–³“G" } }, },
+		{ Fri,name_and_descript{ Fri,"‹à",E_ExpUp ,{ "ŒoŒ±’l@‚Q”{" } }, },
+		{ Sat,name_and_descript{ Sat,"“y",E_DefUp ,{ "–hŒä—Í@‚Q”{" } }, },
+		{ Sun,name_and_descript{ Sun,"“ú",E_LoveUp,{ "ˆ¤@‚R”{" } }, },
+		{ Mon,name_and_descript{ Mon,"Œ",E_Moon  ,{ "Œ‚ªÎ‚Á‚Ä‚¢‚é","–¡•ûUç‚R”{" } } },
 	};
+	//static map<Date, name_and_descript> YOUBI_DETAIL;
 	struct chip_descript {
 		string shortname;
 		string fullname;
@@ -478,8 +509,8 @@ void RogueGame::Draw() {
 		}
 	}
 	aDrawableConsole.draw(7, 0, Common::To_ZString(day) + "“ú/365“ú");
-	aDrawableConsole.draw(13, 0, YOUBI_DETAIL[Date(day % 7)].name + "—j“úF" + YOUBI_DETAIL[Date(day % 7)].descript[0]);
-
+	aDrawableConsole.draw(13, 0, YOUBI_DETAIL[Date(day % 7)].name + "—j“úF" + YOUBI_DETAIL[Date(day % 7)].GetDescript());
+	//////////////////////////////////////////////////////////////////////////////
 #pragma endregion	
 #pragma region MAP
 	vector<int> My_EnemyMap(EnemyMaps[season]);
