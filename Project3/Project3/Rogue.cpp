@@ -5,7 +5,8 @@
 
 
 Rogue::Rogue(SceneChanger* changer) : BaseScene(changer) {
-	mGameScene = new Text(this, 1, 0);
+	mGameScene = new roguegame::RogueGame(this);
+	mNextScene = eGameScene_None;
 
 }
 void Rogue::Initialize() {
